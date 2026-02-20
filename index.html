@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Farka - Ultimate Responsive Build (Bug Fixed)</title>
+    <title>Farka - Ultimate Responsive Build (All Bugs Fixed)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: white; color: #000; overflow: hidden; }
@@ -52,6 +52,7 @@
         .btn-line-h { position: absolute; left: -8px; right: -8px; height: 1.5px; background: black; }
         .btn-line-v { position: absolute; top: -8px; bottom: -8px; width: 1.5px; background: black; }
         .btn-t { top: 0; } .btn-b { bottom: 0; } 
+        /* BUG FIXED: Lines Footer menyilang sempurna (left-0, right-0) */
         .btn-l { left: 0; } .btn-r { right: 0; }
 
         /* --- PROJECT MENU STYLES --- */
@@ -276,15 +277,15 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-20 text-sm font-bold uppercase tracking-widest text-black w-full max-w-4xl">
                 <div class="text-center flex flex-col items-center">
-                    <div class="text-gray-400 text-[0.65rem] mb-3">Email Inquiries</div>
-                    <a href="mailto:admin@farkastudio.id" class="hover:text-gray-500 transition">admin@farkastudio.id</a>
+                    <div class="text-gray-400 text-[0.65rem] mb-3 whitespace-nowrap">Email Inquiries</div>
+                    <a href="mailto:admin@farkastudio.id" class="hover:text-gray-500 transition whitespace-nowrap">admin@farkastudio.id</a>
                 </div>
-                <div class="text-center flex flex-col items-center border-y md:border-y-0 md:border-l md:border-r border-gray-200 py-8 md:py-0 px-0 md:px-20">
-                    <div class="text-gray-400 text-[0.65rem] mb-3">Give Us a Call</div>
-                    <a href="tel:+62812345678" class="hover:text-gray-500 transition">+62 812 3456 78</a>
+                <div class="text-center flex flex-col items-center border-y md:border-y-0 md:border-l md:border-r border-gray-200 py-8 md:py-0 px-0 md:px-8">
+                    <div class="text-gray-400 text-[0.65rem] mb-3 whitespace-nowrap">Give Us a Call</div>
+                    <a href="tel:+62812345678" class="hover:text-gray-500 transition whitespace-nowrap">+62 812 3456 78</a>
                 </div>
                 <div class="text-center flex flex-col items-center">
-                    <div class="text-gray-400 text-[0.65rem] mb-3">Farka HQ</div>
+                    <div class="text-gray-400 text-[0.65rem] mb-3 whitespace-nowrap">Farka HQ</div>
                     <div class="leading-relaxed">Jl. Kemang Raya No. 88<br>Jakarta Selatan 12730</div>
                 </div>
             </div>
@@ -292,7 +293,6 @@
     </section>
 
     <div id="bottom-bar" class="bottom-nav-bar flex flex-col justify-between px-6 md:px-[10%] py-6 md:py-8">
-        
         <div class="flex justify-between items-start w-full">
             <div class="nav-btn relative inline-block cursor-pointer" onclick="goToProject()">
                 <div class="btn-lines">
@@ -301,9 +301,7 @@
                 </div>
                 <div class="btn-text px-3 md:px-6 py-2 relative z-10 font-black uppercase text-sm md:text-xl tracking-widest">Project</div>
             </div>
-
             <div class="w-[60px] md:w-[150px]"></div>
-
             <div class="nav-btn relative inline-block cursor-pointer" onclick="goToAbout()">
                 <div class="btn-lines">
                     <div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div>
@@ -314,31 +312,25 @@
         </div>
         
         <div class="flex justify-between items-end w-full text-[0.55rem] md:text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">
-            
             <div class="leading-relaxed w-[45%] md:w-auto">
                 Jl. Kemang Raya No. 88<br>Jakarta Selatan
             </div>
-            
             <div class="flex flex-col md:flex-row gap-2 md:gap-10 items-end text-right w-[50%] md:w-auto">
-                
-                <div class="leading-relaxed order-last md:order-first">
+                <div class="leading-relaxed order-last md:order-first whitespace-nowrap">
                     admin@farkastudio.id<br>+62 812 3456 78
                 </div>
-                
                 <div class="nav-btn relative inline-block cursor-pointer order-first md:order-last mb-1 md:mb-0" onclick="goToContact()">
                     <div class="btn-lines">
                         <div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div>
                         <div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div>
                     </div>
-                    <div class="btn-text px-3 md:px-4 py-1.5 md:py-1 relative z-10 text-black font-black text-[0.6rem] md:text-sm">Contact Us</div>
+                    <div class="btn-text px-3 md:px-4 py-1.5 md:py-1 relative z-10 text-black font-black text-[0.6rem] md:text-sm whitespace-nowrap">Contact Us</div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
-        // --- DATABASE PROYEK (LENGKAP 5 GAMBAR & TEKS PENUH) ---
         const db = {
             atelier: { 
                 title: "Atelier Jagakarsa", land: "600 M2", build: "450 M2", type: "Modern Tropical", 
@@ -392,7 +384,6 @@
             }
         };
 
-        // --- CASCADING HOVER & ACTIVE LOGIC ---
         const cascadeColors = ['#1F1F1F', '#545454', '#898989', '#BDBEBE', '#F2F3F3'];
         const sidebar = document.getElementById('sidebar-menu');
         const mainItems = Array.from(document.querySelectorAll('.project-menu-item'));
@@ -430,8 +421,13 @@
             });
         }
 
+        // BUG FIXED: Memastikan seluruh inline styles bersih sebelum merender ulang state yang aktif
         function restoreActiveStates() {
             const activeMainIdx = mainItems.findIndex(el => el.classList.contains('active'));
+            
+            // Bersihkan semua gaya cascade (baik menu utama maupun SELURUH submenu di kategori apapun)
+            clearCascade(mainItems, false);
+            clearCascade(Array.from(document.querySelectorAll('.submenu-item')), true);
             
             if (activeMainIdx !== -1) {
                 const activeContainer = document.getElementById(mainItems[activeMainIdx].getAttribute('data-target'));
@@ -439,22 +435,17 @@
                 const activeSubIdx = subItems.findIndex(el => el.classList.contains('active'));
 
                 if (activeSubIdx !== -1) {
-                    clearCascade(mainItems, false);
                     applyCascade(subItems, activeSubIdx, true);
                 } else {
-                    clearCascade(subItems, true);
                     applyCascade(mainItems, activeMainIdx, false);
                 }
-            } else {
-                clearCascade(mainItems, false);
             }
         }
 
         mainItems.forEach((item, idx) => {
             item.addEventListener('mouseenter', () => {
-                document.querySelectorAll('.submenu-container').forEach(cont => {
-                    clearCascade(Array.from(cont.querySelectorAll('.submenu-item')), true);
-                });
+                // BUG FIXED: Bersihkan SELURUH submenu agar tidak ada warna yang nyangkut (ghosting)
+                clearCascade(Array.from(document.querySelectorAll('.submenu-item')), true);
                 applyCascade(mainItems, idx, false);
             });
         });
@@ -464,14 +455,16 @@
                 const container = subItem.closest('.submenu-container');
                 const subItems = Array.from(container.querySelectorAll('.submenu-item'));
                 
+                // BUG FIXED: Bersihkan SELURUH submenu juga, lalu render cascade yang baru di-hover
                 clearCascade(mainItems, false); 
+                clearCascade(Array.from(document.querySelectorAll('.submenu-item')), true);
                 applyCascade(subItems, subItems.indexOf(subItem), true);
             });
         });
 
         sidebar.addEventListener('mouseleave', restoreActiveStates);
 
-        // --- PRELOADER ANIMATION (LOCKED - GARIS AMAN) ---
+        // --- PRELOADER ANIMATION ---
         const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
         
         async function runPreloader() {
@@ -488,51 +481,21 @@
                     bg.style.transition = 'none';
                     bg.style.transform = 'translateY(-101%)';
                 });
-                linesH.forEach(id => { 
-                    document.getElementById(id).style.transition = 'none'; 
-                    document.getElementById(id).style.transform = 'scaleX(0)'; 
-                });
-                linesV.forEach(id => { 
-                    document.getElementById(id).style.transition = 'none'; 
-                    document.getElementById(id).style.transform = 'scaleY(0)'; 
-                });
+                linesH.forEach(id => { document.getElementById(id).style.transition = 'none'; document.getElementById(id).style.transform = 'scaleX(0)'; });
+                linesV.forEach(id => { document.getElementById(id).style.transition = 'none'; document.getElementById(id).style.transform = 'scaleY(0)'; });
 
                 await wait(50);
 
-                linesH.forEach(id => { 
-                    document.getElementById(id).style.transition = `transform 0.8s ${ease}`; 
-                    document.getElementById(id).style.transform = 'scaleX(1)'; 
-                });
-                linesV.forEach(id => { 
-                    document.getElementById(id).style.transition = `transform 0.8s ${ease}`; 
-                    document.getElementById(id).style.transform = 'scaleY(1)'; 
-                });
-
-                bgs.forEach(i => {
-                    const bg = document.getElementById(`bg-${i}`);
-                    bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`;
-                    bg.style.transform = 'translateY(0)'; 
-                });
+                linesH.forEach(id => { document.getElementById(id).style.transition = `transform 0.8s ${ease}`; document.getElementById(id).style.transform = 'scaleX(1)'; });
+                linesV.forEach(id => { document.getElementById(id).style.transition = `transform 0.8s ${ease}`; document.getElementById(id).style.transform = 'scaleY(1)'; });
+                bgs.forEach(i => { const bg = document.getElementById(`bg-${i}`); bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`; bg.style.transform = 'translateY(0)'; });
 
                 await wait(1200);
+                if (loop === 0) { logoPre.style.transition = 'none'; logoPre.style.opacity = '1'; }
 
-                if (loop === 0) {
-                    logoPre.style.transition = 'none';
-                    logoPre.style.opacity = '1';
-                }
-
-                linesH.forEach(id => { 
-                    document.getElementById(id).style.transform = 'scaleX(0)'; 
-                });
-                linesV.forEach(id => { 
-                    document.getElementById(id).style.transform = 'scaleY(0)'; 
-                });
-
-                bgs.forEach(i => {
-                    const bg = document.getElementById(`bg-${i}`);
-                    bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`;
-                    bg.style.transform = 'translateY(101%)';
-                });
+                linesH.forEach(id => { document.getElementById(id).style.transform = 'scaleX(0)'; });
+                linesV.forEach(id => { document.getElementById(id).style.transform = 'scaleY(0)'; });
+                bgs.forEach(i => { const bg = document.getElementById(`bg-${i}`); bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`; bg.style.transform = 'translateY(101%)'; });
 
                 await wait(1200);
                 await wait(1500);
@@ -543,7 +506,6 @@
             mainLogo.classList.replace('opacity-0', 'opacity-100');
 
             await wait(100);
-
             mainLogo.className = 'logo-nav-bottom';
             document.getElementById('preloader').style.display = 'none';
             document.body.classList.remove('overflow-hidden');
@@ -565,7 +527,12 @@
                 targetCat.classList.add('open');
                 el.classList.add('active');
             }
-            restoreActiveStates();
+            
+            // BUG FIXED: Paksa rendering ulang cascade secara manual agar tidak berkedip
+            const idx = mainItems.indexOf(el);
+            clearCascade(mainItems, false); 
+            clearCascade(Array.from(document.querySelectorAll('.submenu-item')), true);
+            applyCascade(mainItems, idx, false);
         }
 
         function setDetail(id, el) {
@@ -574,12 +541,9 @@
             const placeholder = document.getElementById('project-placeholder');
             const contentContainer = document.getElementById('det-content-container');
             
-            // HILANGKAN PLACEHOLDER SECARA INSTAN
             if(placeholder) {
                 placeholder.style.opacity = '0'; 
-                setTimeout(() => {
-                    placeholder.style.display = 'none';
-                }, 500);
+                setTimeout(() => { placeholder.style.display = 'none'; }, 500);
             }
 
             detailContainer.style.opacity = '0'; 
@@ -610,7 +574,6 @@
                 
                 detailContainer.style.opacity = '1';
                 
-                // UX MOBILE: Auto-scroll halus ke area detail
                 if (window.innerWidth < 768) {
                     detailContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 } else {
@@ -620,10 +583,17 @@
 
             document.querySelectorAll('.submenu-item').forEach(e => e.classList.remove('active'));
             el.classList.add('active');
-            restoreActiveStates();
+            
+            const container = el.closest('.submenu-container');
+            const subItems = Array.from(container.querySelectorAll('.submenu-item'));
+            const idx = subItems.indexOf(el);
+            
+            // BUG FIXED: Pembersihan total sebelum setting active state baru
+            clearCascade(mainItems, false);
+            clearCascade(Array.from(document.querySelectorAll('.submenu-item')), true);
+            applyCascade(subItems, idx, true);
         }
 
-        // --- NAVIGASI HALAMAN MORPHING ---
         function hideAllPages() {
             document.getElementById('home-page').classList.remove('active');
             document.getElementById('project-page').classList.remove('active');
