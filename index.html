@@ -48,12 +48,11 @@
         .nav-btn:hover .btn-text { background-color: #000; color: #fff; }
         .nav-btn:hover .btn-lines { opacity: 1; }
         
-        .btn-lines { position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .btn-lines { position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 20; }
         .btn-line-h { position: absolute; left: -8px; right: -8px; height: 1.5px; background: black; }
         .btn-line-v { position: absolute; top: -8px; bottom: -8px; width: 1.5px; background: black; }
-        .btn-t { top: 0; } .btn-b { bottom: 0; } 
-        /* BUG FIXED: Lines Footer menyilang sempurna (left-0, right-0) */
-        .btn-l { left: 0; } .btn-r { right: 0; }
+        .btn-t { top: -1.5px; } .btn-b { bottom: -1.5px; } 
+        .btn-l { left: -1.5px; } .btn-r { right: -1.5px; }
 
         /* --- PROJECT MENU STYLES --- */
         .submenu-container { height: 0; overflow: hidden; transition: height 0.4s ease; }
@@ -92,37 +91,39 @@
 
     <section id="project-page" class="page-section bg-white pt-24 md:pt-40 px-6 md:px-20">
         <div class="fixed top-8 md:top-20 right-6 md:right-20 -translate-y-1/2 font-black cursor-pointer uppercase border-b-2 border-black text-[0.65rem] md:text-xs tracking-widest transition hover:text-gray-500 z-50" onclick="goToHome()">Back to Home</div>
-        
+        <div class="md:hidden fixed bottom-6 right-6 bg-black text-white px-3 py-2 text-[0.6rem] font-black uppercase tracking-widest cursor-pointer z-[150] shadow-lg hover:bg-gray-800 transition" onclick="scrollToProjectMenu()">
+            Back to Menu
+        </div>
         <div class="flex flex-col md:grid md:grid-cols-12 gap-6 md:gap-10 h-full pb-[20vh] md:pb-0 overflow-y-auto md:overflow-y-hidden scroll-container">
             
             <div class="md:col-span-4 md:border-r border-gray-50 pt-4 md:pt-10" id="sidebar-menu">
                 
                 <div class="mb-2">
-                    <div class="project-menu-item relative inline-block cursor-pointer active" onclick="toggleCat('res', this)" data-target="cat-res">
-                        <div class="menu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
-                            <div class="absolute top-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
-                            <div class="absolute bottom-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
-                            <div class="absolute left-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
-                            <div class="absolute right-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                    <div class="project-menu-item relative inline-block cursor-pointer active ml-3" onclick="toggleCat('res', this)" data-target="cat-res">
+                        <div class="menu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
+                            <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute bottom-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute left-[-2px] top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                            <div class="absolute right-[-2px] top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
                         </div>
                         <div class="menu-text px-4 py-1 relative z-10 font-black text-xl md:text-2xl uppercase tracking-wider">Residential</div>
                     </div>
                     <div id="cat-res" class="submenu-container open pl-4">
-                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3" onclick="setDetail('atelier', this)">
-                            <div class="submenu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
-                                <div class="absolute top-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
-                                <div class="absolute bottom-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
-                                <div class="absolute left-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
-                                <div class="absolute right-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3 ml-2" onclick="setDetail('atelier', this)">
+                            <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute top-[-1px] left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute bottom-[-1px] left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute left-[-1px] top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                                <div class="absolute right-[-1px] top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
                             </div>
                             <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Atelier Jagakarsa</div>
                         </div>
-                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3" onclick="setDetail('uluwatu', this)">
-                            <div class="submenu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
-                                <div class="absolute top-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
-                                <div class="absolute bottom-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
-                                <div class="absolute left-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
-                                <div class="absolute right-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3 ml-2" onclick="setDetail('uluwatu', this)">
+                            <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute top-[-1px] left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute bottom-[-1px] left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute left-[-1px] top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                                <div class="absolute right-[-1px] top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
                             </div>
                             <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Uluwatu Villa</div>
                         </div>
@@ -130,31 +131,31 @@
                 </div>
 
                 <div class="mb-2">
-                    <div class="project-menu-item relative inline-block cursor-pointer" onclick="toggleCat('off', this)" data-target="cat-off">
-                        <div class="menu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
-                            <div class="absolute top-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
-                            <div class="absolute bottom-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
-                            <div class="absolute left-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
-                            <div class="absolute right-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                    <div class="project-menu-item relative inline-block cursor-pointer ml-3" onclick="toggleCat('off', this)" data-target="cat-off">
+                        <div class="menu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
+                            <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute bottom-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute left-[-2px] top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                            <div class="absolute right-[-2px] top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
                         </div>
                         <div class="menu-text px-4 py-1 relative z-10 font-black text-xl md:text-2xl uppercase tracking-wider">Office</div>
                     </div>
                     <div id="cat-off" class="submenu-container pl-4">
-                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3" onclick="setDetail('hq', this)">
-                            <div class="submenu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
-                                <div class="absolute top-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
-                                <div class="absolute bottom-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
-                                <div class="absolute left-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
-                                <div class="absolute right-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3 ml-2" onclick="setDetail('hq', this)">
+                            <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute top-[-1px] left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute bottom-[-1px] left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute left-[-1px] top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                                <div class="absolute right-[-1px] top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
                             </div>
                             <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Farka Studio HQ</div>
                         </div>
-                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3" onclick="setDetail('sudirman', this)">
-                            <div class="submenu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
-                                <div class="absolute top-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
-                                <div class="absolute bottom-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
-                                <div class="absolute left-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
-                                <div class="absolute right-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3 ml-2" onclick="setDetail('sudirman', this)">
+                            <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute top-[-1px] left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute bottom-[-1px] left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute left-[-1px] top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                                <div class="absolute right-[-1px] top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
                             </div>
                             <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Sudirman Suite</div>
                         </div>
@@ -162,22 +163,22 @@
                 </div>
 
                 <div class="mb-2">
-                    <div class="project-menu-item relative inline-block cursor-pointer" onclick="toggleCat('pub', this)" data-target="cat-pub">
-                        <div class="menu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
-                            <div class="absolute top-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
-                            <div class="absolute bottom-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
-                            <div class="absolute left-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
-                            <div class="absolute right-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                    <div class="project-menu-item relative inline-block cursor-pointer ml-3" onclick="toggleCat('pub', this)" data-target="cat-pub">
+                        <div class="menu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
+                            <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute bottom-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute left-[-2px] top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                            <div class="absolute right-[-2px] top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
                         </div>
                         <div class="menu-text px-4 py-1 relative z-10 font-black text-xl md:text-2xl uppercase tracking-wider">Public Space</div>
                     </div>
                     <div id="cat-pub" class="submenu-container pl-4">
-                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3" onclick="setDetail('park', this)">
-                            <div class="submenu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
-                                <div class="absolute top-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
-                                <div class="absolute bottom-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
-                                <div class="absolute left-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
-                                <div class="absolute right-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3 ml-2" onclick="setDetail('park', this)">
+                            <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute top-[-1px] left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute bottom-[-1px] left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute left-[-1px] top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                                <div class="absolute right-[-1px] top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
                             </div>
                             <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Urban Park Plaza</div>
                         </div>
@@ -295,35 +296,22 @@
     <div id="bottom-bar" class="bottom-nav-bar flex flex-col justify-between px-6 md:px-[10%] py-6 md:py-8">
         <div class="flex justify-between items-start w-full">
             <div class="nav-btn relative inline-block cursor-pointer" onclick="goToProject()">
-                <div class="btn-lines">
-                    <div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div>
-                    <div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div>
-                </div>
+                <div class="btn-lines"><div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div><div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div></div>
                 <div class="btn-text px-3 md:px-6 py-2 relative z-10 font-black uppercase text-sm md:text-xl tracking-widest">Project</div>
             </div>
             <div class="w-[60px] md:w-[150px]"></div>
             <div class="nav-btn relative inline-block cursor-pointer" onclick="goToAbout()">
-                <div class="btn-lines">
-                    <div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div>
-                    <div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div>
-                </div>
+                <div class="btn-lines"><div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div><div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div></div>
                 <div class="btn-text px-3 md:px-6 py-2 relative z-10 font-black uppercase text-sm md:text-xl tracking-widest">About</div>
             </div>
         </div>
         
         <div class="flex justify-between items-end w-full text-[0.55rem] md:text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">
-            <div class="leading-relaxed w-[45%] md:w-auto">
-                Jl. Kemang Raya No. 88<br>Jakarta Selatan
-            </div>
+            <div class="leading-relaxed w-[45%] md:w-auto">Jl. Kemang Raya No. 88<br>Jakarta Selatan</div>
             <div class="flex flex-col md:flex-row gap-2 md:gap-10 items-end text-right w-[50%] md:w-auto">
-                <div class="leading-relaxed order-last md:order-first whitespace-nowrap">
-                    admin@farkastudio.id<br>+62 812 3456 78
-                </div>
+                <div class="leading-relaxed order-last md:order-first whitespace-nowrap">admin@farkastudio.id<br>+62 812 3456 78</div>
                 <div class="nav-btn relative inline-block cursor-pointer order-first md:order-last mb-1 md:mb-0" onclick="goToContact()">
-                    <div class="btn-lines">
-                        <div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div>
-                        <div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div>
-                    </div>
+                    <div class="btn-lines"><div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div><div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div></div>
                     <div class="btn-text px-3 md:px-4 py-1.5 md:py-1 relative z-10 text-black font-black text-[0.6rem] md:text-sm whitespace-nowrap">Contact Us</div>
                 </div>
             </div>
@@ -388,6 +376,14 @@
         const sidebar = document.getElementById('sidebar-menu');
         const mainItems = Array.from(document.querySelectorAll('.project-menu-item'));
         
+
+        function scrollToProjectMenu() {
+            const scrollArea = document.querySelector('#project-page .scroll-container');
+            if (scrollArea) {
+                scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
         function clearCascade(itemsList, isSubmenu = false) {
             itemsList.forEach(item => {
                 const textEl = isSubmenu ? item.querySelector('.submenu-text') : item.querySelector('.menu-text');
@@ -416,16 +412,14 @@
                     
                     textEl.style.backgroundColor = color;
                     textEl.style.color = offset >= 3 ? '#000' : '#fff';
-                    linesEl.style.opacity = offset === 0 ? '1' : '0'; 
+                    linesEl.style.opacity = '1';
                 }
             });
         }
 
-        // BUG FIXED: Memastikan seluruh inline styles bersih sebelum merender ulang state yang aktif
         function restoreActiveStates() {
             const activeMainIdx = mainItems.findIndex(el => el.classList.contains('active'));
             
-            // Bersihkan semua gaya cascade (baik menu utama maupun SELURUH submenu di kategori apapun)
             clearCascade(mainItems, false);
             clearCascade(Array.from(document.querySelectorAll('.submenu-item')), true);
             
@@ -444,7 +438,6 @@
 
         mainItems.forEach((item, idx) => {
             item.addEventListener('mouseenter', () => {
-                // BUG FIXED: Bersihkan SELURUH submenu agar tidak ada warna yang nyangkut (ghosting)
                 clearCascade(Array.from(document.querySelectorAll('.submenu-item')), true);
                 applyCascade(mainItems, idx, false);
             });
@@ -455,7 +448,6 @@
                 const container = subItem.closest('.submenu-container');
                 const subItems = Array.from(container.querySelectorAll('.submenu-item'));
                 
-                // BUG FIXED: Bersihkan SELURUH submenu juga, lalu render cascade yang baru di-hover
                 clearCascade(mainItems, false); 
                 clearCascade(Array.from(document.querySelectorAll('.submenu-item')), true);
                 applyCascade(subItems, subItems.indexOf(subItem), true);
@@ -528,7 +520,6 @@
                 el.classList.add('active');
             }
             
-            // BUG FIXED: Paksa rendering ulang cascade secara manual agar tidak berkedip
             const idx = mainItems.indexOf(el);
             clearCascade(mainItems, false); 
             clearCascade(Array.from(document.querySelectorAll('.submenu-item')), true);
@@ -588,7 +579,6 @@
             const subItems = Array.from(container.querySelectorAll('.submenu-item'));
             const idx = subItems.indexOf(el);
             
-            // BUG FIXED: Pembersihan total sebelum setting active state baru
             clearCascade(mainItems, false);
             clearCascade(Array.from(document.querySelectorAll('.submenu-item')), true);
             applyCascade(subItems, idx, true);
