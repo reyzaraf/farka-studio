@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Farka - Perfectly Aligned Header & Full Build</title>
+    <title>Farka - Ultimate Responsive Build (Bug Fixed)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: white; color: #000; overflow: hidden; }
@@ -20,12 +20,10 @@
         .char-box { flex: 1; position: relative; overflow: hidden; }
         .char-bg { position: absolute; inset: 0; z-index: 52; transform: translateY(-101%); opacity: 1 !important; }
 
-        /* --- LOGO MORPHING (PERFECT HORIZONTAL ALIGNMENT) --- */
+        /* --- LOGO MORPHING (RESPONSIVE SIZING & ALIGNMENT) --- */
         #logo-farka { position: fixed; transition: all 0.6s cubic-bezier(0.85, 0, 0.15, 1); pointer-events: none; z-index: 150; }
         .logo-center { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60vw; max-width: 280px; }
         .logo-nav-bottom { top: 87.5%; left: 50%; transform: translate(-50%, -50%); width: 80px; }
-        
-        /* Modifikasi Posisi Center Vertical (-50%) agar presisi dengan tombol Back to Home */
         .logo-project-header { top: 2rem; left: 1.5rem; transform: translate(0, -50%); width: 90px; }
 
         /* --- MEDIA QUERIES FOR DESKTOP/TABLET --- */
@@ -187,8 +185,9 @@
             </div>
 
             <div class="md:col-span-8 relative h-auto md:h-[calc(100vh-25vh)] mt-6 md:mt-0">
-                <div id="project-placeholder" class="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none transition-opacity duration-500">
-                    <div class="text-gray-200 font-black text-5xl uppercase tracking-widest opacity-60">Select a Project</div>
+                
+                <div id="project-placeholder" class="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-500 z-10">
+                    <div class="text-gray-200 font-black text-3xl md:text-5xl uppercase tracking-widest opacity-60 px-4 text-center">Select a Project</div>
                 </div>
 
                 <div class="opacity-0 transition-opacity duration-500 flex flex-col md:flex-row gap-6 md:gap-10 h-full" id="project-detail-container">
@@ -331,7 +330,7 @@
                         <div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div>
                         <div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div>
                     </div>
-                    <div class="btn-text px-3 md:px-4 py-1.5 md:py-1 relative z-10 text-black font-black text-[0.6rem] md:text-sm">Contact Us</div>
+                    <div class="btn-text px-3 md:px-4 py-1.5 md:py-1 relative z-10 text-black font-black text-[0.6rem] md:text-sm">Contact Us -></div>
                 </div>
             </div>
 
@@ -554,7 +553,7 @@
 
         window.onload = runPreloader;
 
-        // --- FUNGSI MENU & DETAIL (DENGAN AUTO-SCROLL MOBILE) ---
+        // --- FUNGSI MENU & DETAIL ---
         function toggleCat(id, el) {
             const targetCat = document.getElementById(`cat-${id}`);
             const isActive = el.classList.contains('active');
@@ -575,7 +574,14 @@
             const placeholder = document.getElementById('project-placeholder');
             const contentContainer = document.getElementById('det-content-container');
             
-            if(placeholder) placeholder.classList.add('hidden');
+            // HILANGKAN PLACEHOLDER SECARA INSTAN
+            if(placeholder) {
+                placeholder.style.opacity = '0'; 
+                setTimeout(() => {
+                    placeholder.style.display = 'none';
+                }, 500);
+            }
+
             detailContainer.style.opacity = '0'; 
             
             setTimeout(() => {
