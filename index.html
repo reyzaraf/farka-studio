@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Farka - Perfectly Aligned Header & Full Build</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: white; color: #000; overflow: hidden; }
+
+        /* --- PRELOADER ELEMENTS (LOCKED & RESPONSIVE) --- */
+        .sketch-line { position: absolute; background-color: #000; z-index: 120; opacity: 1 !important; }
+        .line-h { height: 2px; width: calc(100% + 40px); left: -20px; transform: scaleX(0); transform-origin: left; }
+        .line-v { width: 2px; height: calc(100% + 40px); top: -20px; transform: scaleY(0); transform-origin: top; }
+        .top-line { top: -2px; } .bottom-line { bottom: -2px; }
+        .left-line { left: -2px; } .right-line { right: -2px; }
+
+        .loader-frame { position: relative; width: 80vw; max-width: 450px; height: 80px; display: flex; z-index: 110; }
+        .char-box { flex: 1; position: relative; overflow: hidden; }
+        .char-bg { position: absolute; inset: 0; z-index: 52; transform: translateY(-101%); opacity: 1 !important; }
+
+        /* --- LOGO MORPHING (PERFECT HORIZONTAL ALIGNMENT) --- */
+        #logo-farka { position: fixed; transition: all 0.6s cubic-bezier(0.85, 0, 0.15, 1); pointer-events: none; z-index: 150; }
+        .logo-center { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60vw; max-width: 280px; }
+        .logo-nav-bottom { top: 87.5%; left: 50%; transform: translate(-50%, -50%); width: 80px; }
+        
+        /* Modifikasi Posisi Center Vertical (-50%) agar presisi dengan tombol Back to Home */
+        .logo-project-header { top: 2rem; left: 1.5rem; transform: translate(0, -50%); width: 90px; }
+
+        /* --- MEDIA QUERIES FOR DESKTOP/TABLET --- */
+        @media (min-width: 768px) {
+            .loader-frame { height: 120px; }
+            .logo-nav-bottom { width: 110px; }
+            .logo-project-header { top: 5rem; left: 5rem; width: 130px; transform: translate(0, -50%); }
+        }
+
+        /* --- PAGE SECTIONS --- */
+        .page-section { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 0.6s ease; }
+        .page-section.active { opacity: 1; pointer-events: auto; }
+        .scroll-container { overflow-y: auto; scrollbar-width: none; }
+        .scroll-container::-webkit-scrollbar { display: none; }
+
+        /* --- BOTTOM BAR & FOOTER (FIXED HEIGHT) --- */
+        .bottom-nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 25vh; background-color: #fff; z-index: 100; border-top: 1px solid #eee; transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1); }
+        .hidden-bar { transform: translateY(100%); }
+
+        /* --- HOVER EFFECTS (NAV BUTTONS FOOTER) --- */
+        .nav-btn .btn-text { transition: all 0.3s; }
+        .nav-btn:hover .btn-text { background-color: #000; color: #fff; }
+        .nav-btn:hover .btn-lines { opacity: 1; }
+        
+        .btn-lines { position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .btn-line-h { position: absolute; left: -8px; right: -8px; height: 1.5px; background: black; }
+        .btn-line-v { position: absolute; top: -8px; bottom: -8px; width: 1.5px; background: black; }
+        .btn-t { top: 0; } .btn-b { bottom: 0; } 
+        .btn-l { left: 0; } .btn-r { right: 0; }
+
+        /* --- PROJECT MENU STYLES --- */
+        .submenu-container { height: 0; overflow: hidden; transition: height 0.4s ease; }
+        .submenu-container.open { height: auto; margin-bottom: 2rem; margin-top: 1rem; }
+        .menu-text, .submenu-text { transition: all 0.3s; color: #ccc; }
+        .submenu-text { color: #888; }
+    </style>
+</head>
+<body class="overflow-hidden">
+
+    <div id="preloader" class="fixed inset-0 z-[200] flex items-center justify-center bg-white">
+        <div class="loader-frame" id="loader-frame-main">
+            <div class="sketch-line line-h top-line" id="l-top"></div>
+            <div class="sketch-line line-h bottom-line" id="l-bottom"></div>
+            <div class="sketch-line line-v left-line" id="l-left"></div>
+            <div class="sketch-line line-v right-line" id="l-right"></div>
+            
+            <div class="char-box"><div class="char-bg bg-[#1F1F1F]" id="bg-0"></div></div>
+            <div class="char-box"><div class="char-bg bg-[#545454]" id="bg-1"></div></div>
+            <div class="char-box"><div class="char-bg bg-[#898989]" id="bg-2"></div></div>
+            <div class="char-box"><div class="char-bg bg-[#BDBEBE]" id="bg-3"></div></div>
+            <div class="char-box"><div class="char-bg bg-[#F2F3F3]" id="bg-4"></div></div>
+        </div>
+        <img id="logo-pre-img" src="farkalogo.svg" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-[280px] z-[51] opacity-0">
+    </div>
+
+    <img id="logo-farka" src="farkalogo.svg" class="logo-center opacity-0">
+
+    <section id="home-page" class="page-section active">
+        <div class="w-full h-[75vh] overflow-hidden">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                <source src="https://www.pexels.com/download/video/36168059/" type="video/mp4">
+            </video>
+        </div>
+    </section>
+
+    <section id="project-page" class="page-section bg-white pt-24 md:pt-40 px-6 md:px-20">
+        <div class="fixed top-8 md:top-20 right-6 md:right-20 -translate-y-1/2 font-black cursor-pointer uppercase border-b-2 border-black text-[0.65rem] md:text-xs tracking-widest transition hover:text-gray-500 z-50" onclick="goToHome()">Back to Home</div>
+        
+        <div class="flex flex-col md:grid md:grid-cols-12 gap-6 md:gap-10 h-full pb-[20vh] md:pb-0 overflow-y-auto md:overflow-y-hidden scroll-container">
+            
+            <div class="md:col-span-4 md:border-r border-gray-50 pt-4 md:pt-10" id="sidebar-menu">
+                
+                <div class="mb-2">
+                    <div class="project-menu-item relative inline-block cursor-pointer active" onclick="toggleCat('res', this)" data-target="cat-res">
+                        <div class="menu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
+                            <div class="absolute top-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute bottom-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute left-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                            <div class="absolute right-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                        </div>
+                        <div class="menu-text px-4 py-1 relative z-10 font-black text-xl md:text-2xl uppercase tracking-wider">Residential</div>
+                    </div>
+                    <div id="cat-res" class="submenu-container open pl-4">
+                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3" onclick="setDetail('atelier', this)">
+                            <div class="submenu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute top-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute bottom-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute left-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                                <div class="absolute right-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                            </div>
+                            <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Atelier Jagakarsa</div>
+                        </div>
+                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3" onclick="setDetail('uluwatu', this)">
+                            <div class="submenu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute top-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute bottom-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute left-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                                <div class="absolute right-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                            </div>
+                            <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Uluwatu Villa</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <div class="project-menu-item relative inline-block cursor-pointer" onclick="toggleCat('off', this)" data-target="cat-off">
+                        <div class="menu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
+                            <div class="absolute top-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute bottom-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute left-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                            <div class="absolute right-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                        </div>
+                        <div class="menu-text px-4 py-1 relative z-10 font-black text-xl md:text-2xl uppercase tracking-wider">Office</div>
+                    </div>
+                    <div id="cat-off" class="submenu-container pl-4">
+                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3" onclick="setDetail('hq', this)">
+                            <div class="submenu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute top-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute bottom-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute left-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                                <div class="absolute right-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                            </div>
+                            <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Farka Studio HQ</div>
+                        </div>
+                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3" onclick="setDetail('sudirman', this)">
+                            <div class="submenu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute top-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute bottom-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute left-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                                <div class="absolute right-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                            </div>
+                            <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Sudirman Suite</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <div class="project-menu-item relative inline-block cursor-pointer" onclick="toggleCat('pub', this)" data-target="cat-pub">
+                        <div class="menu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
+                            <div class="absolute top-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute bottom-0 left-[-10px] right-[-10px] h-[2px] bg-black"></div>
+                            <div class="absolute left-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                            <div class="absolute right-0 top-[-10px] bottom-[-10px] w-[2px] bg-black"></div>
+                        </div>
+                        <div class="menu-text px-4 py-1 relative z-10 font-black text-xl md:text-2xl uppercase tracking-wider">Public Space</div>
+                    </div>
+                    <div id="cat-pub" class="submenu-container pl-4">
+                        <div class="submenu-item relative inline-block cursor-pointer w-full mb-3" onclick="setDetail('park', this)">
+                            <div class="submenu-lines opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute top-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute bottom-0 left-[-6px] right-[-6px] h-[1px] bg-black"></div>
+                                <div class="absolute left-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                                <div class="absolute right-0 top-[-6px] bottom-[-6px] w-[1px] bg-black"></div>
+                            </div>
+                            <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Urban Park Plaza</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-8 relative h-auto md:h-[calc(100vh-25vh)] mt-6 md:mt-0">
+                <div id="project-placeholder" class="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none transition-opacity duration-500">
+                    <div class="text-gray-200 font-black text-5xl uppercase tracking-widest opacity-60">Select a Project</div>
+                </div>
+
+                <div class="opacity-0 transition-opacity duration-500 flex flex-col md:flex-row gap-6 md:gap-10 h-full" id="project-detail-container">
+                    
+                    <div class="w-full md:w-2/3 h-auto md:h-full overflow-y-visible md:overflow-y-auto scroll-container pr-0 md:pr-4 pb-10 md:pb-20 order-last md:order-first">
+                        <div id="det-content-container" class="flex flex-col gap-12"></div>
+                    </div>
+
+                    <div class="w-full md:w-1/3 pt-0 md:pt-4 h-fit border-b-2 border-gray-100 pb-6 md:border-0 md:pb-0 order-first md:order-last">
+                        <h3 id="det-title" class="font-black text-2xl border-b-2 border-black pb-4 mb-4 uppercase"></h3>
+                        
+                        <div class="text-[0.65rem] font-black text-gray-400 uppercase mt-4 md:mt-6 tracking-widest">Land Area</div>
+                        <div id="det-land" class="text-sm font-bold uppercase mt-1"></div>
+                        
+                        <div class="text-[0.65rem] font-black text-gray-400 uppercase mt-4 md:mt-6 tracking-widest">Building Area</div>
+                        <div id="det-build" class="text-sm font-bold uppercase mt-1"></div>
+                        
+                        <div class="text-[0.65rem] font-black text-gray-400 uppercase mt-4 md:mt-6 tracking-widest">Design Type</div>
+                        <div id="det-type" class="text-sm font-bold uppercase mt-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about-page" class="page-section bg-white pt-24 md:pt-40 px-6 md:px-20">
+        <div class="fixed top-8 md:top-20 right-6 md:right-20 -translate-y-1/2 font-black cursor-pointer uppercase border-b-2 border-black text-[0.65rem] md:text-xs tracking-widest transition hover:text-gray-500 z-50" onclick="goToHome()">Back to Home</div>
+        
+        <div class="h-[calc(100vh-25vh)] md:h-full w-full overflow-y-auto scroll-container pb-32">
+            <div class="max-w-4xl mx-auto mb-16 md:mb-24 pt-4 md:pt-10 text-center">
+                <h2 class="text-3xl md:text-4xl font-black uppercase mb-6 md:mb-8 tracking-widest border-b-2 border-black pb-4 inline-block">The Studio</h2>
+                <p class="text-gray-500 leading-relaxed text-sm md:text-lg">
+                    Farka Studio adalah biro arsitektur dan desain interior yang berpusat di Indonesia. Kami percaya bahwa arsitektur bukan sekadar tentang membangun struktur, melainkan menciptakan ruang yang mampu bernapas, berdialog dengan lingkungannya, dan memberikan dampak positif bagi kehidupan manusia di dalamnya. 
+                    <br><br>
+                    Pendekatan kami selalu berakar pada kesederhanaan bentuk, kejujuran material, dan keberlanjutan. Melalui proses kolaboratif yang erat antara arsitek, klien, dan pembuat karya, Farka Studio terus mengeksplorasi batas-batas ruang untuk menghadirkan desain yang fungsional sekaligus berjiwa.
+                </p>
+            </div>
+
+            <div class="w-full h-[40vh] md:h-[60vh] mb-20 md:mb-32 relative">
+                <img src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg" alt="Farka Team" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-700 ease-in-out">
+                <div class="absolute bottom-4 right-6 text-white font-bold tracking-widest text-[0.6rem] md:text-xs uppercase opacity-70 bg-black/30 px-2 py-1 rounded">Farka Studio Collective, 2026</div>
+            </div>
+
+            <div class="max-w-6xl mx-auto">
+                <h3 class="text-xl md:text-2xl font-black uppercase mb-8 md:mb-12 tracking-widest text-center md:text-left">Key People</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
+                    <div class="group cursor-pointer text-center md:text-left">
+                        <div class="overflow-hidden mb-4">
+                            <img src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg" alt="Team Member" class="w-full aspect-[3/4] object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-500 ease-in-out">
+                        </div>
+                        <h4 class="font-black uppercase tracking-wider text-sm md:text-lg">Ahmad Faris</h4>
+                        <p class="text-[0.65rem] md:text-xs text-gray-400 uppercase tracking-widest mt-1 font-bold">Principal Architect</p>
+                    </div>
+                    <div class="group cursor-pointer text-center md:text-left">
+                        <div class="overflow-hidden mb-4">
+                            <img src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg" alt="Team Member" class="w-full aspect-[3/4] object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-500 ease-in-out">
+                        </div>
+                        <h4 class="font-black uppercase tracking-wider text-sm md:text-lg">Project Manager</h4>
+                        <p class="text-[0.65rem] md:text-xs text-gray-400 uppercase tracking-widest mt-1 font-bold">Project Manager</p>
+                    </div>
+                    <div class="group cursor-pointer text-center md:text-left">
+                        <div class="overflow-hidden mb-4">
+                            <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg" alt="Team Member" class="w-full aspect-[3/4] object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-500 ease-in-out">
+                        </div>
+                        <h4 class="font-black uppercase tracking-wider text-sm md:text-lg">Dina Lestari</h4>
+                        <p class="text-[0.65rem] md:text-xs text-gray-400 uppercase tracking-widest mt-1 font-bold">Lead Interior Designer</p>
+                    </div>
+                    <div class="group cursor-pointer text-center md:text-left">
+                        <div class="overflow-hidden mb-4">
+                            <img src="https://images.pexels.com/photos/1239288/pexels-photo-1239288.jpeg" alt="Team Member" class="w-full aspect-[3/4] object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-500 ease-in-out">
+                        </div>
+                        <h4 class="font-black uppercase tracking-wider text-sm md:text-lg">Siti Amira</h4>
+                        <p class="text-[0.65rem] md:text-xs text-gray-400 uppercase tracking-widest mt-1 font-bold">3D Visualizer & Drafter</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact-page" class="page-section bg-white pt-24 md:pt-40 px-6 md:px-20">
+        <div class="fixed top-8 md:top-20 right-6 md:right-20 -translate-y-1/2 font-black cursor-pointer uppercase border-b-2 border-black text-[0.65rem] md:text-xs tracking-widest transition hover:text-gray-500 z-50" onclick="goToHome()">Back to Home</div>
+        
+        <div class="flex flex-col items-center justify-center h-[calc(100vh-25vh)] md:h-full pb-20 md:pb-32 overflow-y-auto scroll-container">
+            <h2 class="text-3xl md:text-5xl font-black uppercase mb-6 md:mb-8 tracking-widest text-center">Get In Touch</h2>
+            <p class="text-gray-500 mb-10 md:mb-16 text-center max-w-xl leading-relaxed text-sm md:text-lg">Kami selalu terbuka untuk mendiskusikan visi ruang Anda. Hubungi kami untuk jadwal konsultasi atau sekadar menyapa tim kami.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-20 text-sm font-bold uppercase tracking-widest text-black w-full max-w-4xl">
+                <div class="text-center flex flex-col items-center">
+                    <div class="text-gray-400 text-[0.65rem] mb-3">Email Inquiries</div>
+                    <a href="mailto:admin@farkastudio.id" class="hover:text-gray-500 transition">admin@farkastudio.id</a>
+                </div>
+                <div class="text-center flex flex-col items-center border-y md:border-y-0 md:border-l md:border-r border-gray-200 py-8 md:py-0 px-0 md:px-20">
+                    <div class="text-gray-400 text-[0.65rem] mb-3">Give Us a Call</div>
+                    <a href="tel:+62812345678" class="hover:text-gray-500 transition">+62 812 3456 78</a>
+                </div>
+                <div class="text-center flex flex-col items-center">
+                    <div class="text-gray-400 text-[0.65rem] mb-3">Farka HQ</div>
+                    <div class="leading-relaxed">Jl. Kemang Raya No. 88<br>Jakarta Selatan 12730</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="bottom-bar" class="bottom-nav-bar flex flex-col justify-between px-6 md:px-[10%] py-6 md:py-8">
+        
+        <div class="flex justify-between items-start w-full">
+            <div class="nav-btn relative inline-block cursor-pointer" onclick="goToProject()">
+                <div class="btn-lines">
+                    <div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div>
+                    <div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div>
+                </div>
+                <div class="btn-text px-3 md:px-6 py-2 relative z-10 font-black uppercase text-sm md:text-xl tracking-widest">Project</div>
+            </div>
+
+            <div class="w-[60px] md:w-[150px]"></div>
+
+            <div class="nav-btn relative inline-block cursor-pointer" onclick="goToAbout()">
+                <div class="btn-lines">
+                    <div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div>
+                    <div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div>
+                </div>
+                <div class="btn-text px-3 md:px-6 py-2 relative z-10 font-black uppercase text-sm md:text-xl tracking-widest">About</div>
+            </div>
+        </div>
+        
+        <div class="flex justify-between items-end w-full text-[0.55rem] md:text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">
+            
+            <div class="leading-relaxed w-[45%] md:w-auto">
+                Jl. Kemang Raya No. 88<br>Jakarta Selatan
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-2 md:gap-10 items-end text-right w-[50%] md:w-auto">
+                
+                <div class="leading-relaxed order-last md:order-first">
+                    admin@farkastudio.id<br>+62 812 3456 78
+                </div>
+                
+                <div class="nav-btn relative inline-block cursor-pointer order-first md:order-last mb-1 md:mb-0" onclick="goToContact()">
+                    <div class="btn-lines">
+                        <div class="btn-line-h btn-t"></div><div class="btn-line-h btn-b"></div>
+                        <div class="btn-line-v btn-l"></div><div class="btn-line-v btn-r"></div>
+                    </div>
+                    <div class="btn-text px-3 md:px-4 py-1.5 md:py-1 relative z-10 text-black font-black text-[0.6rem] md:text-sm">Contact Us</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- DATABASE PROYEK (LENGKAP 5 GAMBAR & TEKS PENUH) ---
+        const db = {
+            atelier: { 
+                title: "Atelier Jagakarsa", land: "600 M2", build: "450 M2", type: "Modern Tropical", 
+                content: [
+                    { img: "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg", text: "Fasad depan Atelier Jagakarsa memadukan beton ekspos dengan elemen taman tropis. Eksplorasi ruang ini mengedepankan keterbukaan dan sirkulasi udara alami yang maksimal." },
+                    { img: "https://images.pexels.com/photos/1732414/pexels-photo-1732414.jpeg", text: "Area komunal di lantai dasar didesain tanpa sekat (open plan), memaksimalkan sirkulasi udara silang dan pencahayaan alami sepanjang hari tanpa bantuan lampu buatan." },
+                    { img: "https://images.pexels.com/photos/2251247/pexels-photo-2251247.jpeg", text: "Penggunaan material kayu solid pada elemen furnitur dan partisi memberikan sentuhan hangat yang menyeimbangkan karakter dingin dan masif dari struktur beton." },
+                    { img: "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg", text: "Skylight memanjang di area koridor lantai dua menciptakan bayangan arsitektural yang dinamis mengikuti pergerakan arah matahari dari pagi hingga sore hari." },
+                    { img: "https://images.pexels.com/photos/259915/pexels-photo-259915.jpeg", text: "Taman dalam (inner courtyard) menjadi jantung utama bangunan, menyatukan seluruh ruang interior dan memberikan tingkat privasi yang maksimal bagi penghuni rumah." }
+                ] 
+            },
+            uluwatu: { 
+                title: "Uluwatu Villa", land: "1200 M2", build: "800 M2", type: "Minimalist Beach", 
+                content: [
+                    { img: "https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg", text: "Sebuah tempat perlindungan di tepi tebing yang berfokus pada pemandangan cakrawala luas." },
+                    { img: "https://images.pexels.com/photos/189296/pexels-photo-189296.jpeg", text: "Desain memaksimalkan bukaan kaca berukuran masif untuk pengalaman hidup tanpa batas antara ruang dalam dan luar." },
+                    { img: "https://images.pexels.com/photos/2613260/pexels-photo-2613260.jpeg", text: "Kolam renang infinity menjadi titik sentral yang secara visual menghubungkan arsitektur bangunan langsung dengan garis laut." },
+                    { img: "https://images.pexels.com/photos/1134176/pexels-photo-1134176.jpeg", text: "Pemilihan material batu alam lokal membantu struktur menyatu dengan lingkungan tebing kapur di sekitarnya." },
+                    { img: "https://images.pexels.com/photos/1450361/pexels-photo-1450361.jpeg", text: "Teras atap (rooftop) didedikasikan sepenuhnya sebagai area observasi matahari terbenam dengan lanskap minimalis." }
+                ] 
+            },
+            hq: { 
+                title: "Farka Studio HQ", land: "400 M2", build: "900 M2", type: "Industrial Office", 
+                content: [
+                    { img: "https://images.pexels.com/photos/37347/office-sitting-room-executive-sitting-area.jpg", text: "Pusat kreatif yang dirancang untuk kolaborasi maksimal dan pemikiran arsitektur yang inovatif." },
+                    { img: "https://images.pexels.com/photos/260680/pexels-photo-260680.jpeg", text: "Ruang rapat terbuka di tengah ruangan mengedepankan transparansi ide antar tim." },
+                    { img: "https://images.pexels.com/photos/269077/pexels-photo-269077.jpeg", text: "Kami mempertahankan bata ekspos dan langit-langit struktural asli bangunan untuk kesan industrial yang kuat." },
+                    { img: "https://images.pexels.com/photos/280453/pexels-photo-280453.jpeg", text: "Lampu gantung modern dan perabot baja hitam menjadi aksen kontras terhadap warna hangat kayu meja kerja." },
+                    { img: "https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg", text: "Area komunal karyawan dirancang seperti kafe untuk meningkatkan kenyamanan dan produktivitas informal." }
+                ] 
+            },
+            sudirman: { 
+                title: "Sudirman Suite", land: "N/A", build: "250 M2", type: "Corporate Luxury", 
+                content: [
+                    { img: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg", text: "Ruang kerja eksekutif kelas atas di jantung kawasan keuangan Jakarta dengan desain premium." },
+                    { img: "https://images.pexels.com/photos/1957478/pexels-photo-1957478.jpeg", text: "Lobi resepsionis menampilkan marmer impor dan pencahayaan aksen tersembunyi yang mewah." },
+                    { img: "https://images.pexels.com/photos/1181715/pexels-photo-1181715.jpeg", text: "Area lounge eksekutif memberikan privasi tertinggi untuk diskusi dengan klien-klien penting (VVIP)." },
+                    { img: "https://images.pexels.com/photos/840996/pexels-photo-840996.jpeg", text: "Kaca kedap suara membatasi setiap ruang manajerial tanpa mengorbankan masuknya cahaya matahari ke area staf." },
+                    { img: "https://images.pexels.com/photos/1170412/pexels-photo-1170412.jpeg", text: "Setiap detail perabot dipilih langsung (custom-made) untuk merepresentasikan citra prestisius dari perusahaan." }
+                ] 
+            },
+            park: { 
+                title: "Urban Park Plaza", land: "5000 M2", build: "1200 M2", type: "Sustainable Public", 
+                content: [
+                    { img: "https://images.pexels.com/photos/302769/pexels-photo-302769.jpeg", text: "Proyek paru-paru hijau yang mengintegrasikan rekreasi publik dengan infrastruktur ramah lingkungan di tengah perkotaan." },
+                    { img: "https://images.pexels.com/photos/12314/pexels-photo-12314.jpeg", text: "Paviliun utama dirancang dengan struktur bambu melengkung yang sepenuhnya mengambil sumber material berkelanjutan." },
+                    { img: "https://images.pexels.com/photos/375141/pexels-photo-375141.jpeg", text: "Jalur pejalan kaki menggunakan paving berpori untuk mengoptimalkan resapan air hujan langsung ke tanah." },
+                    { img: "https://images.pexels.com/photos/310411/pexels-photo-310411.jpeg", text: "Zona bermain anak dan amfiteater terbuka mengelilingi kolam retensi yang bertindak ganda sebagai pengontrol banjir." },
+                    { img: "https://images.pexels.com/photos/1283625/pexels-photo-1283625.jpeg", text: "Plaza ini sukses mengubah lahan terbengkalai menjadi titik kumpul komunal terfavorit bagi masyarakat sekitar." }
+                ] 
+            }
+        };
+
+        // --- CASCADING HOVER & ACTIVE LOGIC ---
+        const cascadeColors = ['#1F1F1F', '#545454', '#898989', '#BDBEBE', '#F2F3F3'];
+        const sidebar = document.getElementById('sidebar-menu');
+        const mainItems = Array.from(document.querySelectorAll('.project-menu-item'));
+        
+        function clearCascade(itemsList, isSubmenu = false) {
+            itemsList.forEach(item => {
+                const textEl = isSubmenu ? item.querySelector('.submenu-text') : item.querySelector('.menu-text');
+                const linesEl = isSubmenu ? item.querySelector('.submenu-lines') : item.querySelector('.menu-lines');
+                const defaultColor = isSubmenu ? '#888' : '#ccc';
+                
+                textEl.style.backgroundColor = 'transparent';
+                textEl.style.color = defaultColor;
+                linesEl.style.opacity = '0';
+            });
+        }
+
+        function applyCascade(itemsList, targetIndex, isSubmenu = false) {
+            itemsList.forEach((item, idx) => {
+                const textEl = isSubmenu ? item.querySelector('.submenu-text') : item.querySelector('.menu-text');
+                const linesEl = isSubmenu ? item.querySelector('.submenu-lines') : item.querySelector('.menu-lines');
+                const defaultColor = isSubmenu ? '#888' : '#ccc';
+
+                if (idx < targetIndex) {
+                    textEl.style.backgroundColor = 'transparent';
+                    textEl.style.color = defaultColor;
+                    linesEl.style.opacity = '0';
+                } else {
+                    const offset = idx - targetIndex;
+                    const color = cascadeColors[offset] || cascadeColors[cascadeColors.length - 1];
+                    
+                    textEl.style.backgroundColor = color;
+                    textEl.style.color = offset >= 3 ? '#000' : '#fff';
+                    linesEl.style.opacity = offset === 0 ? '1' : '0'; 
+                }
+            });
+        }
+
+        function restoreActiveStates() {
+            const activeMainIdx = mainItems.findIndex(el => el.classList.contains('active'));
+            
+            if (activeMainIdx !== -1) {
+                const activeContainer = document.getElementById(mainItems[activeMainIdx].getAttribute('data-target'));
+                const subItems = Array.from(activeContainer.querySelectorAll('.submenu-item'));
+                const activeSubIdx = subItems.findIndex(el => el.classList.contains('active'));
+
+                if (activeSubIdx !== -1) {
+                    clearCascade(mainItems, false);
+                    applyCascade(subItems, activeSubIdx, true);
+                } else {
+                    clearCascade(subItems, true);
+                    applyCascade(mainItems, activeMainIdx, false);
+                }
+            } else {
+                clearCascade(mainItems, false);
+            }
+        }
+
+        mainItems.forEach((item, idx) => {
+            item.addEventListener('mouseenter', () => {
+                document.querySelectorAll('.submenu-container').forEach(cont => {
+                    clearCascade(Array.from(cont.querySelectorAll('.submenu-item')), true);
+                });
+                applyCascade(mainItems, idx, false);
+            });
+        });
+
+        document.querySelectorAll('.submenu-item').forEach(subItem => {
+            subItem.addEventListener('mouseenter', () => {
+                const container = subItem.closest('.submenu-container');
+                const subItems = Array.from(container.querySelectorAll('.submenu-item'));
+                
+                clearCascade(mainItems, false); 
+                applyCascade(subItems, subItems.indexOf(subItem), true);
+            });
+        });
+
+        sidebar.addEventListener('mouseleave', restoreActiveStates);
+
+        // --- PRELOADER ANIMATION (LOCKED - GARIS AMAN) ---
+        const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        
+        async function runPreloader() {
+            const logoPre = document.getElementById('logo-pre-img');
+            const linesH = ['l-top', 'l-bottom'];
+            const linesV = ['l-left', 'l-right'];
+            const bgs = [0, 1, 2, 3, 4];
+            const ease = "cubic-bezier(0.85, 0, 0.15, 1)";
+            const loopCount = 2; 
+
+            for (let loop = 0; loop < loopCount; loop++) {
+                bgs.forEach(i => {
+                    const bg = document.getElementById(`bg-${i}`);
+                    bg.style.transition = 'none';
+                    bg.style.transform = 'translateY(-101%)';
+                });
+                linesH.forEach(id => { 
+                    document.getElementById(id).style.transition = 'none'; 
+                    document.getElementById(id).style.transform = 'scaleX(0)'; 
+                });
+                linesV.forEach(id => { 
+                    document.getElementById(id).style.transition = 'none'; 
+                    document.getElementById(id).style.transform = 'scaleY(0)'; 
+                });
+
+                await wait(50);
+
+                linesH.forEach(id => { 
+                    document.getElementById(id).style.transition = `transform 0.8s ${ease}`; 
+                    document.getElementById(id).style.transform = 'scaleX(1)'; 
+                });
+                linesV.forEach(id => { 
+                    document.getElementById(id).style.transition = `transform 0.8s ${ease}`; 
+                    document.getElementById(id).style.transform = 'scaleY(1)'; 
+                });
+
+                bgs.forEach(i => {
+                    const bg = document.getElementById(`bg-${i}`);
+                    bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`;
+                    bg.style.transform = 'translateY(0)'; 
+                });
+
+                await wait(1200);
+
+                if (loop === 0) {
+                    logoPre.style.transition = 'none';
+                    logoPre.style.opacity = '1';
+                }
+
+                linesH.forEach(id => { 
+                    document.getElementById(id).style.transform = 'scaleX(0)'; 
+                });
+                linesV.forEach(id => { 
+                    document.getElementById(id).style.transform = 'scaleY(0)'; 
+                });
+
+                bgs.forEach(i => {
+                    const bg = document.getElementById(`bg-${i}`);
+                    bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`;
+                    bg.style.transform = 'translateY(101%)';
+                });
+
+                await wait(1200);
+                await wait(1500);
+            }
+
+            logoPre.style.opacity = '0'; 
+            const mainLogo = document.getElementById('logo-farka');
+            mainLogo.classList.replace('opacity-0', 'opacity-100');
+
+            await wait(100);
+
+            mainLogo.className = 'logo-nav-bottom';
+            document.getElementById('preloader').style.display = 'none';
+            document.body.classList.remove('overflow-hidden');
+            
+            restoreActiveStates();
+        }
+
+        window.onload = runPreloader;
+
+        // --- FUNGSI MENU & DETAIL (DENGAN AUTO-SCROLL MOBILE) ---
+        function toggleCat(id, el) {
+            const targetCat = document.getElementById(`cat-${id}`);
+            const isActive = el.classList.contains('active');
+
+            document.querySelectorAll('.submenu-container').forEach(e => e.classList.remove('open'));
+            document.querySelectorAll('.project-menu-item').forEach(e => e.classList.remove('active'));
+
+            if (!isActive) {
+                targetCat.classList.add('open');
+                el.classList.add('active');
+            }
+            restoreActiveStates();
+        }
+
+        function setDetail(id, el) {
+            const data = db[id];
+            const detailContainer = document.getElementById('project-detail-container');
+            const placeholder = document.getElementById('project-placeholder');
+            const contentContainer = document.getElementById('det-content-container');
+            
+            if(placeholder) placeholder.classList.add('hidden');
+            detailContainer.style.opacity = '0'; 
+            
+            setTimeout(() => {
+                document.getElementById('det-title').innerText = data.title;
+                document.getElementById('det-land').innerText = data.land;
+                document.getElementById('det-build').innerText = data.build;
+                document.getElementById('det-type').innerText = data.type;
+                
+                contentContainer.innerHTML = '';
+                data.content.forEach(item => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = "mb-12";
+                    
+                    const imgEl = document.createElement('img');
+                    imgEl.src = item.img;
+                    imgEl.className = "w-full aspect-[4/5] object-cover shadow-sm mb-4";
+                    
+                    const descEl = document.createElement('p');
+                    descEl.className = "text-sm text-gray-500 leading-relaxed pl-2 border-l-2 border-gray-200";
+                    descEl.innerText = item.text;
+                    
+                    wrapper.appendChild(imgEl);
+                    wrapper.appendChild(descEl);
+                    contentContainer.appendChild(wrapper);
+                });
+                
+                detailContainer.style.opacity = '1';
+                
+                // UX MOBILE: Auto-scroll halus ke area detail
+                if (window.innerWidth < 768) {
+                    detailContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    document.querySelector('.scroll-container').scrollTop = 0; 
+                }
+            }, 300);
+
+            document.querySelectorAll('.submenu-item').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+            restoreActiveStates();
+        }
+
+        // --- NAVIGASI HALAMAN MORPHING ---
+        function hideAllPages() {
+            document.getElementById('home-page').classList.remove('active');
+            document.getElementById('project-page').classList.remove('active');
+            document.getElementById('about-page').classList.remove('active');
+            document.getElementById('contact-page').classList.remove('active');
+        }
+
+        function goToProject() {
+            document.getElementById('bottom-bar').classList.add('hidden-bar');
+            hideAllPages();
+            document.getElementById('logo-farka').className = 'logo-project-header';
+            setTimeout(() => { 
+                document.getElementById('project-page').classList.add('active'); 
+                restoreActiveStates(); 
+            }, 600);
+        }
+
+        function goToAbout() {
+            document.getElementById('bottom-bar').classList.add('hidden-bar');
+            hideAllPages();
+            document.getElementById('logo-farka').className = 'logo-project-header';
+            setTimeout(() => { 
+                document.getElementById('about-page').classList.add('active'); 
+            }, 600);
+        }
+
+        function goToContact() {
+            document.getElementById('bottom-bar').classList.add('hidden-bar');
+            hideAllPages();
+            document.getElementById('logo-farka').className = 'logo-project-header';
+            setTimeout(() => { 
+                document.getElementById('contact-page').classList.add('active'); 
+            }, 600);
+        }
+
+        function goToHome() {
+            hideAllPages();
+            setTimeout(() => {
+                document.getElementById('logo-farka').className = 'logo-nav-bottom';
+                document.getElementById('bottom-bar').classList.remove('hidden-bar');
+                document.getElementById('home-page').classList.add('active');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
