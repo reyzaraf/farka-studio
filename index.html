@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Farka - Ultimate Responsive Build (All Bugs Fixed)</title>
+    <title>Farka - Ultimate Cinematic Build (Random Lines)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: white; color: #000; overflow: hidden; }
 
-        /* --- PRELOADER ELEMENTS (LOCKED & RESPONSIVE) --- */
+        /* --- PRELOADER ELEMENTS --- */
         .sketch-line { position: absolute; background-color: #000; z-index: 120; opacity: 1 !important; }
-        .line-h { height: 2px; width: calc(100% + 40px); left: -20px; transform: scaleX(0); transform-origin: left; }
-        .line-v { width: 2px; height: calc(100% + 40px); top: -20px; transform: scaleY(0); transform-origin: top; }
+        .line-h { height: 2px; width: calc(100% + 40px); left: -20px; transform: scaleX(0); }
+        .line-v { width: 2px; height: calc(100% + 40px); top: -20px; transform: scaleY(0); }
         .top-line { top: -2px; } .bottom-line { bottom: -2px; }
         .left-line { left: -2px; } .right-line { right: -2px; }
 
@@ -20,15 +20,16 @@
         .char-box { flex: 1; position: relative; overflow: hidden; }
         .char-bg { position: absolute; inset: 0; z-index: 52; transform: translateY(-101%); opacity: 1 !important; }
 
-        /* --- LOGO MORPHING (RESPONSIVE SIZING & ALIGNMENT) --- */
-        #logo-farka { position: fixed; transition: all 0.6s cubic-bezier(0.85, 0, 0.15, 1); pointer-events: none; z-index: 150; }
-        .logo-center { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60vw; max-width: 280px; }
+        /* --- LOGO MORPHING --- */
+        #logo-farka { position: fixed; transition: all 0.8s cubic-bezier(0.85, 0, 0.15, 1); pointer-events: none; z-index: 195; }
+        .logo-center { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 220px; }
         .logo-nav-bottom { top: 87.5%; left: 50%; transform: translate(-50%, -50%); width: 80px; }
         .logo-project-header { top: 2rem; left: 1.5rem; transform: translate(0, -50%); width: 90px; }
 
         /* --- MEDIA QUERIES FOR DESKTOP/TABLET --- */
         @media (min-width: 768px) {
             .loader-frame { height: 120px; }
+            .logo-center { width: 280px; }
             .logo-nav-bottom { width: 110px; }
             .logo-project-header { top: 5rem; left: 5rem; width: 130px; transform: translate(0, -50%); }
         }
@@ -39,7 +40,7 @@
         .scroll-container { overflow-y: auto; scrollbar-width: none; }
         .scroll-container::-webkit-scrollbar { display: none; }
 
-        /* --- BOTTOM BAR & FOOTER (FIXED HEIGHT) --- */
+        /* --- BOTTOM BAR & FOOTER --- */
         .bottom-nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 25vh; background-color: #fff; z-index: 100; border-top: 1px solid #eee; transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1); }
         .hidden-bar { transform: translateY(100%); }
 
@@ -63,7 +64,11 @@
 </head>
 <body class="overflow-hidden">
 
-    <div id="preloader" class="fixed inset-0 z-[200] flex items-center justify-center bg-white">
+    <div id="preloader-bg" class="fixed inset-0 z-[190] bg-white"></div>
+
+    <img id="logo-farka" src="farkalogo.svg" class="logo-center opacity-0">
+
+    <div id="preloader-stagger" class="fixed inset-0 z-[200] flex items-center justify-center pointer-events-none">
         <div class="loader-frame" id="loader-frame-main">
             <div class="sketch-line line-h top-line" id="l-top"></div>
             <div class="sketch-line line-h bottom-line" id="l-bottom"></div>
@@ -76,10 +81,7 @@
             <div class="char-box"><div class="char-bg bg-[#BDBEBE]" id="bg-3"></div></div>
             <div class="char-box"><div class="char-bg bg-[#F2F3F3]" id="bg-4"></div></div>
         </div>
-        <img id="logo-pre-img" src="farkalogo.svg" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-[280px] z-[51] opacity-0">
     </div>
-
-    <img id="logo-farka" src="farkalogo.svg" class="logo-center opacity-0">
 
     <section id="home-page" class="page-section active">
         <div class="w-full h-[75vh] overflow-hidden">
@@ -92,7 +94,7 @@
     <section id="project-page" class="page-section bg-white pt-24 md:pt-40 px-6 md:px-20">
         <div class="fixed top-8 md:top-20 right-6 md:right-20 -translate-y-1/2 font-black cursor-pointer uppercase border-b-2 border-black text-[0.65rem] md:text-xs tracking-widest transition hover:text-gray-500 z-50" onclick="goToHome()">Back to Home</div>
         <div class="md:hidden fixed bottom-6 right-6 bg-black text-white px-3 py-2 text-[0.6rem] font-black uppercase tracking-widest cursor-pointer z-[150] shadow-lg hover:bg-gray-800 transition" onclick="scrollToProjectMenu()">
-            Back to Menu
+            ^ Top
         </div>
         <div class="flex flex-col md:grid md:grid-cols-12 gap-6 md:gap-10 h-full pb-[20vh] md:pb-0 overflow-y-auto md:overflow-y-hidden scroll-container">
             
@@ -376,7 +378,6 @@
         const sidebar = document.getElementById('sidebar-menu');
         const mainItems = Array.from(document.querySelectorAll('.project-menu-item'));
         
-
         function scrollToProjectMenu() {
             const scrollArea = document.querySelector('#project-page .scroll-container');
             if (scrollArea) {
@@ -456,11 +457,11 @@
 
         sidebar.addEventListener('mouseleave', restoreActiveStates);
 
-        // --- PRELOADER ANIMATION ---
+        // --- PRELOADER ANIMATION (RANDOM STAGGER & RANDOM LINES) ---
         const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
         
         async function runPreloader() {
-            const logoPre = document.getElementById('logo-pre-img');
+            const mainLogo = document.getElementById('logo-farka');
             const linesH = ['l-top', 'l-bottom'];
             const linesV = ['l-left', 'l-right'];
             const bgs = [0, 1, 2, 3, 4];
@@ -468,41 +469,104 @@
             const loopCount = 2; 
 
             for (let loop = 0; loop < loopCount; loop++) {
+                
+                // 1. RANDOM ARAH KOTAK STAGGER (101% atau -101%)
+                const dirs = bgs.map(() => Math.random() > 0.5 ? 101 : -101);
+
                 bgs.forEach(i => {
                     const bg = document.getElementById(`bg-${i}`);
                     bg.style.transition = 'none';
-                    bg.style.transform = 'translateY(-101%)';
+                    bg.style.transform = `translateY(${dirs[i]}%)`;
                 });
-                linesH.forEach(id => { document.getElementById(id).style.transition = 'none'; document.getElementById(id).style.transform = 'scaleX(0)'; });
-                linesV.forEach(id => { document.getElementById(id).style.transition = 'none'; document.getElementById(id).style.transform = 'scaleY(0)'; });
+
+                // 2. RANDOM ARAH TARIKAN GARIS SKETSA SAAT MASUK
+                linesH.forEach(id => { 
+                    const el = document.getElementById(id);
+                    el.style.transition = 'none'; 
+                    el.style.transform = 'scaleX(0)'; 
+                    el.style.transformOrigin = Math.random() > 0.5 ? 'left' : 'right';
+                });
+                linesV.forEach(id => { 
+                    const el = document.getElementById(id);
+                    el.style.transition = 'none'; 
+                    el.style.transform = 'scaleY(0)'; 
+                    el.style.transformOrigin = Math.random() > 0.5 ? 'top' : 'bottom';
+                });
 
                 await wait(50);
 
-                linesH.forEach(id => { document.getElementById(id).style.transition = `transform 0.8s ${ease}`; document.getElementById(id).style.transform = 'scaleX(1)'; });
-                linesV.forEach(id => { document.getElementById(id).style.transition = `transform 0.8s ${ease}`; document.getElementById(id).style.transform = 'scaleY(1)'; });
-                bgs.forEach(i => { const bg = document.getElementById(`bg-${i}`); bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`; bg.style.transform = 'translateY(0)'; });
+                // ANIMASI MASUK
+                linesH.forEach(id => { 
+                    const el = document.getElementById(id);
+                    el.style.transition = `transform 0.8s ${ease}`; 
+                    el.style.transform = 'scaleX(1)'; 
+                });
+                linesV.forEach(id => { 
+                    const el = document.getElementById(id);
+                    el.style.transition = `transform 0.8s ${ease}`; 
+                    el.style.transform = 'scaleY(1)'; 
+                });
+                
+                bgs.forEach(i => { 
+                    const bg = document.getElementById(`bg-${i}`); 
+                    bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`; 
+                    bg.style.transform = 'translateY(0)'; 
+                });
 
                 await wait(1200);
-                if (loop === 0) { logoPre.style.transition = 'none'; logoPre.style.opacity = '1'; }
+                
+                // MUNCULKAN LOGO DI BAWAH KOTAK STAGGER
+                if (loop === 0) { 
+                    mainLogo.style.transition = 'opacity 0.6s ease';
+                    mainLogo.classList.remove('opacity-0'); 
+                }
 
-                linesH.forEach(id => { document.getElementById(id).style.transform = 'scaleX(0)'; });
-                linesV.forEach(id => { document.getElementById(id).style.transform = 'scaleY(0)'; });
-                bgs.forEach(i => { const bg = document.getElementById(`bg-${i}`); bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`; bg.style.transform = 'translateY(101%)'; });
+                // 3. RANDOM ARAH LENYAPNYA GARIS SKETSA SAAT KELUAR
+                linesH.forEach(id => { 
+                    const el = document.getElementById(id);
+                    el.style.transformOrigin = Math.random() > 0.5 ? 'left' : 'right';
+                    el.style.transform = 'scaleX(0)'; 
+                });
+                linesV.forEach(id => { 
+                    const el = document.getElementById(id);
+                    el.style.transformOrigin = Math.random() > 0.5 ? 'top' : 'bottom';
+                    el.style.transform = 'scaleY(0)'; 
+                });
+                
+                // KOTAK KELUAR MELANJUTKAN ARAHNYA
+                bgs.forEach(i => { 
+                    const bg = document.getElementById(`bg-${i}`); 
+                    bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`; 
+                    bg.style.transform = `translateY(${-dirs[i]}%)`; 
+                });
 
                 await wait(1200);
-                await wait(1500);
+                await wait(1000);
             }
 
-            logoPre.style.opacity = '0'; 
-            const mainLogo = document.getElementById('logo-farka');
-            mainLogo.classList.replace('opacity-0', 'opacity-100');
-
             await wait(100);
-            mainLogo.className = 'logo-nav-bottom';
-            document.getElementById('preloader').style.display = 'none';
-            document.body.classList.remove('overflow-hidden');
             
-            restoreActiveStates();
+            // TRANSISI CINEMATIC KE HOME
+            mainLogo.style.transition = 'all 1.2s cubic-bezier(0.85, 0, 0.15, 1)';
+            mainLogo.className = 'logo-nav-bottom';
+            
+            const preloaderBg = document.getElementById('preloader-bg');
+            const preloaderStagger = document.getElementById('preloader-stagger');
+            
+            preloaderBg.style.transition = 'opacity 1.2s ease-in-out';
+            preloaderBg.style.opacity = '0';
+            
+            preloaderStagger.style.display = 'none';
+
+            setTimeout(() => {
+                preloaderBg.style.display = 'none';
+                document.body.classList.remove('overflow-hidden');
+                
+                mainLogo.style.transition = 'all 0.8s cubic-bezier(0.85, 0, 0.15, 1)';
+                mainLogo.style.zIndex = '150'; 
+                
+                restoreActiveStates();
+            }, 1200);
         }
 
         window.onload = runPreloader;
