@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Farka - Ultimate Cinematic Build (Random Lines)</title>
+    <title>Farka - Ultimate Cinematic Build (Smooth Menu)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: white; color: #000; overflow: hidden; }
@@ -55,9 +55,22 @@
         .btn-t { top: -1.5px; } .btn-b { bottom: -1.5px; } 
         .btn-l { left: -1.5px; } .btn-r { right: -1.5px; }
 
-        /* --- PROJECT MENU STYLES --- */
-        .submenu-container { height: 0; overflow: hidden; transition: height 0.4s ease; }
-        .submenu-container.open { height: auto; margin-bottom: 2rem; margin-top: 1rem; }
+        /* --- PROJECT MENU STYLES (SMOOTH ANIMATION ADDED) --- */
+        .submenu-container { 
+            max-height: 0; 
+            opacity: 0;
+            overflow: hidden; 
+            margin-top: 0; 
+            margin-bottom: 0;
+            /* Transisi meluncur (slide) dan memudar (fade) yang sangat mulus */
+            transition: max-height 0.6s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.4s ease, margin 0.6s cubic-bezier(0.85, 0, 0.15, 1); 
+        }
+        .submenu-container.open { 
+            max-height: 500px; /* Nilai maksimal agar animasi kalkulasi tingginya bekerja */
+            opacity: 1;
+            margin-bottom: 2rem; 
+            margin-top: 1rem; 
+        }
         .menu-text, .submenu-text { transition: all 0.3s; color: #ccc; }
         .submenu-text { color: #888; }
     </style>
@@ -470,7 +483,6 @@
 
             for (let loop = 0; loop < loopCount; loop++) {
                 
-                // 1. RANDOM ARAH KOTAK STAGGER (101% atau -101%)
                 const dirs = bgs.map(() => Math.random() > 0.5 ? 101 : -101);
 
                 bgs.forEach(i => {
@@ -479,7 +491,6 @@
                     bg.style.transform = `translateY(${dirs[i]}%)`;
                 });
 
-                // 2. RANDOM ARAH TARIKAN GARIS SKETSA SAAT MASUK
                 linesH.forEach(id => { 
                     const el = document.getElementById(id);
                     el.style.transition = 'none'; 
@@ -495,7 +506,6 @@
 
                 await wait(50);
 
-                // ANIMASI MASUK
                 linesH.forEach(id => { 
                     const el = document.getElementById(id);
                     el.style.transition = `transform 0.8s ${ease}`; 
@@ -515,13 +525,11 @@
 
                 await wait(1200);
                 
-                // MUNCULKAN LOGO DI BAWAH KOTAK STAGGER
                 if (loop === 0) { 
                     mainLogo.style.transition = 'opacity 0.6s ease';
                     mainLogo.classList.remove('opacity-0'); 
                 }
 
-                // 3. RANDOM ARAH LENYAPNYA GARIS SKETSA SAAT KELUAR
                 linesH.forEach(id => { 
                     const el = document.getElementById(id);
                     el.style.transformOrigin = Math.random() > 0.5 ? 'left' : 'right';
@@ -533,7 +541,6 @@
                     el.style.transform = 'scaleY(0)'; 
                 });
                 
-                // KOTAK KELUAR MELANJUTKAN ARAHNYA
                 bgs.forEach(i => { 
                     const bg = document.getElementById(`bg-${i}`); 
                     bg.style.transition = `transform 0.8s ${ease} ${i * 80}ms`; 
@@ -546,7 +553,6 @@
 
             await wait(100);
             
-            // TRANSISI CINEMATIC KE HOME
             mainLogo.style.transition = 'all 1.2s cubic-bezier(0.85, 0, 0.15, 1)';
             mainLogo.className = 'logo-nav-bottom';
             
@@ -571,7 +577,6 @@
 
         window.onload = runPreloader;
 
-        // --- FUNGSI MENU & DETAIL ---
         function toggleCat(id, el) {
             const targetCat = document.getElementById(`cat-${id}`);
             const isActive = el.classList.contains('active');
