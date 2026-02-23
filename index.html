@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Farka - Ultimate Cinematic Full Build (Perfect Spacing & Lines)</title>
+    <title>Farka - Ultimate Cinematic Full Build (Fixed Desktop List)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: white; color: #000; overflow: hidden; }
@@ -12,7 +12,6 @@
         /* --- PRELOADER ELEMENTS --- */
         .sketch-line { position: absolute; background-color: #000; z-index: 120; opacity: 1 !important; }
         .line-h { height: 2px; width: calc(100% + 40px); left: -20px; transform: scaleX(0); }
-        /* Tinggi garis vertikal disesuaikan agar menonjol sedikit di bawah proporsional dengan menu */
         .line-v { width: 2px; height: calc(100% + 30px); top: -20px; transform: scaleY(0); }
         .top-line { top: -2px; } 
         .right-line { right: -2px; }
@@ -50,7 +49,6 @@
         
         .btn-lines { position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 20; }
         .btn-line-h { position: absolute; left: -8px; right: -8px; height: 1.5px; background: black; }
-        /* Tombol footer juga disesuaikan agar ujung bawahnya tidak terlalu pendek atau terlalu panjang */
         .btn-line-v { position: absolute; top: -8px; bottom: -6px; width: 1.5px; background: black; }
         .btn-t { top: -1.5px; }  
         .btn-r { right: -1.5px; }
@@ -67,11 +65,10 @@
         .submenu-container.open { 
             max-height: 1200px;
             opacity: 1;
-            margin-bottom: 2rem; 
-            margin-top: 0.75rem; /* Margin dibagi dua agar seimbang */
+            margin-bottom: 1rem; 
+            margin-top: 0.75rem; 
         }
         
-        /* FIX: Mendorong submenu pertama turun sedikit ke dalam agar garis sketsanya tidak terpotong (clipped) oleh efek overflow:hidden */
         .submenu-item:first-child {
             margin-top: 0.75rem;
         }
@@ -116,7 +113,7 @@
         <div id="project-scroll-container" class="flex flex-col md:grid md:grid-cols-12 gap-6 md:gap-10 h-full pb-[20vh] md:pb-0 overflow-y-auto md:overflow-y-hidden scroll-container">
             <div class="md:col-span-4 md:border-r border-gray-50 pt-4 md:pt-10" id="sidebar-menu">
                 
-                <div class="mb-6">
+                <div class="mb-4">
                     <div class="project-menu-item relative inline-block cursor-pointer active ml-3" onclick="toggleCat('res', this)" data-target="cat-res">
                         <div class="menu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
                             <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
@@ -124,15 +121,15 @@
                         </div>
                         <div class="menu-text px-4 py-1 relative z-10 font-black text-xl md:text-2xl uppercase tracking-wider">Residential</div>
                     </div>
-                    <div id="cat-res" class="submenu-container open pl-4">
-                        <div class="submenu-item relative inline-block cursor-pointer mb-5 ml-2" onclick="setDetail('atelier', this)">
+                    <div id="cat-res" class="submenu-container open pl-4 flex flex-col items-start">
+                        <div class="submenu-item relative inline-block cursor-pointer mb-4 ml-2" onclick="setDetail('atelier', this)">
                             <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
                                 <div class="absolute right-[-2px] top-[-10px] bottom-[-6px] w-[2px] bg-black"></div>
                             </div>
                             <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Atelier Jagakarsa</div>
                         </div>
-                        <div class="submenu-item relative inline-block cursor-pointer mb-5 ml-2" onclick="setDetail('uluwatu', this)">
+                        <div class="submenu-item relative inline-block cursor-pointer mb-4 ml-2" onclick="setDetail('uluwatu', this)">
                             <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
                                 <div class="absolute right-[-2px] top-[-10px] bottom-[-6px] w-[2px] bg-black"></div>
@@ -142,7 +139,7 @@
                     </div>
                 </div>
 
-                <div class="mb-6">
+                <div class="mb-4">
                     <div class="project-menu-item relative inline-block cursor-pointer ml-3" onclick="toggleCat('off', this)" data-target="cat-off">
                         <div class="menu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
                             <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
@@ -150,15 +147,15 @@
                         </div>
                         <div class="menu-text px-4 py-1 relative z-10 font-black text-xl md:text-2xl uppercase tracking-wider">Office</div>
                     </div>
-                    <div id="cat-off" class="submenu-container pl-4">
-                        <div class="submenu-item relative inline-block cursor-pointer mb-5 ml-2" onclick="setDetail('hq', this)">
+                    <div id="cat-off" class="submenu-container pl-4 flex flex-col items-start">
+                        <div class="submenu-item relative inline-block cursor-pointer mb-4 ml-2" onclick="setDetail('hq', this)">
                             <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
                                 <div class="absolute right-[-2px] top-[-10px] bottom-[-6px] w-[2px] bg-black"></div>
                             </div>
                             <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">Farka Studio HQ</div>
                         </div>
-                        <div class="submenu-item relative inline-block cursor-pointer mb-5 ml-2" onclick="setDetail('sudirman', this)">
+                        <div class="submenu-item relative inline-block cursor-pointer mb-4 ml-2" onclick="setDetail('sudirman', this)">
                             <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
                                 <div class="absolute right-[-2px] top-[-10px] bottom-[-6px] w-[2px] bg-black"></div>
@@ -168,7 +165,7 @@
                     </div>
                 </div>
 
-                <div class="mb-6">
+                <div class="mb-4">
                     <div class="project-menu-item relative inline-block cursor-pointer ml-3" onclick="toggleCat('pub', this)" data-target="cat-pub">
                         <div class="menu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
                             <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
@@ -176,8 +173,8 @@
                         </div>
                         <div class="menu-text px-4 py-1 relative z-10 font-black text-xl md:text-2xl uppercase tracking-wider">Public Space</div>
                     </div>
-                    <div id="cat-pub" class="submenu-container pl-4">
-                        <div class="submenu-item relative inline-block cursor-pointer mb-5 ml-2" onclick="setDetail('park', this)">
+                    <div id="cat-pub" class="submenu-container pl-4 flex flex-col items-start">
+                        <div class="submenu-item relative inline-block cursor-pointer mb-4 ml-2" onclick="setDetail('park', this)">
                             <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
                                 <div class="absolute right-[-2px] top-[-10px] bottom-[-6px] w-[2px] bg-black"></div>
@@ -302,7 +299,6 @@
     </div>
 
     <script>
-        // --- DATABASE PROYEK UTUH (5 DATA) ---
         const db = {
             atelier: { 
                 title: "Atelier Jagakarsa", land: "600 M2", build: "450 M2", type: "Modern Tropical", 
