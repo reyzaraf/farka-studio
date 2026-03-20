@@ -52,7 +52,7 @@
         /* --- LOGO MORPHING (CINEMATIC) --- */
         #logo-farka { position: fixed; transition: all 0.8s cubic-bezier(0.85, 0, 0.15, 1); pointer-events: none; z-index: 195; }
         .logo-center { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 220px; }
-        .logo-nav-bottom { top: 87.5%; left: 50%; transform: translate(-50%, -50%); width: 80px; }
+        .logo-nav-bottom { top: 82%; left: 50%; transform: translate(-50%, -50%); width: 80px; }
         .logo-project-header { top: 2rem; left: 1.5rem; transform: translate(0, -50%); width: 90px; }
 
         @media (min-width: 768px) {
