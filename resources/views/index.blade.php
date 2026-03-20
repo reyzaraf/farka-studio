@@ -7,6 +7,7 @@
     <title>Farka Studio</title>
     
     <!-- Primary Meta Tags -->
+     
     <meta name="title" content="Farka Studio">
     <meta name="description" content="Farka Studio is a premier architectural and interior design studio specializing in innovative, premium, and sustainable spatial experiences.">
     <meta name="keywords" content="Farka Studio, Architecture, Interior Design, Architectural Firm, Sustainable Design, Premium Architecture, Spatial Design, Building Design">
@@ -14,6 +15,8 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="language" content="English">
     
+    <!-- favicon -->
+     <link rel="icon" href="{{ asset('farkalogo.svg') }}" type="image/x-icon">
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}">
 
