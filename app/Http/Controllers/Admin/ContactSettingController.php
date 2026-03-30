@@ -21,6 +21,7 @@ class ContactSettingController extends Controller
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:50',
             'address' => 'nullable|string',
+            'video_url' => 'nullable|url',
         ]);
 
         $setting = ContactSetting::first();

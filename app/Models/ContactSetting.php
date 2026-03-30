@@ -9,5 +9,5 @@ class ContactSetting extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['email', 'phone', 'address'];
+    protected $fillable = ['email', 'phone', 'address', 'video_url'];
 }

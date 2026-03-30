@@ -50,6 +50,22 @@
                         @error('address')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
+                    <div class="mb-5">
+                        <label class="form-label" for="video_url">Background Video URL</label>
+                        <input type="url" class="form-control @error('video_url') is-invalid @enderror" id="video_url" name="video_url" 
+                               value="{{ old('video_url', $setting->video_url ?? '') }}" placeholder="e.g. https://www.pexels.com/download/video/36168059/" oninput="updateVideoPreview()">
+                        <small class="form-text text-muted">A direct link to the MP4 video to display on the homepage.</small>
+                        @error('video_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        
+                        <!-- Video Preview -->
+                        <div class="mt-3">
+                            <label class="form-label">Video Preview</label>
+                            <div id="previewContainer" class="rounded overflow-hidden bg-dark position-relative" style="height: 250px; display: flex; align-items: center; justify-content: center; border: 1px solid #ddd;">
+                                <span id="noVideoText" class="text-white position-absolute">No Video Selected</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary">Save Settings</button>
                     </div>
@@ -58,4 +74,28 @@
         </div>
     </div>
 </div>
+
+<script>
+    function updateVideoPreview() {
+        const input = document.getElementById('video_url');
+        const container = document.getElementById('previewContainer');
+        const val = input.value.trim();
+
+        if (val !== "") {
+            const ytRegex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+            const match = val.match(ytRegex);
+            
+            if (match && match[1]) {
+                const ytId = match[1];
+                container.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}" class="w-100 h-100" style="border:0;" allow="autoplay; fullscreen"></iframe>`;
+            } else {
+                container.innerHTML = `<video src="${val}" autoplay muted loop playsinline class="w-100 h-100" style="object-fit: cover;"></video>`;
+            }
+        } else {
+            container.innerHTML = `<span id="noVideoText" class="text-white position-absolute">No Video Selected</span>`;
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', updateVideoPreview);
+</script>
 @endsection

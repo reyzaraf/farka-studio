@@ -1,7 +1,23 @@
     <section id="home-page" class="page-section active">
-        <div class="w-full h-[75vh] overflow-hidden">
-            <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                <source src="https://www.pexels.com/download/video/36168059/" type="video/mp4">
-            </video>
+        <div class="w-full h-[75vh] overflow-hidden relative">
+            @php
+                $videoUrl = $contact->video_url ?? 'https://www.pexels.com/download/video/36168059/';
+                $isYoutube = false;
+                $youtubeId = '';
+                if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/\s]{11})%i', $videoUrl, $match)) {
+                    $isYoutube = true;
+                    $youtubeId = $match[1];
+                }
+            @endphp
+
+            @if($isYoutube)
+                <iframe class="absolute top-1/2 left-1/2 w-[300vw] h-[300vh] md:w-[150vw] md:h-[150vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none" 
+                        src="https://www.youtube.com/embed/{{ $youtubeId }}?autoplay=1&mute=1&loop=1&playlist={{ $youtubeId }}&controls=0&showinfo=0&autohide=1&modestbranding=1" 
+                        frameborder="0" allow="autoplay; fullscreen"></iframe>
+            @else
+                <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                    <source src="{{ $videoUrl }}" type="video/mp4">
+                </video>
+            @endif
         </div>
     </section>
