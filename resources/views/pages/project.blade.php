@@ -15,7 +15,7 @@
                             <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
                             <div class="absolute right-[-2px] top-[-10px] bottom-[-6px] w-[2px] bg-black"></div>
                         </div>
-                        <div class="menu-text px-4 py-1 relative z-10 font-black text-xl md:text-2xl uppercase tracking-wider">{{ $categoryModel->name }}</div>
+                        <div class="menu-text px-4 py-1 relative z-10 font-black font-header text-xl md:text-2xl uppercase tracking-wider">{{ $categoryModel->name }}</div>
                     </div>
                     <div id="cat-{{ $categoryModel->slug }}" class="submenu-container {{ $loop->first ? 'open' : '' }} pl-4 flex flex-col items-start">
                         @foreach($projects->where('category_id', $categoryModel->id) as $projectItem)
@@ -24,7 +24,7 @@
                                 <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
                                 <div class="absolute right-[-2px] top-[-10px] bottom-[-6px] w-[2px] bg-black"></div>
                             </div>
-                            <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest">{{ $projectItem->title }}</div>
+                            <div class="submenu-text px-3 py-1 relative z-10 text-xs md:text-sm font-bold font-header uppercase tracking-widest">{{ $projectItem->title }}</div>
                         </div>
                         @endforeach
                     </div>
@@ -34,7 +34,7 @@
 
             <div class="md:col-span-8 relative h-auto md:h-[calc(100vh-25vh)] mt-6 md:mt-0">
                 <div id="project-placeholder" class="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-500 z-10">
-                    <div class="text-gray-200 font-black text-3xl md:text-5xl uppercase tracking-widest opacity-60 px-4 text-center">Select a Project</div>
+                    <div class="text-gray-200 font-black font-title text-3xl md:text-5xl uppercase tracking-widest opacity-60 px-4 text-center">Select a Project</div>
                 </div>
 
                 <div class="opacity-0 transition-opacity duration-500 flex flex-col md:flex-row gap-6 md:gap-10 h-full" id="project-detail-container">
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="w-full md:w-1/3 pt-0 md:pt-4 h-fit border-b-2 border-gray-100 pb-6 md:border-0 md:pb-0 order-first md:order-last">
-                        <h3 id="det-title" class="font-black text-2xl border-b-2 border-black pb-4 mb-4 uppercase"></h3>
+                        <h3 id="det-title" class="font-black font-title text-2xl border-b-2 border-black pb-4 mb-4 uppercase"></h3>
                         <div class="text-[0.65rem] font-black text-gray-400 uppercase mt-4 md:mt-6 tracking-widest">Status</div>
                         <div id="det-status" class="text-sm font-bold uppercase mt-1"></div>
                         <div class="text-[0.65rem] font-black text-gray-400 uppercase mt-4 md:mt-6 tracking-widest">Architect in Charge</div>

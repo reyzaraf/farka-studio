@@ -37,9 +37,30 @@
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#ffffff">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                        title: ['Montserrat', 'sans-serif'],
+                        header: ['"Source Sans 3"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Noto+Sans+JP:wght@400;500;700&family=Source+Sans+3:wght@400;600;700;800;900&display=swap');
+        
+        @layer base {
+            body { @apply font-sans; }
+            h1, h2, .title-text { @apply font-title; }
+            h3, h4, h5, h6, .header-text { @apply font-header; }
+        }
+    </style>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: white; color: #000; overflow: hidden; }
+        body { background-color: white; color: #000; overflow: hidden; }
 
         /* --- PRELOADER ELEMENTS --- */
         .sketch-line { position: absolute; background-color: #000; z-index: 120; opacity: 1 !important; }
