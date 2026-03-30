@@ -21,7 +21,15 @@
                 </div>
             </div>
             <div class="flex flex-row md:flex-col justify-between md:justify-start md:items-end gap-1 md:gap-2 items-end">
-                <div class="leading-tight md:leading-tight text-left md:text-right md:order-last">{{ $contact->email ?? 'admin@farkastudio.id' }}<br>{{ $contact->phone ?? '+62 812 3456 78' }}</div>
+                <div class="leading-tight md:leading-tight text-left md:text-right md:order-last flex flex-col">
+                    <a href="mailto:{{ $contact->email ?? 'admin@farkastudio.id' }}" class="hover:text-white transition">{{ $contact->email ?? 'admin@farkastudio.id' }}</a>
+                    @php
+                        $phoneNav = $contact->phone ?? '+62 812 3456 78';
+                        $waNav = preg_replace('/[^0-9]/', '', $phoneNav);
+                        if (str_starts_with($waNav, '0')) $waNav = '62' . substr($waNav, 1);
+                    @endphp
+                    <a href="https://wa.me/{{ $waNav }}" target="_blank" class="hover:text-white transition">{{ $phoneNav }}</a>
+                </div>
                 <div class="nav-btn relative inline-block cursor-pointer md:order-first md:mb-1" onclick="goToContact()">
                     <div class="btn-lines"><div class="btn-line-h btn-t"></div><div class="btn-line-v btn-r"></div></div>
                     <div class="btn-text px-4 md:px-4 py-2 md:py-1 relative z-10 text-black font-black font-header text-sm md:text-lg whitespace-nowrap">Contact Us</div>

@@ -323,6 +323,17 @@
                 mainLogo.style.transition = 'all 0.8s cubic-bezier(0.85, 0, 0.15, 1)';
                 mainLogo.style.zIndex = '150'; 
                 restoreActiveStates();
+                
+                // Play video after preloader
+                const ytIframe = document.getElementById('hero-yt-video');
+                const mp4Video = document.getElementById('hero-mp4-video');
+                if (ytIframe && ytIframe.dataset.src) {
+                    ytIframe.src = ytIframe.dataset.src;
+                    setTimeout(() => ytIframe.classList.remove('opacity-0'), 800);
+                } else if (mp4Video) {
+                    mp4Video.play();
+                    setTimeout(() => mp4Video.classList.remove('opacity-0'), 100);
+                }
             }, 1200);
         }
 

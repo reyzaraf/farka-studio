@@ -10,7 +10,12 @@
                 </div>
                 <div class="text-center flex flex-col items-center border-y md:border-y-0 md:border-l md:border-r border-gray-200 py-8 md:py-0 px-0 md:px-8">
                     <h4 class="text-gray-400 mb-3 whitespace-nowrap text-base">Give Us a Call</h4>
-                    <a href="tel:{{ $contact->phone ?? '+62812345678' }}" class="hover:text-gray-500 transition whitespace-nowrap">{{ $contact->phone ?? '+62 812 3456 78' }}</a>
+                    @php
+                        $phoneContact = $contact->phone ?? '+62 812 3456 78';
+                        $waContact = preg_replace('/[^0-9]/', '', $phoneContact);
+                        if (str_starts_with($waContact, '0')) $waContact = '62' . substr($waContact, 1);
+                    @endphp
+                    <a href="https://wa.me/{{ $waContact }}" target="_blank" class="hover:text-gray-500 transition whitespace-nowrap">{{ $phoneContact }}</a>
                 </div>
                 <div class="text-center flex flex-col items-center">
                     <h4 class="text-gray-400 mb-3 whitespace-nowrap text-base">Farka HQ</h4>
