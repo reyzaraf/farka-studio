@@ -37,12 +37,19 @@
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#ffffff">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Noto+Sans+JP:wght@400;500;700;800;900&family=Source+Sans+3:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
+                fontFamily: {
+                    sans: ['"Noto Sans JP"', '"Noto Sans CJK JP"', '"Source Han Sans JP"', 'sans-serif'],
+                },
                 extend: {
                     fontFamily: {
-                        sans: ['"Noto Sans JP"', 'sans-serif'],
                         title: ['Montserrat', 'sans-serif'],
                         header: ['"Source Sans 3"', 'sans-serif']
                     }
@@ -51,16 +58,13 @@
         }
     </script>
     <style type="text/tailwindcss">
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Noto+Sans+JP:wght@400;500;700&family=Source+Sans+3:wght@400;600;700;800;900&display=swap');
-        
         @layer base {
-            body { @apply font-sans; }
             h1, h2, .title-text { @apply font-title; }
             h3, h4, h5, h6, .header-text { @apply font-header; }
         }
     </style>
     <style>
-        body { background-color: white; color: #000; overflow: hidden; }
+        body { font-family: 'Noto Sans JP', 'Noto Sans CJK JP', sans-serif; background-color: white; color: #000; overflow: hidden; }
 
         /* --- PRELOADER ELEMENTS --- */
         .sketch-line { position: absolute; background-color: #000; z-index: 120; opacity: 1 !important; }
@@ -378,7 +382,7 @@
                         imgEl.src = item.img;
                         imgEl.className = "w-full aspect-[4/5] object-cover shadow-sm mb-4";
                         const descEl = document.createElement('p');
-                        descEl.className = "text-sm text-gray-500 leading-relaxed pl-2 border-l-2 border-gray-200";
+                        descEl.className = "text-sm text-gray-500 leading-tight pl-2 border-l-2 border-gray-200";
                         descEl.innerText = item.text;
                         wrapper.appendChild(imgEl);
                         wrapper.appendChild(descEl);
