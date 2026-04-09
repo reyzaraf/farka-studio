@@ -54,7 +54,7 @@
                         <label class="form-label" for="video_url">Background Video URL</label>
                         <input type="url" class="form-control @error('video_url') is-invalid @enderror" id="video_url" name="video_url" 
                                value="{{ old('video_url', $setting->video_url ?? '') }}" placeholder="e.g. https://www.pexels.com/download/video/36168059/" oninput="updateVideoPreview()">
-                        <small class="form-text text-muted">A direct link to the MP4 video to display on the homepage.</small>
+                        <small class="form-text text-muted">Supports: direct MP4 link, YouTube URL, or Google Drive share link (e.g. <code>https://drive.google.com/file/d/FILE_ID/view</code>).</small>
                         @error('video_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         
                         <!-- Video Preview -->
@@ -83,11 +83,16 @@
 
         if (val !== "") {
             const ytRegex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
-            const match = val.match(ytRegex);
-            
-            if (match && match[1]) {
-                const ytId = match[1];
+            const gdRegex = /drive\.google\.com\/(?:file\/d\/|open\?id=)([a-zA-Z0-9_-]+)/i;
+            const ytMatch = val.match(ytRegex);
+            const gdMatch = val.match(gdRegex);
+
+            if (ytMatch && ytMatch[1]) {
+                const ytId = ytMatch[1];
                 container.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}" class="w-100 h-100" style="border:0;" allow="autoplay; fullscreen"></iframe>`;
+            } else if (gdMatch && gdMatch[1]) {
+                const gdId = gdMatch[1];
+                container.innerHTML = `<iframe src="https://drive.google.com/file/d/${gdId}/preview" class="w-100 h-100" style="border:0;" allow="autoplay; fullscreen"></iframe>`;
             } else {
                 container.innerHTML = `<video src="${val}" autoplay muted loop playsinline class="w-100 h-100" style="object-fit: cover;"></video>`;
             }
