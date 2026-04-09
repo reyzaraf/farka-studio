@@ -326,10 +326,14 @@
                 
                 // Play video after preloader
                 const ytIframe = document.getElementById('hero-yt-video');
+                const gdriveIframe = document.getElementById('hero-gdrive-video');
                 const mp4Video = document.getElementById('hero-mp4-video');
                 if (ytIframe && ytIframe.dataset.src) {
                     ytIframe.src = ytIframe.dataset.src;
                     setTimeout(() => ytIframe.classList.remove('opacity-0'), 800);
+                } else if (gdriveIframe && gdriveIframe.dataset.src) {
+                    gdriveIframe.src = gdriveIframe.dataset.src;
+                    setTimeout(() => gdriveIframe.classList.remove('opacity-0'), 800);
                 } else if (mp4Video) {
                     mp4Video.play();
                     setTimeout(() => mp4Video.classList.remove('opacity-0'), 100);

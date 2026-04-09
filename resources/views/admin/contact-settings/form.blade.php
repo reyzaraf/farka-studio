@@ -92,7 +92,7 @@
                 container.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}" class="w-100 h-100" style="border:0;" allow="autoplay; fullscreen"></iframe>`;
             } else if (gdMatch && gdMatch[1]) {
                 const gdId = gdMatch[1];
-                container.innerHTML = `<video src="https://drive.google.com/uc?export=download&id=${gdId}" autoplay muted loop playsinline class="w-100 h-100" style="object-fit: cover;"></video>`;
+                container.innerHTML = `<iframe src="https://drive.google.com/file/d/${gdId}/preview" class="w-100 h-100" style="border:0;" allow="autoplay; fullscreen"></iframe>`;
             } else {
                 container.innerHTML = `<video src="${val}" autoplay muted loop playsinline class="w-100 h-100" style="object-fit: cover;"></video>`;
             }
