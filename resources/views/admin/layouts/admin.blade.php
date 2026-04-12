@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
     <!-- [Favicon] icon -->
-    <link rel="icon" href="{{ asset('assets/farkalogo.svg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('farkalogo.svg') }}" type="image/x-icon">
 
     <!-- [Google Font : Public Sans] icon -->
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">

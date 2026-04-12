@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
     <!-- [Favicon] icon -->
-    <link rel="icon" href="{{ asset('assets/farkalogo.svg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('farkalogo.svg') }}" type="image/x-icon">
     <!-- [Google Font : Public Sans] icon -->
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- [Template CSS Files] -->
@@ -31,7 +31,7 @@
           <div class="card my-5">
             <div class="card-body">
               <div class="text-center">
-                <img src="{{ asset('assets/farkalogo.svg') }}" alt="logo" class="img-fluid mb-4" style="max-height: 80px;">
+                <img src="{{ asset('farkalogo.svg') }}" alt="logo" class="img-fluid mb-4" style="max-height: 80px;">
                 <h4 class="f-w-500 mb-4">Verify Your Email</h4>
                 
                 @if (session('resent'))
@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="auth-sidefooter">
-          <img src="{{ asset('assets/farkalogo.svg') }}" class="img-brand img-fluid" alt="images" style="max-height: 40px;">
+          <img src="{{ asset('farkalogo.svg') }}" class="img-brand img-fluid" alt="images" style="max-height: 40px;">
           <hr class="mb-3 mt-4">
           <div class="row">
             <div class="col my-1">
