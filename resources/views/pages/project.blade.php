@@ -38,8 +38,10 @@
                 </div>
 
                 <div class="opacity-0 transition-opacity duration-500 flex flex-col md:flex-row gap-6 md:gap-10 h-full" id="project-detail-container">
-                    <div class="w-full md:w-2/3 h-auto md:h-full overflow-y-visible md:overflow-y-auto scroll-container pr-0 md:pr-4 pb-10 md:pb-20 order-last md:order-first">
-                        <div id="det-content-container" class="flex flex-col gap-12"></div>
+                    <div class="w-full md:w-2/3 h-auto md:h-full relative order-last md:order-first">
+                        <div class="h-auto md:h-full overflow-y-visible md:overflow-y-auto scroll-container pr-0 md:pr-4 pb-10 md:pb-20" id="image-scroll-container">
+                            <div id="det-content-container" class="flex flex-col gap-12"></div>
+                        </div>
                     </div>
 
                     <div class="w-full md:w-1/3 pt-0 md:pt-4 h-fit border-b-2 border-gray-100 pb-6 md:border-0 md:pb-0 order-first md:order-last">

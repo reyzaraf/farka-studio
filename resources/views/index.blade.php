@@ -132,6 +132,15 @@
 
         .menu-text, .submenu-text { transition: all 0.3s; color: #ccc; }
         .submenu-text { color: #888; }
+
+        @keyframes wheel-move {
+            0% { transform: translateY(0); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(12px); opacity: 0; }
+        }
+        .animate-wheel-move {
+            animation: wheel-move 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
     </style>
 </head>
 <body class="overflow-hidden">
@@ -371,6 +380,9 @@
             const detailContainer = document.getElementById('project-detail-container');
             const placeholder = document.getElementById('project-placeholder');
             const contentContainer = document.getElementById('det-content-container');
+            const imageContainer = document.getElementById('image-scroll-container');
+
+
             
             if(placeholder) {
                 placeholder.style.opacity = '0'; 
@@ -390,9 +402,9 @@
                 
                 contentContainer.innerHTML = '';
                 if (data.content) {
-                    data.content.forEach(item => {
+                    data.content.forEach((item, index) => {
                         const wrapper = document.createElement('div');
-                        wrapper.className = "mb-12";
+                        wrapper.className = "mb-12 relative pb-10";
                         const imgEl = document.createElement('img');
                         imgEl.src = item.img;
                         imgEl.className = "w-full aspect-[3/2] object-cover shadow-sm mb-4";
@@ -401,6 +413,20 @@
                         descEl.innerText = item.text;
                         wrapper.appendChild(imgEl);
                         wrapper.appendChild(descEl);
+                        
+                        // Add Scroll Indicator between panels
+                        if (index < data.content.length - 1) {
+                            const indicator = document.createElement('div');
+                            indicator.className = "flex flex-col items-center gap-1.5 mt-8 pb-4 pointer-events-none";
+                            indicator.innerHTML = `
+                                <span class="text-[0.5rem] font-black uppercase tracking-[0.2em] text-black/40">Next</span>
+                                <div class="w-[16px] h-[26px] border-2 border-black/20 rounded-full flex justify-center pt-1">
+                                    <div class="w-0.5 h-1.5 bg-black/40 rounded-full animate-wheel-move"></div>
+                                </div>
+                            `;
+                            wrapper.appendChild(indicator);
+                        }
+                        
                         contentContainer.appendChild(wrapper);
                     });
                 }
@@ -410,7 +436,7 @@
                 if (window.innerWidth < 768) {
                     detailContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 } else {
-                    document.getElementById('project-scroll-container').scrollTop = 0; 
+                    imageContainer.scrollTop = 0; 
                 }
             }, 300);
 
