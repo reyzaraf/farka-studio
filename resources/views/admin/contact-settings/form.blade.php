@@ -1,11 +1,11 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Contact Settings')
+@section('title', 'Page Settings')
 @section('page-title', 'Company Contact Information')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item" aria-current="page">Contact Settings</li>
+    <li class="breadcrumb-item" aria-current="page">Page Settings</li>
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
     <div class="col-md-8 mx-auto">
         <div class="card">
             <div class="card-header">
-                <h5>Update Global Contact Details</h5>
+                <h5>Page Settings</h5>
             </div>
             <div class="card-body">
                 

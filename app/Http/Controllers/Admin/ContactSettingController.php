@@ -33,6 +33,6 @@ class ContactSettingController extends Controller
             ContactSetting::create($validated);
         }
 
-        return redirect()->route('admin.contact-settings.edit')->with('success', 'Contact settings updated successfully.');
+        return redirect()->route('admin.contact-settings.edit')->with('success', 'Page settings updated successfully.');
     }
 }

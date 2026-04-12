@@ -50,7 +50,7 @@
         <li class="pc-item {{ request()->routeIs('admin.contact-settings.*') ? 'active' : '' }}">
           <a href="{{ route('admin.contact-settings.edit') }}" class="pc-link">
             <span class="pc-micon"><i class="ph-duotone ph-address-book"></i></span>
-            <span class="pc-mtext">Contact Settings</span>
+            <span class="pc-mtext">Page Settings</span>
           </a>
         </li>
 
