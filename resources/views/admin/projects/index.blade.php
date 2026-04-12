@@ -48,6 +48,7 @@
                                 <th>Title</th>
                                 <th>Category</th>
                                 <th>Architect</th>
+                                <th>Sort Order</th>
                                 <th>Status</th>
                                 <th class="text-end">Actions</th>
                             </tr>
@@ -68,6 +69,9 @@
                                 <td>{{ Str::limit($project->title, 40) }}</td>
                                 <td>{{ $project->category->name ?? 'N/A' }}</td>
                                 <td>{{ $project->architect ?: '-' }}</td>
+                                <td>
+                                    <span class="badge bg-light-info border border-info">{{ $project->order }}</span>
+                                </td>
                                 <td>
                                     @if($project->status)
                                         <span class="badge bg-light-secondary border border-secondary">{{ $project->status }}</span>
@@ -115,7 +119,7 @@
             "pageLength": 10,
             "order": [[ 0, "asc" ]],
             "columnDefs": [
-                { "orderable": false, "targets": [1, 6] } // Disable sorting on thumbnail and actions
+                { "orderable": false, "targets": [1, 7] } // Disable sorting on thumbnail and actions
             ]
         });
     });

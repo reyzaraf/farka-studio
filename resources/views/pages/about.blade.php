@@ -5,9 +5,13 @@
             <div class="max-w-4xl mx-auto mb-16 md:mb-24 pt-4 md:pt-10 text-center">
                 <h2 class="text-3xl md:text-4xl font-black mb-6 md:mb-8 tracking-tight border-b-2 border-black pb-4 inline-block">The Studio</h2>
                 <p class="text-gray-500 leading-tight text-sm md:text-lg">
-                    Farka Studio adalah biro arsitektur dan desain interior yang berpusat di Indonesia. Kami percaya bahwa arsitektur bukan sekadar tentang membangun struktur, melainkan menciptakan ruang yang mampu bernapas, berdialog dengan lingkungannya, dan memberikan dampak positif bagi kehidupan manusia di dalamnya. 
-                    <br><br>
-                    Pendekatan kami selalu berakar pada kesederhanaan bentuk, kejujuran material, dan keberlanjutan. Melalui proses kolaboratif yang erat antara arsitek, klien, dan pembuat karya, Farka Studio terus mengeksplorasi batas-batas ruang untuk menghadirkan desain yang fungsional sekaligus berjiwa.
+                    @if($contact->about_description)
+                        {!! nl2br(e($contact->about_description)) !!}
+                    @else
+                        Farka Studio adalah biro arsitektur dan desain interior yang berpusat di Indonesia. Kami percaya bahwa arsitektur bukan sekadar tentang membangun struktur, melainkan menciptakan ruang yang mampu bernapas, berdialog dengan lingkungannya, dan memberikan dampak positif bagi kehidupan manusia di dalamnya. 
+                        <br><br>
+                        Pendekatan kami selalu berakar pada kesederhanaan bentuk, kejujuran material, dan keberlanjutan. Melalui proses kolaboratif yang erat antara arsitek, klien, dan pembuat karya, Farka Studio terus mengeksplorasi batas-batas ruang untuk menghadirkan desain yang fungsional sekaligus berjiwa.
+                    @endif
                 </p>
             </div>
 

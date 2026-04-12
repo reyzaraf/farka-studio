@@ -5,8 +5,8 @@
             Back to Menu
         </div>
 
-        <div id="project-scroll-container" class="flex flex-col md:grid md:grid-cols-12 gap-6 md:gap-10 h-full pb-[20vh] md:pb-0 overflow-y-auto md:overflow-y-hidden scroll-container">
-            <div class="md:col-span-4 md:border-r border-gray-50 pt-4 md:pt-10" id="sidebar-menu">
+        <div id="project-scroll-container" class="flex flex-col md:grid md:grid-cols-12 gap-6 md:gap-4 h-full pb-[20vh] md:pb-0 overflow-y-auto md:overflow-y-hidden scroll-container">
+            <div class="md:col-span-2 md:border-r border-gray-50 pt-4 md:pt-10" id="sidebar-menu">
                 
                 @foreach($categories as $categoryModel)
                 <div class="mb-4">
@@ -32,7 +32,7 @@
                 @endforeach
             </div>
 
-            <div class="md:col-span-8 relative h-auto md:h-[calc(100vh-25vh)] mt-6 md:mt-0">
+            <div class="md:col-span-10 relative h-auto md:h-[calc(100vh-25vh)] mt-6 md:mt-0">
                 <div id="project-placeholder" class="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-500 z-10">
                     <div class="text-gray-200 font-black font-title text-3xl md:text-5xl tracking-tight opacity-60 px-4 text-center">Select a Project</div>
                 </div>
@@ -52,7 +52,7 @@
                         <div id="det-floor" class="text-sm font-bold mt-1"></div>
                         <div class="text-[0.65rem] font-black text-gray-400 mt-4 md:mt-6 tracking-tight">Site Area</div>
                         <div id="det-site" class="text-sm font-bold mt-1"></div>
-                        <div class="text-[0.65rem] font-black text-gray-400 mt-4 md:mt-6 tracking-tight">Number of Stories</div>
+                        <div class="text-[0.65rem] font-black text-gray-400 mt-4 md:mt-6 tracking-tight">Description</div>
                         <div id="det-stories" class="text-sm font-bold mt-1"></div>
                         <div class="text-[0.65rem] font-black text-gray-400 mt-4 md:mt-6 tracking-tight">Location</div>
                         <div id="det-location" class="text-sm font-bold mt-1"></div>

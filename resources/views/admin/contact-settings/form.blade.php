@@ -51,6 +51,14 @@
                     </div>
 
                     <div class="mb-5">
+                        <label class="form-label" for="about_description">About The Studio (Display on About Page)</label>
+                        <textarea class="form-control @error('about_description') is-invalid @enderror" id="about_description" name="about_description" 
+                                  rows="6" placeholder="Enter descriptive text for the About section">{{ old('about_description', $setting->about_description ?? '') }}</textarea>
+                        <small class="form-text text-muted">This text will be displayed in the "The Studio" section on the About page.</small>
+                        @error('about_description')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="mb-5">
                         <label class="form-label" for="video_url">Background Video URL</label>
                         <input type="url" class="form-control @error('video_url') is-invalid @enderror" id="video_url" name="video_url" 
                                value="{{ old('video_url', $setting->video_url ?? '') }}" placeholder="e.g. https://www.pexels.com/download/video/36168059/" oninput="updateVideoPreview()">

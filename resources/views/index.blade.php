@@ -162,16 +162,16 @@
         const db = {!! $projects_json ?? '{}' !!};
 
         const cascadeColors = [
-            '#1F1F1F', // 1. Hitam awal (tetap)
-            '#404040', // 2. Abu-abu gelap
-            '#666666', // 3. Abu-abu medium-gelap
-            '#8C8C8C', // 4. Abu-abu medium
-            '#AFAFAF', // 5. Abu-abu medium-terang
-            '#C9C9C9', // 6. Abu-abu terang mulai memudar
-            '#DFDFDF', // 7. Abu-abu pucat
-            '#F0F0F0', // 8. Abu-abu sangat pucat (soft)
-            '#F8F8F8', // 9. Hampir putih bersih
-            '#FFFFFF'  // 10. Putih murni
+            'rgba(31, 31, 31, 1)',    // 1. Hitam awal (tetap solid)
+            'rgba(64, 64, 64, 0.7)',  // 2. Abu-abu gelap (70%)
+            'rgba(102, 102, 102, 0.6)', // 3. Abu-abu medium-gelap (60%)
+            'rgba(140, 140, 140, 0.5)', // 4. Abu-abu medium (50%)
+            'rgba(175, 175, 175, 0.4)', // 5. Abu-abu medium-terang (40%)
+            'rgba(201, 201, 201, 0.3)', // 6. Abu-abu terang (30%)
+            'rgba(223, 223, 223, 0.2)', // 7. Abu-abu pucat (20%)
+            'rgba(240, 240, 240, 0.1)', // 8. Abu-abu sangat pucat (10%)
+            'rgba(248, 248, 248, 0.05)', // 9. Hampir putih bersih (5%)
+            'rgba(255, 255, 255, 0.02)'  // 10. Putih murni (2%)
             ];
         const sidebar = document.getElementById('sidebar-menu');
         const mainItems = Array.from(document.querySelectorAll('.project-menu-item'));
@@ -395,7 +395,7 @@
                         wrapper.className = "mb-12";
                         const imgEl = document.createElement('img');
                         imgEl.src = item.img;
-                        imgEl.className = "w-full aspect-[4/5] object-cover shadow-sm mb-4";
+                        imgEl.className = "w-full aspect-[3/2] object-cover shadow-sm mb-4";
                         const descEl = document.createElement('p');
                         descEl.className = "text-sm text-gray-500 leading-tight pl-2 border-l-2 border-gray-200";
                         descEl.innerText = item.text;

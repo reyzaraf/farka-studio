@@ -15,7 +15,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::with(['category', 'contents'])->latest()->get();
+        $projects = Project::with(['category', 'contents'])->orderBy('order', 'asc')->latest()->get();
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -44,6 +44,7 @@ class ProjectController extends Controller
             'site_area' => 'nullable|string|max:255',
             'stories' => 'nullable|string|max:255',
             'location' => 'nullable|string',
+            'order' => 'nullable|integer',
             'contents.*.image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg,gif|max:5120',
             'contents.*.description' => 'nullable|string',
             'contents.*.order' => 'nullable|integer',
@@ -104,6 +105,7 @@ class ProjectController extends Controller
             'site_area' => 'nullable|string|max:255',
             'stories' => 'nullable|string|max:255',
             'location' => 'nullable|string',
+            'order' => 'nullable|integer',
             'contents.*.image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg,gif|max:5120',
             'contents.*.description' => 'nullable|string',
             'contents.*.order' => 'nullable|integer',

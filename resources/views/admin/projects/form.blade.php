@@ -86,11 +86,18 @@
                             @error('site_area')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label" for="stories">Stories</label>
                             <input type="text" class="form-control @error('stories') is-invalid @enderror" id="stories" name="stories" 
                                    value="{{ old('stories', $project->stories ?? '') }}">
                             @error('stories')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="order">Project Order (Lower appears first)</label>
+                            <input type="number" class="form-control @error('order') is-invalid @enderror" id="order" name="order" 
+                                   value="{{ old('order', $project->order ?? 0) }}">
+                            @error('order')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="col-12 mb-4">
@@ -123,6 +130,7 @@
                                             <img src="{{ asset('storage/' . $content->image_url) }}" class="img-fluid rounded border mb-2" style="max-height: 100px; width: auto; display: block;">
                                             <label class="form-label text-xs">Replace Image</label>
                                             <input type="file" class="form-control form-control-sm" name="contents[{{ $index }}][image]" accept="image/*">
+                                            <small class="text-muted d-block mt-1">Max upload size: 35MB</small>
                                         </div>
                                         <div class="col-md-7 mb-3">
                                             <label class="form-label">Description (Optional)</label>
@@ -184,6 +192,7 @@
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Upload Image <span class="text-danger">*</span></label>
                                 <input type="file" class="form-control" name="contents[${contentIndex}][image]" accept="image/*" required>
+                                <small class="text-muted d-block mt-1">Max upload size: 35MB</small>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Description (Optional)</label>
