@@ -45,7 +45,7 @@ class ProjectController extends Controller
             'stories' => 'nullable|string|max:255',
             'location' => 'nullable|string',
             'order' => 'nullable|integer',
-            'contents.*.image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg,gif|max:5120',
+            'contents.*.image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg,gif|max:35840',
             'contents.*.description' => 'nullable|string',
             'contents.*.order' => 'nullable|integer',
         ]);
@@ -106,7 +106,7 @@ class ProjectController extends Controller
             'stories' => 'nullable|string|max:255',
             'location' => 'nullable|string',
             'order' => 'nullable|integer',
-            'contents.*.image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg,gif|max:5120',
+            'contents.*.image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg,gif|max:35840',
             'contents.*.description' => 'nullable|string',
             'contents.*.order' => 'nullable|integer',
         ]);

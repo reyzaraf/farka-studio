@@ -34,7 +34,7 @@ class KeyPersonController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
-            'image_url' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image_url' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:35840',
             'description' => 'nullable|string',
             'order' => 'nullable|integer',
         ]);
@@ -75,7 +75,7 @@ class KeyPersonController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
-            'image_url' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image_url' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:35840',
             'description' => 'nullable|string',
             'order' => 'nullable|integer',
         ]);
