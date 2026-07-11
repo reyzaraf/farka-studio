@@ -23,6 +23,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Bulk / custom routes must be declared BEFORE their resource so paths like
     // "projects/bulk-destroy" don't get captured by "projects/{project}".
+    Route::post('projects/reorder', [\App\Http\Controllers\Admin\ProjectController::class, 'reorder'])->name('projects.reorder');
     Route::delete('projects/bulk-destroy', [\App\Http\Controllers\Admin\ProjectController::class, 'bulkDestroy'])->name('projects.bulk-destroy');
     Route::resource('projects', \App\Http\Controllers\Admin\ProjectController::class)->except(['show']);
 

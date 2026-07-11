@@ -15,7 +15,7 @@ class ProjectController extends Controller
     {
         $this->middleware('permission:view_projects')->only(['index']);
         $this->middleware('permission:create_projects')->only(['create', 'store']);
-        $this->middleware('permission:edit_projects')->only(['edit', 'update']);
+        $this->middleware('permission:edit_projects')->only(['edit', 'update', 'reorder']);
         $this->middleware('permission:delete_projects')->only(['destroy', 'bulkDestroy']);
     }
 
@@ -169,6 +169,23 @@ class ProjectController extends Controller
 
         return redirect()->route('admin.projects.index')
             ->with('success', $projects->count() . ' project(s) deleted successfully.');
+    }
+
+    /**
+     * Persist a new display order from drag-and-drop on the list.
+     */
+    public function reorder(Request $request)
+    {
+        $validated = $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer|exists:projects,id',
+        ]);
+
+        foreach ($validated['ids'] as $position => $id) {
+            Project::where('id', $id)->update(['order' => $position + 1]);
+        }
+
+        return response()->json(['status' => 'ok']);
     }
 
     /**

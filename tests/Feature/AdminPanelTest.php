@@ -210,6 +210,38 @@ class AdminPanelTest extends TestCase
         $this->assertDatabaseMissing('roles', ['id' => $editorRole->id]); // deleted
     }
 
+    /* ---------------- #12 Drag reorder (projects list) ---------------- */
+
+    public function test_project_reorder_persists_new_order(): void
+    {
+        $a = Project::create(['title' => 'A', 'slug' => 'a', 'order' => 1]);
+        $b = Project::create(['title' => 'B', 'slug' => 'b', 'order' => 2]);
+        $c = Project::create(['title' => 'C', 'slug' => 'c', 'order' => 3]);
+
+        // Drag into order: C, A, B
+        $this->actingAs($this->superAdmin())
+            ->post(route('admin.projects.reorder'), ['ids' => [$c->id, $a->id, $b->id]])
+            ->assertOk()->assertJson(['status' => 'ok']);
+
+        $this->assertEquals(1, $c->fresh()->order);
+        $this->assertEquals(2, $a->fresh()->order);
+        $this->assertEquals(3, $b->fresh()->order);
+    }
+
+    public function test_project_reorder_requires_edit_permission(): void
+    {
+        $viewer = User::factory()->create();
+        $role = Role::create(['name' => 'viewer']);
+        $role->givePermissionTo('view_projects'); // no edit_projects
+        $viewer->assignRole($role);
+
+        $p = Project::create(['title' => 'A', 'slug' => 'a', 'order' => 1]);
+
+        $this->actingAs($viewer)
+            ->post(route('admin.projects.reorder'), ['ids' => [$p->id]])
+            ->assertForbidden();
+    }
+
     /* ---------------- #11 Media rows preserved on validation failure ---------------- */
 
     public function test_validation_error_repopulates_media_descriptions(): void

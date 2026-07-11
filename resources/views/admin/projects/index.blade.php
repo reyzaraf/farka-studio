@@ -9,6 +9,10 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('admin_assets/css/plugins/dataTables.bootstrap5.min.css') }}">
+    <style>
+        #projects-table .drag-handle { cursor: grab; color: #adb5bd; }
+        #projects-table tr.sortable-ghost { opacity: .4; }
+    </style>
 @endpush
 
 @section('content')
@@ -50,6 +54,13 @@
                     <div id="bulk-ids"></div>
                 </form>
 
+                @can('edit_projects')
+                <div class="small text-muted mb-2">
+                    <i class="ti ti-grip-vertical"></i> Drag the handle in the <strong>Sort Order</strong> column to reorder — the order saves automatically.
+                    <span id="reorder-hint" class="text-warning ms-1" style="display:none;"><i class="ti ti-info-circle"></i> Clear search, filters &amp; column sorting to reorder.</span>
+                </div>
+                @endcan
+
                 <div class="table-responsive dt-responsive">
                     <table id="projects-table" class="table table-striped table-bordered nowrap">
                         <thead>
@@ -68,9 +79,9 @@
                         </thead>
                         <tbody>
                             @forelse($projects as $project)
-                            <tr>
+                            <tr data-id="{{ $project->id }}">
                                 <td><input type="checkbox" class="form-check-input row-check" value="{{ $project->id }}"></td>
-                                <td>{{ $loop->iteration }}</td>
+                                <td class="row-num">{{ $loop->iteration }}</td>
                                 <td>
                                     @if($project->contents && $project->contents->first() && $project->contents->first()->image_url)
                                         <img src="{{ asset('storage/' . $project->contents->first()->image_url) }}" alt="Thumbnail" class="img-radius align-top m-r-15" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
@@ -83,8 +94,11 @@
                                 <td>{{ Str::limit($project->title, 40) }}</td>
                                 <td>{{ $project->category->name ?? 'N/A' }}</td>
                                 <td>{{ $project->architect ?: '-' }}</td>
-                                <td>
-                                    <span class="badge bg-light-info border border-info">{{ $project->order }}</span>
+                                <td data-order="{{ $project->order }}">
+                                    @can('edit_projects')
+                                    <span class="drag-handle me-1" title="Drag to reorder"><i class="ti ti-grip-vertical"></i></span>
+                                    @endcan
+                                    <span class="badge bg-light-info border border-info order-badge">{{ $project->order }}</span>
                                 </td>
                                 <td>
                                     @if($project->status)
@@ -136,11 +150,14 @@
 @push('scripts')
 <script src="{{ asset('admin_assets/js/plugins/dataTables.min.js') }}"></script>
 <script src="{{ asset('admin_assets/js/plugins/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('admin_assets/js/plugins/sortable.min.js') }}"></script>
 <script>
     $(document).ready(function () {
+        // paging:false keeps every row in the DOM so drag-reorder can span the whole list.
+        // Column 6 (Sort Order) carries data-order attributes, so DataTables sorts it numerically.
         var table = $('#projects-table').DataTable({
-            "pageLength": 10,
-            "order": [[ 1, "asc" ]],
+            "paging": false,
+            "order": [[ 6, "asc" ]],
             "columnDefs": [
                 { "orderable": false, "targets": [0, 2, 9] }
             ]
@@ -197,6 +214,72 @@
                     .then(function (r) { if (r.isConfirmed) doDelete(); });
             } else if (window.confirm(msg)) { doDelete(); }
         });
+
+        @can('edit_projects')
+        /* ---------- Drag-and-drop reordering (only in the default, unfiltered/unsorted view) ---------- */
+        var tbody = document.querySelector('#projects-table tbody');
+        var reorderUrl = "{{ route('admin.projects.reorder') }}";
+        var csrf = "{{ csrf_token() }}";
+        var reorderHint = document.getElementById('reorder-hint');
+        var sortable = null;
+
+        function isReorderable() {
+            var ord = table.order();
+            var defaultSort = ord.length === 1 && ord[0][0] === 6 && ord[0][1] === 'asc';
+            return table.search() === ''
+                && table.column(4).search() === ''
+                && table.column(7).search() === ''
+                && defaultSort;
+        }
+        function refreshReorderState() {
+            var on = isReorderable();
+            if (sortable) sortable.option('disabled', !on);
+            document.querySelectorAll('#projects-table .drag-handle').forEach(function (h) {
+                h.style.opacity = on ? '1' : '.3';
+                h.style.cursor = on ? 'grab' : 'not-allowed';
+            });
+            if (reorderHint) reorderHint.style.display = on ? 'none' : '';
+        }
+
+        if (window.Sortable && tbody) {
+            sortable = Sortable.create(tbody, {
+                handle: '.drag-handle',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                onEnd: function () {
+                    var rows = tbody.querySelectorAll('tr[data-id]');
+                    var ids = [];
+                    rows.forEach(function (row, i) {
+                        var n = i + 1;
+                        ids.push(row.getAttribute('data-id'));
+                        var badge = row.querySelector('.order-badge');
+                        if (badge) badge.textContent = n;
+                        var num = row.querySelector('.row-num');
+                        if (num) num.textContent = n;
+                        var orderCell = row.querySelector('td[data-order]');
+                        if (orderCell) orderCell.setAttribute('data-order', n);
+                    });
+                    // Refresh DataTables' sort cache from the new data-order attributes so a later
+                    // search/sort doesn't snap rows back to the old order (no draw = no flicker).
+                    table.rows().invalidate('dom');
+
+                    var fd = new FormData();
+                    ids.forEach(function (id) { fd.append('ids[]', id); });
+                    fetch(reorderUrl, {
+                        method: 'POST',
+                        headers: { 'X-CSRF-TOKEN': csrf, 'X-Requested-With': 'XMLHttpRequest' },
+                        body: fd
+                    }).then(function (r) { if (!r.ok) throw new Error('failed'); })
+                      .catch(function () {
+                          alert('Could not save the new order. Reloading to restore the correct order.');
+                          window.location.reload();
+                      });
+                }
+            });
+            table.on('search.dt order.dt', refreshReorderState);
+            refreshReorderState();
+        }
+        @endcan
     });
 </script>
 @endpush
