@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_categories')->only(['index']);
+        $this->middleware('permission:create_categories')->only(['create', 'store']);
+        $this->middleware('permission:edit_categories')->only(['edit', 'update']);
+        $this->middleware('permission:delete_categories')->only(['destroy', 'bulkDestroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -84,7 +92,23 @@ class CategoryController extends Controller
         // Ensure no projects are silently orphaned or deleted restrictively depending on DB setup.
         // Assuming cascade or set null is handled in DB. Let's just delete the category.
         $category->delete();
-        
+
         return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
+    }
+
+    /**
+     * Delete multiple categories at once.
+     */
+    public function bulkDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer|exists:categories,id',
+        ]);
+
+        $count = Category::whereIn('id', $validated['ids'])->delete();
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', $count . ' category(ies) deleted successfully.');
     }
 }

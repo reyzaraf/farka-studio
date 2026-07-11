@@ -7,9 +7,18 @@ use App\Models\Project;
 use App\Models\Category;
 use App\Models\KeyPerson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_projects')->only(['index']);
+        $this->middleware('permission:create_projects')->only(['create', 'store']);
+        $this->middleware('permission:edit_projects')->only(['edit', 'update']);
+        $this->middleware('permission:delete_projects')->only(['destroy', 'bulkDestroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -34,21 +43,8 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:projects,slug',
-            'category_id' => 'nullable|exists:categories,id',
-            'status' => 'nullable|string|max:255',
-            'architect' => 'nullable|string|max:255',
-            'floor_area' => 'nullable|string|max:255',
-            'site_area' => 'nullable|string|max:255',
-            'stories' => 'nullable|string|max:255',
-            'location' => 'nullable|string',
-            'order' => 'nullable|integer',
-            'contents.*.image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg,gif|max:35840',
-            'contents.*.description' => 'nullable|string',
-            'contents.*.order' => 'nullable|integer',
-        ]);
+        $validated = $request->validate($this->rules());
+        $validated['is_published'] = $request->boolean('is_published');
 
         $project = Project::create($validated);
 
@@ -70,14 +66,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        // Not used
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -95,21 +83,8 @@ class ProjectController extends Controller
     {
         $project = Project::findOrFail($id);
 
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:projects,slug,' . $id,
-            'category_id' => 'nullable|exists:categories,id',
-            'status' => 'nullable|string|max:255',
-            'architect' => 'nullable|string|max:255',
-            'floor_area' => 'nullable|string|max:255',
-            'site_area' => 'nullable|string|max:255',
-            'stories' => 'nullable|string|max:255',
-            'location' => 'nullable|string',
-            'order' => 'nullable|integer',
-            'contents.*.image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg,gif|max:35840',
-            'contents.*.description' => 'nullable|string',
-            'contents.*.order' => 'nullable|integer',
-        ]);
+        $validated = $request->validate($this->rules($id));
+        $validated['is_published'] = $request->boolean('is_published');
 
         $project->update($validated);
 
@@ -118,7 +93,7 @@ class ProjectController extends Controller
             $contentsToDelete = $project->contents()->whereIn('id', $request->deleted_contents)->get();
             foreach ($contentsToDelete as $content) {
                 if ($content->image_url) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($content->image_url);
+                    Storage::disk('public')->delete($content->image_url);
                 }
                 $content->delete();
             }
@@ -130,7 +105,6 @@ class ProjectController extends Controller
             $inputs = $request->input('contents') ?? [];
 
             foreach ($inputs as $index => $contentData) {
-                // If it exists, update it
                 if (isset($contentData['id'])) {
                     $content = $project->contents()->find($contentData['id']);
                     if ($content) {
@@ -138,14 +112,14 @@ class ProjectController extends Controller
                             'description' => $contentData['description'] ?? null,
                             'order' => $contentData['order'] ?? 0,
                         ];
-                        
+
                         if (isset($files[$index]['image'])) {
                             if ($content->image_url) {
-                                \Illuminate\Support\Facades\Storage::disk('public')->delete($content->image_url);
+                                Storage::disk('public')->delete($content->image_url);
                             }
                             $updateData['image_url'] = $files[$index]['image']->store('project-contents', 'public');
                         }
-                        
+
                         $content->update($updateData);
                     }
                 } else {
@@ -170,9 +144,64 @@ class ProjectController extends Controller
      */
     public function destroy(string $id)
     {
-        $project = Project::findOrFail($id);
-        $project->delete();
-        
+        $project = Project::with('contents')->findOrFail($id);
+        $this->deleteProjectImages($project);
+        $project->delete(); // project_contents rows cascade at the DB level
+
         return redirect()->route('admin.projects.index')->with('success', 'Project deleted successfully.');
+    }
+
+    /**
+     * Delete multiple projects at once.
+     */
+    public function bulkDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer|exists:projects,id',
+        ]);
+
+        $projects = Project::with('contents')->whereIn('id', $validated['ids'])->get();
+        foreach ($projects as $project) {
+            $this->deleteProjectImages($project);
+            $project->delete();
+        }
+
+        return redirect()->route('admin.projects.index')
+            ->with('success', $projects->count() . ' project(s) deleted successfully.');
+    }
+
+    /**
+     * Shared validation rules for store/update.
+     */
+    private function rules(?string $ignoreId = null): array
+    {
+        $slugUnique = 'required|string|max:255|unique:projects,slug' . ($ignoreId ? ',' . $ignoreId : '');
+
+        return [
+            'title' => 'required|string|max:255',
+            'slug' => $slugUnique,
+            'category_id' => 'nullable|exists:categories,id',
+            'status' => 'nullable|string|max:255',
+            'architect' => 'nullable|string|max:255',
+            'floor_area' => 'nullable|string|max:255',
+            'site_area' => 'nullable|string|max:255',
+            'stories' => 'nullable|string|max:255',
+            'location' => 'nullable|string',
+            'order' => 'nullable|integer',
+            'is_published' => 'nullable|boolean',
+            'contents.*.image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg,gif|max:35840',
+            'contents.*.description' => 'nullable|string',
+            'contents.*.order' => 'nullable|integer',
+        ];
+    }
+
+    private function deleteProjectImages(Project $project): void
+    {
+        foreach ($project->contents as $content) {
+            if ($content->image_url) {
+                Storage::disk('public')->delete($content->image_url);
+            }
+        }
     }
 }

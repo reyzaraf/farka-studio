@@ -20,6 +20,8 @@ class DashboardController extends Controller
             'key_people' => KeyPerson::count(),
         ];
 
-        return view('admin.dashboard', compact('stats'));
+        $recentProjects = Project::with('category')->latest()->take(5)->get();
+
+        return view('admin.dashboard', compact('stats', 'recentProjects'));
     }
 }

@@ -19,7 +19,13 @@
     <!-- [Mobile Media Block end] -->
 
     <div class="ms-auto">
-      <ul class="list-unstyled">
+      <ul class="list-unstyled d-flex align-items-center mb-0">
+        <li class="pc-h-item">
+          <a href="{{ url('/') }}" target="_blank" rel="noopener" class="btn btn-sm btn-light-primary d-flex align-items-center gap-1 me-2" title="Open the public website in a new tab">
+            <i class="ph-duotone ph-globe"></i>
+            <span class="d-none d-sm-inline">View Site</span>
+          </a>
+        </li>
         <li class="dropdown pc-h-item header-user-profile">
           <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
             <i class="ti ti-user user-avtar wid-35"></i>
@@ -41,7 +47,13 @@
                   </div>
                 </div>
                 <hr class="border-secondary border-opacity-50">
-                <a href="{{ url('/') }}" target="_blank" class="dropdown-item">
+                <a href="{{ route('admin.profile.edit') }}" class="dropdown-item">
+                  <span>
+                    <i class="ph-duotone ph-user-gear"></i>
+                    <span>My Profile</span>
+                  </span>
+                </a>
+                <a href="{{ url('/') }}" target="_blank" rel="noopener" class="dropdown-item">
                   <span>
                     <i class="ph-duotone ph-globe"></i>
                     <span>Visit Website</span>

@@ -1,7 +1,7 @@
 @extends('admin.layouts.admin')
 
 @section('title', 'Roles')
-@section('page-title', 'Roles & Permissions Management')
+@section('page_title', 'Roles & Permissions Management')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
@@ -9,7 +9,6 @@
 @endsection
 
 @push('styles')
-    <!-- data tables css -->
     <link rel="stylesheet" href="{{ asset('admin_assets/css/plugins/dataTables.bootstrap5.min.css') }}">
 @endpush
 
@@ -24,25 +23,24 @@
                 </a>
             </div>
             <div class="card-body">
-                
-                @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                
-                @if(session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                
+
+                <div class="mb-3 text-end">
+                    <button type="button" id="bulk-delete-btn" class="btn btn-sm btn-danger" disabled>
+                        <i class="ti ti-trash"></i> Delete Selected (<span id="bulk-count">0</span>)
+                    </button>
+                </div>
+
+                <form id="bulk-delete-form" action="{{ route('admin.roles.bulk-destroy') }}" method="POST" class="d-none">
+                    @csrf
+                    @method('DELETE')
+                    <div id="bulk-ids"></div>
+                </form>
+
                 <div class="table-responsive dt-responsive">
                     <table id="roles-table" class="table table-striped table-bordered nowrap">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" id="check-all" class="form-check-input"></th>
                                 <th>#</th>
                                 <th>Role Name</th>
                                 <th>Permissions Count</th>
@@ -52,8 +50,13 @@
                         <tbody>
                             @forelse($roles as $role)
                             <tr>
+                                <td>
+                                    @if($role->name !== 'super_admin')
+                                        <input type="checkbox" class="form-check-input row-check" value="{{ $role->id }}">
+                                    @endif
+                                </td>
                                 <td>{{ $loop->iteration }}</td>
-                                <td><span class="badge bg-light-primary text-primary">{{ $role->name }}</span></td>
+                                <td><span class="badge bg-light-primary text-primary">{{ ucwords(str_replace('_', ' ', $role->name)) }}</span></td>
                                 <td>{{ $role->permissions->count() }} permissions</td>
                                 <td class="text-end">
                                     <div class="d-inline-flex">
@@ -64,7 +67,7 @@
                                         <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-icon btn-link-danger delete-btn" title="Delete">
+                                            <button type="button" class="btn btn-icon btn-link-danger delete-btn" title="Delete" data-name="{{ $role->name }}">
                                                 <i class="ti ti-trash"></i>
                                             </button>
                                         </form>
@@ -78,7 +81,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="4" class="text-center">No roles found.</td>
+                                <td colspan="5" class="text-center">No roles found.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -91,38 +94,40 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{ asset('admin_assets/js/plugins/dataTables.min.js') }}"></script>
 <script src="{{ asset('admin_assets/js/plugins/dataTables.bootstrap5.min.js') }}"></script>
 <script>
-    $(document).ready(function() {
-        $('#roles-table').DataTable({
+    $(document).ready(function () {
+        var table = $('#roles-table').DataTable({
             "pageLength": 10,
-            "order": [[ 0, "asc" ]],
-            "columnDefs": [
-                { "orderable": false, "targets": [3] } 
-            ]
+            "order": [[ 1, "asc" ]],
+            "columnDefs": [{ "orderable": false, "targets": [0, 4] }]
         });
-    });
 
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const form = this.closest('form');
-            
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Removing this role will revoke access for all users assigned to it!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            })
+        function updateBulk() {
+            var count = table.$('.row-check:checked').length;
+            $('#bulk-count').text(count);
+            $('#bulk-delete-btn').prop('disabled', count === 0);
+        }
+        $('#roles-table tbody').on('change', '.row-check', updateBulk);
+        $('#check-all').on('change', function () {
+            table.$('.row-check').prop('checked', this.checked);
+            updateBulk();
+        });
+        $('#bulk-delete-btn').on('click', function () {
+            var ids = table.$('.row-check:checked').map(function () { return this.value; }).get();
+            if (!ids.length) return;
+            var doDelete = function () {
+                var $c = $('#bulk-ids').empty();
+                ids.forEach(function (id) { $c.append($('<input>', { type: 'hidden', name: 'ids[]', value: id })); });
+                $('#bulk-delete-form').submit();
+            };
+            var msg = 'Delete ' + ids.length + ' selected role(s)? Users assigned to them will lose that access.';
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({ title: 'Delete selected?', text: msg, icon: 'warning', showCancelButton: true,
+                    confirmButtonColor: '#d33', confirmButtonText: 'Yes, delete them!' })
+                    .then(function (r) { if (r.isConfirmed) doDelete(); });
+            } else if (window.confirm(msg)) { doDelete(); }
         });
     });
 </script>

@@ -8,13 +8,11 @@
 @section('page_title', 'User Management')
 
 @push('styles')
-    <!-- data tables css -->
     <link rel="stylesheet" href="{{ asset('admin_assets/css/plugins/dataTables.bootstrap5.min.css') }}">
 @endpush
 
 @section('content')
 <div class="row">
-    <!-- [ basic-table ] start -->
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -24,25 +22,24 @@
                 </a>
             </div>
             <div class="card-body">
-                
-                @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                
-                @if(session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                
+
+                <div class="mb-3 text-end">
+                    <button type="button" id="bulk-delete-btn" class="btn btn-sm btn-danger" disabled>
+                        <i class="ti ti-trash"></i> Delete Selected (<span id="bulk-count">0</span>)
+                    </button>
+                </div>
+
+                <form id="bulk-delete-form" action="{{ route('admin.users.bulk-destroy') }}" method="POST" class="d-none">
+                    @csrf
+                    @method('DELETE')
+                    <div id="bulk-ids"></div>
+                </form>
+
                 <div class="table-responsive dt-responsive">
                     <table id="users-table" class="table table-striped table-bordered nowrap">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" id="check-all" class="form-check-input"></th>
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -54,6 +51,11 @@
                         <tbody>
                             @forelse($users as $user)
                             <tr>
+                                <td>
+                                    @if(auth()->id() !== $user->id)
+                                        <input type="checkbox" class="form-check-input row-check" value="{{ $user->id }}">
+                                    @endif
+                                </td>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
                                     <div class="d-inline-flex align-items-center">
@@ -68,7 +70,7 @@
                                     @if($user->hasRole('super_admin'))
                                         <span class="badge bg-light-danger border border-danger">Super Admin</span>
                                     @else
-                                        <span class="badge bg-light-secondary border border-secondary">Administrator</span>
+                                        <span class="badge bg-light-secondary border border-secondary">{{ ucwords(str_replace('_', ' ', $user->getRoleNames()->first() ?? 'Administrator')) }}</span>
                                     @endif
                                 </td>
                                 <td>{{ $user->created_at->format('M d, Y') }}</td>
@@ -81,7 +83,7 @@
                                         <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-icon btn-link-danger delete-btn" title="Delete">
+                                            <button type="button" class="btn btn-icon btn-link-danger delete-btn" title="Delete" data-name="{{ $user->name }}">
                                                 <i class="ti ti-trash"></i>
                                             </button>
                                         </form>
@@ -91,7 +93,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center">No users found.</td>
+                                <td colspan="7" class="text-center">No users found.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -104,40 +106,40 @@
 @endsection
 
 @push('scripts')
-<!-- datatable Js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{ asset('admin_assets/js/plugins/dataTables.min.js') }}"></script>
 <script src="{{ asset('admin_assets/js/plugins/dataTables.bootstrap5.min.js') }}"></script>
 <script>
-    $(document).ready(function() {
-        $('#users-table').DataTable({
+    $(document).ready(function () {
+        var table = $('#users-table').DataTable({
             "pageLength": 10,
-            "order": [[ 0, "asc" ]],
-            "columnDefs": [
-                { "orderable": false, "targets": [5] } // Disable sorting on actions
-            ]
+            "order": [[ 1, "asc" ]],
+            "columnDefs": [{ "orderable": false, "targets": [0, 6] }]
         });
-    });
 
-    // SweetAlert Delete Confirmation
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const form = this.closest('form');
-            
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Deleting a user will revoke their access to the system entirely.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, remove user!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            })
+        function updateBulk() {
+            var count = table.$('.row-check:checked').length;
+            $('#bulk-count').text(count);
+            $('#bulk-delete-btn').prop('disabled', count === 0);
+        }
+        $('#users-table tbody').on('change', '.row-check', updateBulk);
+        $('#check-all').on('change', function () {
+            table.$('.row-check').prop('checked', this.checked);
+            updateBulk();
+        });
+        $('#bulk-delete-btn').on('click', function () {
+            var ids = table.$('.row-check:checked').map(function () { return this.value; }).get();
+            if (!ids.length) return;
+            var doDelete = function () {
+                var $c = $('#bulk-ids').empty();
+                ids.forEach(function (id) { $c.append($('<input>', { type: 'hidden', name: 'ids[]', value: id })); });
+                $('#bulk-delete-form').submit();
+            };
+            var msg = 'Delete ' + ids.length + ' selected user(s)? This revokes their access entirely.';
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({ title: 'Delete selected?', text: msg, icon: 'warning', showCancelButton: true,
+                    confirmButtonColor: '#d33', confirmButtonText: 'Yes, delete them!' })
+                    .then(function (r) { if (r.isConfirmed) doDelete(); });
+            } else if (window.confirm(msg)) { doDelete(); }
         });
     });
 </script>

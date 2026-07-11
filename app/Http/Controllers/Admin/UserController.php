@@ -111,7 +111,28 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $user->delete();
-        
+
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
+    }
+
+    /**
+     * Delete multiple users at once (never the currently logged-in account).
+     */
+    public function bulkDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer|exists:users,id',
+        ]);
+
+        $ids = collect($validated['ids'])->reject(fn ($id) => (int) $id === (int) auth()->id());
+        $count = User::whereIn('id', $ids)->delete();
+
+        $message = $count . ' user(s) deleted successfully.';
+        if (in_array((int) auth()->id(), array_map('intval', $validated['ids']), true)) {
+            $message .= ' Your own account was skipped.';
+        }
+
+        return redirect()->route('admin.users.index')->with('success', $message);
     }
 }

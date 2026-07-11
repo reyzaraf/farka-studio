@@ -5,7 +5,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('admin.key-people.index') }}">Key People</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.key-people.index') }}">Team Members</a></li>
     <li class="breadcrumb-item" aria-current="page">{{ isset($person) ? 'Edit' : 'Create' }}</li>
 @endsection
 
@@ -17,7 +17,7 @@
                 <h5>{{ isset($person) ? 'Edit Team Member Info' : 'New Team Member Details' }}</h5>
             </div>
             <div class="card-body">
-                <form action="{{ isset($person) ? route('admin.key-people.update', $person->id) : route('admin.key-people.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="person-form" action="{{ isset($person) ? route('admin.key-people.update', $person->id) : route('admin.key-people.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @if(isset($person))
                         @method('PUT')
@@ -44,8 +44,10 @@
                                 <img src="{{ asset('storage/' . $person->image_url) }}" alt="{{ $person->name }}" class="img-thumbnail" width="150">
                             </div>
                         @endif
+                        <img id="image-preview" class="img-thumbnail mb-2" style="max-height: 150px; width: auto; display: none;">
                         <input type="file" class="form-control @error('image_url') is-invalid @enderror" id="image_url" name="image_url" accept="image/*">
                         <small class="form-text text-muted">Upload a new image to replace the existing one. <strong>Max upload size: 35MB</strong></small>
+                        <div id="image-size-warning" class="text-danger small mt-1" style="display:none;"></div>
                         @error('image_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
@@ -65,7 +67,7 @@
 
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('admin.key-people.index') }}" class="btn btn-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">{{ isset($person) ? 'Update Member' : 'Save Member' }}</button>
+                        <button type="submit" class="btn btn-primary" id="submit-btn">{{ isset($person) ? 'Update Team Member' : 'Save Team Member' }}</button>
                     </div>
                 </form>
             </div>
@@ -73,3 +75,45 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var MAX_BYTES = 35 * 1024 * 1024;
+        var fileInput = document.getElementById('image_url');
+        var preview = document.getElementById('image-preview');
+        var warning = document.getElementById('image-size-warning');
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function () {
+                var file = fileInput.files && fileInput.files[0];
+                if (!file) { if (preview) preview.style.display = 'none'; return; }
+                if (preview) { preview.src = URL.createObjectURL(file); preview.style.display = 'block'; }
+                if (file.size > MAX_BYTES) {
+                    fileInput.classList.add('is-invalid');
+                    if (warning) { warning.textContent = 'This file is ' + (file.size / 1048576).toFixed(1) + ' MB — over the 35MB limit.'; warning.style.display = 'block'; }
+                } else {
+                    fileInput.classList.remove('is-invalid');
+                    if (warning) warning.style.display = 'none';
+                }
+            });
+        }
+
+        // Saving state + unsaved-changes guard
+        var form = document.getElementById('person-form');
+        var dirty = false, submitting = false;
+        if (form) {
+            form.addEventListener('input', function () { dirty = true; });
+            form.addEventListener('change', function () { dirty = true; });
+            form.addEventListener('submit', function () {
+                submitting = true;
+                var btn = document.getElementById('submit-btn');
+                if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Saving...'; }
+            });
+        }
+        window.addEventListener('beforeunload', function (e) {
+            if (dirty && !submitting) { e.preventDefault(); e.returnValue = ''; }
+        });
+    });
+</script>
+@endpush

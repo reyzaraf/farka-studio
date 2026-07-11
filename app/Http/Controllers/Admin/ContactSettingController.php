@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class ContactSettingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view_page_settings')->only(['edit']);
+        $this->middleware('permission:edit_page_settings')->only(['update']);
+    }
+
     public function edit()
     {
         // Get the first record, or instantiate a new one if it doesn't exist

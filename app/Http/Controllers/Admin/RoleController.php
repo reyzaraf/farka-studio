@@ -78,4 +78,23 @@ class RoleController extends Controller
         $role->delete();
         return redirect()->route('admin.roles.index')->with('success', 'Role deleted successfully.');
     }
+
+    /**
+     * Delete multiple roles at once (never the super_admin role).
+     */
+    public function bulkDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer|exists:roles,id',
+        ]);
+
+        $roles = Role::whereIn('id', $validated['ids'])->where('name', '!=', 'super_admin')->get();
+        foreach ($roles as $role) {
+            $role->delete();
+        }
+
+        return redirect()->route('admin.roles.index')
+            ->with('success', $roles->count() . ' role(s) deleted successfully.');
+    }
 }

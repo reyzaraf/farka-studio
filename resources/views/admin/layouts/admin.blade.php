@@ -58,13 +58,17 @@
             <div class="row align-items-center">
               <div class="col-md-12">
                 <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-                  @yield('breadcrumb')
+                  @hasSection('breadcrumb')
+                    @yield('breadcrumb')
+                  @else
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                  @endif
                 </ul>
               </div>
               <div class="col-md-12">
                 <div class="page-header-title">
-                  <h2 class="mb-0">@yield('page_title')</h2>
+                  {{-- Views set either @section('page_title') or @section('page-title'); render whichever is present --}}
+                  <h2 class="mb-0">@yield('page_title')@yield('page-title')</h2>
                 </div>
               </div>
             </div>
@@ -72,6 +76,34 @@
         </div>
         <!-- [ breadcrumb ] end -->
         
+        <!-- [ Global flash + validation feedback ] start -->
+        <div id="app-flash">
+          @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <i class="ti ti-circle-check me-1"></i>{{ session('success') }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          @endif
+          @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <i class="ti ti-alert-circle me-1"></i>{{ session('error') }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          @endif
+          @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong><i class="ti ti-alert-triangle me-1"></i>Please fix the following {{ $errors->count() }} issue(s):</strong>
+              <ul class="mb-0 mt-2 ps-3">
+                @foreach($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          @endif
+        </div>
+        <!-- [ Global flash + validation feedback ] end -->
+
         <!-- [ Main Content ] start -->
         @yield('content')
         <!-- [ Main Content ] end -->
@@ -107,8 +139,53 @@
       preset_change('preset-1');
     </script>
     
-    <!-- SweetAlert2 for Delete Confirmations -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- jQuery (self-hosted) — loaded once here so DataTables/plugins in @stack('scripts') work even offline -->
+    <script src="{{ asset('admin_assets/js/plugins/jquery.min.js') }}"></script>
+    <!-- SweetAlert2 for Delete Confirmations (self-hosted) -->
+    <script src="{{ asset('admin_assets/js/plugins/sweetalert2.min.js') }}"></script>
+
+    <!-- Shared, dependency-free delete confirmation + flash helper -->
+    <script>
+      // Delegated so it works for any .delete-btn (including rows re-rendered by DataTables).
+      // Falls back to native confirm() if SweetAlert failed to load, so delete never silently no-ops.
+      document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.delete-btn');
+        if (!btn) return;
+        e.preventDefault();
+        const form = btn.closest('form');
+        if (!form) return;
+        const name = btn.getAttribute('data-name');
+        const message = name
+          ? 'Delete "' + name + '"? This action cannot be undone.'
+          : "You won't be able to revert this!";
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: message,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => { if (result.isConfirmed) form.submit(); });
+        } else if (window.confirm(message)) {
+          form.submit();
+        }
+      });
+
+      // Bring server feedback into view and auto-dismiss success alerts.
+      document.addEventListener('DOMContentLoaded', function () {
+        const flash = document.getElementById('app-flash');
+        if (flash && flash.querySelector('.alert')) {
+          flash.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          flash.querySelectorAll('.alert-success').forEach(function (el) {
+            setTimeout(function () {
+              if (window.bootstrap && bootstrap.Alert) { bootstrap.Alert.getOrCreateInstance(el).close(); }
+            }, 5000);
+          });
+        }
+      });
+    </script>
 
     @stack('scripts')
   </body>

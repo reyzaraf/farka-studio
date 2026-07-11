@@ -16,15 +16,7 @@
                 <h5>Page Settings</h5>
             </div>
             <div class="card-body">
-                
-                @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                
-                <form action="{{ route('admin.contact-settings.update') }}" method="POST">
+                <form id="settings-form" action="{{ route('admin.contact-settings.update') }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -74,8 +66,9 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url('/') }}" target="_blank" rel="noopener" class="btn btn-light-info"><i class="ti ti-external-link"></i> View Site</a>
+                        <button type="submit" class="btn btn-primary" id="submit-btn">Save Settings</button>
                     </div>
                 </form>
             </div>
@@ -109,6 +102,22 @@
         }
     }
     
-    document.addEventListener('DOMContentLoaded', updateVideoPreview);
+    document.addEventListener('DOMContentLoaded', function () {
+        updateVideoPreview();
+
+        var form = document.getElementById('settings-form');
+        var dirty = false, submitting = false;
+        if (form) {
+            form.addEventListener('input', function () { dirty = true; });
+            form.addEventListener('submit', function () {
+                submitting = true;
+                var btn = document.getElementById('submit-btn');
+                if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Saving...'; }
+            });
+        }
+        window.addEventListener('beforeunload', function (e) {
+            if (dirty && !submitting) { e.preventDefault(); e.returnValue = ''; }
+        });
+    });
 </script>
 @endsection

@@ -23,36 +23,44 @@
           <label>Content Management</label>
           <i class="ph-duotone ph-buildings"></i>
         </li>
+        @can('view_categories')
         <li class="pc-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
           <a href="{{ route('admin.categories.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ph-duotone ph-squares-four"></i></span>
             <span class="pc-mtext">Categories</span>
           </a>
         </li>
+        @endcan
+        @can('view_projects')
         <li class="pc-item {{ request()->routeIs('admin.projects.*') ? 'active' : '' }}">
           <a href="{{ route('admin.projects.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ph-duotone ph-briefcase"></i></span>
             <span class="pc-mtext">Projects</span>
           </a>
         </li>
-        
-        
+        @endcan
+
+
         <li class="pc-item pc-caption">
           <label>About Settings</label>
           <i class="ph-duotone ph-users"></i>
         </li>
+        @can('view_key_people')
         <li class="pc-item {{ request()->routeIs('admin.key-people.*') ? 'active' : '' }}">
           <a href="{{ route('admin.key-people.index') }}" class="pc-link">
             <span class="pc-micon"><i class="ph-duotone ph-identification-badge"></i></span>
-            <span class="pc-mtext">Key People</span>
+            <span class="pc-mtext">Team Members</span>
           </a>
         </li>
+        @endcan
+        @can('view_page_settings')
         <li class="pc-item {{ request()->routeIs('admin.contact-settings.*') ? 'active' : '' }}">
           <a href="{{ route('admin.contact-settings.edit') }}" class="pc-link">
             <span class="pc-micon"><i class="ph-duotone ph-address-book"></i></span>
             <span class="pc-mtext">Page Settings</span>
           </a>
         </li>
+        @endcan
 
         @role('super_admin')
         <li class="pc-item pc-caption">

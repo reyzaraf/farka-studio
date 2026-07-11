@@ -10,7 +10,7 @@ class WebController extends Controller
 {
     public function index()
     {
-        $projectsQuery = Project::with('contents')->orderBy('order', 'asc')->get();
+        $projectsQuery = Project::with('contents')->where('is_published', true)->orderBy('order', 'asc')->get();
         $projects = $projectsQuery->keyBy('slug');
         
         $projects_json = $projectsQuery->mapWithKeys(function ($project) {

@@ -59,7 +59,10 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                // PHP 8.5 deprecates PDO::MYSQL_* class constants in favour of Pdo\Mysql::*.
+                // Use the new constant when available; the ternary short-circuits so the old
+                // (deprecated) one is only referenced on PHP < 8.4 where it isn't deprecated.
+                (defined('Pdo\Mysql::ATTR_SSL_CA') ? \Pdo\Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
 

@@ -57,12 +57,15 @@
 
                 <!-- Password -->
                 <div class="mb-3">
-                  <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password" required autocomplete="current-password">
-                  @error('password')
-                      <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                      </span>
-                  @enderror
+                  <div class="input-group has-validation">
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password" required autocomplete="current-password">
+                    <button class="btn btn-outline-secondary" type="button" id="toggle-password" aria-label="Show password">Show</button>
+                    @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                  </div>
                 </div>
 
                 <div class="d-flex mt-1 justify-content-between align-items-center">
@@ -104,6 +107,19 @@
     <script>
       layout_change('light');
       preset_change('preset-1');
+
+      (function () {
+        var btn = document.getElementById('toggle-password');
+        var input = document.getElementById('password');
+        if (btn && input) {
+          btn.addEventListener('click', function () {
+            var show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            btn.textContent = show ? 'Hide' : 'Show';
+            btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+          });
+        }
+      })();
     </script>
   </body>
 </html>

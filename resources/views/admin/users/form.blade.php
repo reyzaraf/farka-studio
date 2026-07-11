@@ -39,13 +39,19 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="password">Password {{ isset($user) ? '(Leave blank to keep current)' : '*' }}</label>
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" {{ !isset($user) ? 'required' : '' }}>
-                        @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        <div class="input-group has-validation">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" {{ !isset($user) ? 'required' : '' }} autocomplete="new-password">
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password"><i class="ti ti-eye"></i></button>
+                            @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label" for="password_confirmation">Confirm Password</label>
-                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" {{ !isset($user) ? 'required' : '' }}>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" {{ !isset($user) ? 'required' : '' }} autocomplete="new-password">
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password_confirmation"><i class="ti ti-eye"></i></button>
+                        </div>
                     </div>
 
                     <div class="mb-4">
@@ -53,8 +59,8 @@
                         <div class="d-flex flex-wrap gap-3 mt-2">
                             @foreach($roles as $role)
                                 <div class="form-check">
-                                    <input class="form-check-input @error('roles') is-invalid @enderror" type="checkbox" name="roles[]" value="{{ $role->name }}" id="role_{{ $role->id }}" 
-                                        {{ (is_array(old('roles')) && in_array($role->name, old('roles'))) || (isset($userRoles) && in_array($role->name, $userRoles)) ? 'checked' : '' }}>
+                                    <input class="form-check-input @error('roles') is-invalid @enderror" type="checkbox" name="roles[]" value="{{ $role->name }}" id="role_{{ $role->id }}"
+                                        {{ (is_array(old('roles')) && in_array($role->name, old('roles'))) || (isset($userRoles) && in_array($role->name, $userRoles)) || (!isset($user) && !old('roles') && $role->name === 'editor') ? 'checked' : '' }}>
                                     <label class="form-check-label" for="role_{{ $role->id }}">
                                         {{ ucwords(str_replace('_', ' ', $role->name)) }}
                                     </label>
@@ -74,3 +80,22 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.querySelectorAll('.toggle-password').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var input = document.getElementById(this.getAttribute('data-target'));
+            if (!input) return;
+            var icon = this.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) icon.className = 'ti ti-eye-off';
+            } else {
+                input.type = 'password';
+                if (icon) icon.className = 'ti ti-eye';
+            }
+        });
+    });
+</script>
+@endpush
