@@ -12,7 +12,7 @@ class CategoryController extends Controller
     {
         $this->middleware('permission:view_categories')->only(['index']);
         $this->middleware('permission:create_categories')->only(['create', 'store']);
-        $this->middleware('permission:edit_categories')->only(['edit', 'update']);
+        $this->middleware('permission:edit_categories')->only(['edit', 'update', 'reorder']);
         $this->middleware('permission:delete_categories')->only(['destroy', 'bulkDestroy']);
     }
 
@@ -21,7 +21,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::withCount('projects')->latest()->get();
+        $categories = Category::withCount('projects')->orderBy('order')->get();
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -42,6 +42,9 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:categories,slug',
         ]);
+
+        // New categories go to the end; operators reorder by dragging on the list.
+        $validated['order'] = (Category::max('order') ?? 0) + 1;
 
         Category::create($validated);
 
@@ -110,5 +113,22 @@ class CategoryController extends Controller
 
         return redirect()->route('admin.categories.index')
             ->with('success', $count . ' category(ies) deleted successfully.');
+    }
+
+    /**
+     * Persist a new display order from drag-and-drop on the list.
+     */
+    public function reorder(Request $request)
+    {
+        $validated = $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer|exists:categories,id',
+        ]);
+
+        foreach ($validated['ids'] as $position => $id) {
+            Category::where('id', $id)->update(['order' => $position + 1]);
+        }
+
+        return response()->json(['status' => 'ok']);
     }
 }

@@ -44,10 +44,10 @@
                                 <img src="{{ asset('storage/' . $person->image_url) }}" alt="{{ $person->name }}" class="img-thumbnail" width="150">
                             </div>
                         @endif
-                        <img id="image-preview" class="img-thumbnail mb-2" style="max-height: 150px; width: auto; display: none;">
+                        <img id="image-preview" class="media-preview mb-2">
                         <input type="file" class="form-control @error('image_url') is-invalid @enderror" id="image_url" name="image_url" accept="image/*">
                         <small class="form-text text-muted">Upload a new image to replace the existing one. <strong>Max upload size: 35MB</strong></small>
-                        <div id="image-size-warning" class="text-danger small mt-1" style="display:none;"></div>
+                        <div id="image-size-warning" class="text-danger small mt-1 d-none"></div>
                         @error('image_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
@@ -87,14 +87,14 @@
         if (fileInput) {
             fileInput.addEventListener('change', function () {
                 var file = fileInput.files && fileInput.files[0];
-                if (!file) { if (preview) preview.style.display = 'none'; return; }
-                if (preview) { preview.src = URL.createObjectURL(file); preview.style.display = 'block'; }
+                if (!file) { if (preview) preview.classList.remove('is-shown'); return; }
+                if (preview) { preview.src = URL.createObjectURL(file); preview.classList.add('is-shown'); }
                 if (file.size > MAX_BYTES) {
                     fileInput.classList.add('is-invalid');
-                    if (warning) { warning.textContent = 'This file is ' + (file.size / 1048576).toFixed(1) + ' MB — over the 35MB limit.'; warning.style.display = 'block'; }
+                    if (warning) { warning.textContent = 'This file is ' + (file.size / 1048576).toFixed(1) + ' MB — over the 35MB limit.'; warning.classList.remove('d-none'); }
                 } else {
                     fileInput.classList.remove('is-invalid');
-                    if (warning) warning.style.display = 'none';
+                    if (warning) warning.classList.add('d-none');
                 }
             });
         }

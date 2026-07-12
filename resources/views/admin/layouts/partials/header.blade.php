@@ -20,6 +20,15 @@
 
     <div class="ms-auto">
       <ul class="list-unstyled d-flex align-items-center mb-0">
+        <li class="pc-h-item d-none d-md-flex align-items-center me-2">
+          <div class="admin-search">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text bg-transparent"><i class="ph-duotone ph-magnifying-glass"></i></span>
+              <input type="text" id="admin-search" class="form-control" placeholder="Search projects, team…" autocomplete="off" aria-label="Global search">
+            </div>
+            <div id="admin-search-results" class="admin-search-results"></div>
+          </div>
+        </li>
         <li class="pc-h-item">
           <a href="{{ url('/') }}" target="_blank" rel="noopener" class="btn btn-sm btn-light-primary d-flex align-items-center gap-1 me-2" title="Open the public website in a new tab">
             <i class="ph-duotone ph-globe"></i>
@@ -76,3 +85,57 @@
     </div>
   </div>
 </header>
+
+@push('scripts')
+<script>
+(function () {
+    var input = document.getElementById('admin-search');
+    var box = document.getElementById('admin-search-results');
+    if (!input || !box) return;
+    var url = "{{ route('admin.search') }}";
+    var timer = null;
+
+    function hide() { box.classList.remove('show'); box.innerHTML = ''; }
+    function esc(s) { var d = document.createElement('div'); d.textContent = (s == null ? '' : s); return d.innerHTML; }
+
+    function render(results, q) {
+        if (!results.length) {
+            box.innerHTML = '<div class="dropdown-item-text text-muted small">No matches for &ldquo;' + esc(q) + '&rdquo;</div>';
+            box.classList.add('show');
+            return;
+        }
+        box.innerHTML = results.map(function (r) {
+            return '<a class="dropdown-item d-flex align-items-center gap-2 py-2" href="' + r.url + '">' +
+                '<i class="ph-duotone ' + esc(r.icon) + ' f-18 text-muted"></i>' +
+                '<span class="flex-grow-1 text-truncate">' + esc(r.label) +
+                '<small class="d-block text-muted text-truncate">' + esc(r.sublabel || '') + '</small></span>' +
+                '<span class="badge bg-light-secondary text-secondary">' + esc(r.type) + '</span>' +
+            '</a>';
+        }).join('');
+        box.classList.add('show');
+    }
+
+    function run() {
+        var q = input.value.trim();
+        if (q.length < 2) { hide(); return; }
+        fetch(url + '?q=' + encodeURIComponent(q), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(function (r) { return r.json(); })
+            .then(function (data) { render(data.results || [], q); })
+            .catch(function () { hide(); });
+    }
+
+    input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 250); });
+    input.addEventListener('focus', function () { if (input.value.trim().length >= 2) run(); });
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { hide(); input.blur(); }
+        else if (e.key === 'Enter') {
+            var first = box.querySelector('a.dropdown-item');
+            if (first) { e.preventDefault(); window.location.href = first.getAttribute('href'); }
+        }
+    });
+    document.addEventListener('click', function (e) {
+        if (!input.contains(e.target) && !box.contains(e.target)) hide();
+    });
+})();
+</script>
+@endpush

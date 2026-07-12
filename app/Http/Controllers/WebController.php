@@ -33,7 +33,7 @@ class WebController extends Controller
         })->toJson();
 
         $contact = ContactSetting::first() ?? new ContactSetting();
-        $categories = \App\Models\Category::all();
+        $categories = \App\Models\Category::orderBy('order')->get();
         $keyPeople = \App\Models\KeyPerson::orderBy('order')->get();
 
         return view('index', compact('projects', 'projects_json', 'contact', 'categories', 'keyPeople'));

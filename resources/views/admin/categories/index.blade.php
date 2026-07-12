@@ -25,13 +25,24 @@
             </div>
             <div class="card-body">
 
-                @can('delete_categories')
-                <div class="mb-3 text-end">
-                    <button type="button" id="bulk-delete-btn" class="btn btn-sm btn-danger" disabled>
-                        <i class="ti ti-trash"></i> Delete Selected (<span id="bulk-count">0</span>)
-                    </button>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    @can('edit_categories')
+                    <small class="text-muted">
+                        <i class="ti ti-grip-vertical"></i> Drag the handle to reorder — this also sets the filter order on the public site.
+                        <span id="reorder-hint" class="text-warning ms-1 d-none"><i class="ti ti-info-circle"></i> Clear search &amp; sorting to reorder.</span>
+                    </small>
+                    @else
+                    <span></span>
+                    @endcan
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="search" id="table-search" class="form-control form-control-sm table-search" placeholder="Search categories…" autocomplete="off">
+                        @can('delete_categories')
+                        <button type="button" id="bulk-delete-btn" class="btn btn-sm btn-danger" disabled>
+                            <i class="ti ti-trash"></i> Delete Selected (<span id="bulk-count">0</span>)
+                        </button>
+                        @endcan
+                    </div>
                 </div>
-                @endcan
 
                 <form id="bulk-delete-form" action="{{ route('admin.categories.bulk-destroy') }}" method="POST" class="d-none">
                     @csrf
@@ -44,7 +55,7 @@
                         <thead>
                             <tr>
                                 <th><input type="checkbox" id="check-all" class="form-check-input"></th>
-                                <th>#</th>
+                                <th>Order</th>
                                 <th>Name</th>
                                 <th>Slug</th>
                                 <th>Projects Count</th>
@@ -53,9 +64,14 @@
                         </thead>
                         <tbody>
                             @forelse($categories as $category)
-                            <tr>
+                            <tr data-id="{{ $category->id }}">
                                 <td><input type="checkbox" class="form-check-input row-check" value="{{ $category->id }}"></td>
-                                <td>{{ $loop->iteration }}</td>
+                                <td data-order="{{ $category->order }}">
+                                    @can('edit_categories')
+                                    <span class="drag-handle me-1" title="Drag to reorder"><i class="ti ti-grip-vertical"></i></span>
+                                    @endcan
+                                    <span class="badge bg-light-info border border-info order-badge">{{ $category->order }}</span>
+                                </td>
                                 <td>{{ $category->name }}</td>
                                 <td><code>{{ $category->slug }}</code></td>
                                 <td>
@@ -97,13 +113,18 @@
 @push('scripts')
 <script src="{{ asset('admin_assets/js/plugins/dataTables.min.js') }}"></script>
 <script src="{{ asset('admin_assets/js/plugins/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('admin_assets/js/plugins/sortable.min.js') }}"></script>
 <script>
     $(document).ready(function () {
+        // paging:false keeps all rows in the DOM for drag-reorder; column 1 sorts on data-order.
         var table = $('#categories-table').DataTable({
-            "pageLength": 10,
+            "paging": false,
+            "dom": "rti",           // drop the built-in search/length; our own search sits in the toolbar
             "order": [[ 1, "asc" ]],
             "columnDefs": [{ "orderable": false, "targets": [0, 5] }]
         });
+
+        $('#table-search').on('input', function () { table.search(this.value).draw(); });
 
         function updateBulk() {
             var count = table.$('.row-check:checked').length;
@@ -130,6 +151,64 @@
                     .then(function (r) { if (r.isConfirmed) doDelete(); });
             } else if (window.confirm(msg)) { doDelete(); }
         });
+
+        @can('edit_categories')
+        /* ---------- Drag-and-drop reordering (default, unfiltered/unsorted view only) ---------- */
+        var tbody = document.querySelector('#categories-table tbody');
+        var reorderUrl = "{{ route('admin.categories.reorder') }}";
+        var csrf = "{{ csrf_token() }}";
+        var reorderHint = document.getElementById('reorder-hint');
+        var sortable = null;
+
+        function isReorderable() {
+            var ord = table.order();
+            var defaultSort = ord.length === 1 && ord[0][0] === 1 && ord[0][1] === 'asc';
+            return table.search() === '' && defaultSort;
+        }
+        function refreshReorderState() {
+            var on = isReorderable();
+            if (sortable) sortable.option('disabled', !on);
+            document.querySelectorAll('#categories-table .drag-handle').forEach(function (h) {
+                h.classList.toggle('is-disabled', !on);
+            });
+            if (reorderHint) reorderHint.classList.toggle('d-none', on);
+        }
+
+        if (window.Sortable && tbody) {
+            sortable = Sortable.create(tbody, {
+                handle: '.drag-handle',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                onEnd: function () {
+                    var rows = tbody.querySelectorAll('tr[data-id]');
+                    var ids = [];
+                    rows.forEach(function (row, i) {
+                        var n = i + 1;
+                        ids.push(row.getAttribute('data-id'));
+                        var badge = row.querySelector('.order-badge');
+                        if (badge) badge.textContent = n;
+                        var orderCell = row.querySelector('td[data-order]');
+                        if (orderCell) orderCell.setAttribute('data-order', n);
+                    });
+                    table.rows().invalidate('dom');
+
+                    var fd = new FormData();
+                    ids.forEach(function (id) { fd.append('ids[]', id); });
+                    fetch(reorderUrl, {
+                        method: 'POST',
+                        headers: { 'X-CSRF-TOKEN': csrf, 'X-Requested-With': 'XMLHttpRequest' },
+                        body: fd
+                    }).then(function (r) { if (!r.ok) throw new Error('failed'); })
+                      .catch(function () {
+                          alert('Could not save the new order. Reloading to restore the correct order.');
+                          window.location.reload();
+                      });
+                }
+            });
+            table.on('search.dt order.dt', refreshReorderState);
+            refreshReorderState();
+        }
+        @endcan
     });
 </script>
 @endpush

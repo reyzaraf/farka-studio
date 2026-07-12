@@ -9,10 +9,6 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('admin_assets/css/plugins/dataTables.bootstrap5.min.css') }}">
-    <style>
-        #projects-table .drag-handle { cursor: grab; color: #adb5bd; }
-        #projects-table tr.sortable-ghost { opacity: .4; }
-    </style>
 @endpush
 
 @section('content')
@@ -39,12 +35,18 @@
                         <label class="form-label small mb-1">Filter by Status</label>
                         <select id="filter-status" class="form-select form-select-sm"><option value="">All statuses</option></select>
                     </div>
-                    <div class="col-sm-6 text-sm-end">
-                        @can('delete_projects')
-                        <button type="button" id="bulk-delete-btn" class="btn btn-sm btn-danger" disabled>
-                            <i class="ti ti-trash"></i> Delete Selected (<span id="bulk-count">0</span>)
-                        </button>
-                        @endcan
+                    <div class="col-sm-6">
+                        <div class="d-flex justify-content-end align-items-end gap-2">
+                            <div class="table-search">
+                                <label class="form-label small mb-1" for="table-search">Search</label>
+                                <input type="search" id="table-search" class="form-control form-control-sm" placeholder="Search projects…" autocomplete="off">
+                            </div>
+                            @can('delete_projects')
+                            <button type="button" id="bulk-delete-btn" class="btn btn-sm btn-danger" disabled>
+                                <i class="ti ti-trash"></i> Delete Selected (<span id="bulk-count">0</span>)
+                            </button>
+                            @endcan
+                        </div>
                     </div>
                 </div>
 
@@ -57,7 +59,7 @@
                 @can('edit_projects')
                 <div class="small text-muted mb-2">
                     <i class="ti ti-grip-vertical"></i> Drag the handle in the <strong>Sort Order</strong> column to reorder — the order saves automatically.
-                    <span id="reorder-hint" class="text-warning ms-1" style="display:none;"><i class="ti ti-info-circle"></i> Clear search, filters &amp; column sorting to reorder.</span>
+                    <span id="reorder-hint" class="text-warning ms-1 d-none"><i class="ti ti-info-circle"></i> Clear search, filters &amp; column sorting to reorder.</span>
                 </div>
                 @endcan
 
@@ -157,11 +159,14 @@
         // Column 6 (Sort Order) carries data-order attributes, so DataTables sorts it numerically.
         var table = $('#projects-table').DataTable({
             "paging": false,
+            "dom": "rti",           // drop the built-in search/length; we provide our own search in the toolbar
             "order": [[ 6, "asc" ]],
             "columnDefs": [
                 { "orderable": false, "targets": [0, 2, 9] }
             ]
         });
+
+        $('#table-search').on('input', function () { table.search(this.value).draw(); });
 
         // Build filter dropdowns from the data actually present (no backend change)
         function fillFilter(colIdx, $select) {
@@ -235,10 +240,9 @@
             var on = isReorderable();
             if (sortable) sortable.option('disabled', !on);
             document.querySelectorAll('#projects-table .drag-handle').forEach(function (h) {
-                h.style.opacity = on ? '1' : '.3';
-                h.style.cursor = on ? 'grab' : 'not-allowed';
+                h.classList.toggle('is-disabled', !on);
             });
-            if (reorderHint) reorderHint.style.display = on ? 'none' : '';
+            if (reorderHint) reorderHint.classList.toggle('d-none', on);
         }
 
         if (window.Sortable && tbody) {

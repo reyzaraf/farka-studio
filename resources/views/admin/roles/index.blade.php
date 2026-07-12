@@ -24,7 +24,8 @@
             </div>
             <div class="card-body">
 
-                <div class="mb-3 text-end">
+                <div class="d-flex justify-content-end align-items-center gap-2 mb-3">
+                    <input type="search" id="table-search" class="form-control form-control-sm table-search" placeholder="Search roles…" autocomplete="off">
                     <button type="button" id="bulk-delete-btn" class="btn btn-sm btn-danger" disabled>
                         <i class="ti ti-trash"></i> Delete Selected (<span id="bulk-count">0</span>)
                     </button>
@@ -100,9 +101,12 @@
     $(document).ready(function () {
         var table = $('#roles-table').DataTable({
             "pageLength": 10,
+            "dom": "rtip",          // drop the built-in search/length; our own search sits in the toolbar
             "order": [[ 1, "asc" ]],
             "columnDefs": [{ "orderable": false, "targets": [0, 4] }]
         });
+
+        $('#table-search').on('input', function () { table.search(this.value).draw(); });
 
         function updateBulk() {
             var count = table.$('.row-check:checked').length;

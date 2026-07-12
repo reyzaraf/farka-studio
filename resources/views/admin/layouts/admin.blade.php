@@ -26,6 +26,8 @@
     <!-- [Template CSS Files] -->
     <link rel="stylesheet" href="{{ asset('admin_assets/css/style.css') }}" id="main-style-link">
     <link rel="stylesheet" href="{{ asset('admin_assets/css/style-preset.css') }}">
+    <!-- [Custom admin styles] -->
+    <link rel="stylesheet" href="{{ asset('admin_assets/css/admin-custom.css') }}">
 
     @stack('styles')
   </head>

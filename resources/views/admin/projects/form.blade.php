@@ -9,14 +9,6 @@
     <li class="breadcrumb-item" aria-current="page">{{ isset($project) ? 'Edit' : 'Create' }}</li>
 @endsection
 
-@push('styles')
-    <style>
-        .media-preview { max-height: 100px; width: auto; display: none; border-radius: .375rem; border: 1px solid #dee2e6; }
-        .content-item .drag-handle { cursor: grab; }
-        .content-item.sortable-ghost { opacity: .5; }
-    </style>
-@endpush
-
 @php
     // The fixed set of statuses shown as a public badge. Adjust here to change the options.
     $statusOptions = ['Completed', 'Under Construction', 'Concept'];
@@ -341,10 +333,10 @@
             if (!input) return;
             const file = input.files && input.files[0];
             const preview = input.closest('.col-md-3').querySelector('.media-preview');
-            if (!file) { if (preview) preview.style.display = 'none'; return; }
+            if (!file) { if (preview) preview.classList.remove('is-shown'); return; }
             if (preview) {
                 preview.src = URL.createObjectURL(file);
-                preview.style.display = 'block';
+                preview.classList.add('is-shown');
             }
             input.classList.toggle('is-invalid', file.size > MAX_BYTES);
             let warn = input.parentElement.querySelector('.size-warning');

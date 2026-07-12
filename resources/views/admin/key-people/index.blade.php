@@ -7,13 +7,6 @@
 @endsection
 @section('page_title', 'Team Members Management')
 
-@push('styles')
-    <style>
-        #people-table .drag-handle { cursor: grab; }
-        #people-table tr.sortable-ghost { opacity: .5; }
-    </style>
-@endpush
-
 @section('content')
 <div class="row">
     <div class="col-xl-12">
