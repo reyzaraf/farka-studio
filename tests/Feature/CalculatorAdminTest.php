@@ -10,6 +10,7 @@ use App\Models\Calc\Zonasi;
 use App\Models\Calc\SizeTier;
 use App\Models\Calc\BuildingType;
 use App\Models\Calc\Component;
+use App\Models\Calc\Setting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -33,6 +34,7 @@ class CalculatorAdminTest extends TestCase
         $this->assertSame(5, Zonasi::count());
         $this->assertSame(3, BuildingType::count());
         $this->assertSame(10, Component::count());
+        $this->assertSame(3, Setting::count());
 
         // Precision guard: Kamar mandi Premium must be 6.25 (2.5 x 2.5), not 6.3.
         $kamarMandi = Room::where('name', 'Kamar mandi')->where('category', 'private')->first();
