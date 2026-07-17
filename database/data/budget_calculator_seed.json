@@ -1,0 +1,3051 @@
+{
+  "rooms": [
+    {
+      "category": "Service",
+      "name": "Dapur kotor",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.2,
+          "l": 2,
+          "area": 2.4
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 4,
+          "area": 8
+        },
+        {
+          "tier": "Luas",
+          "p": 2,
+          "l": 6,
+          "area": 12
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Area cuci",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 1.2,
+          "area": 1.2
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 2.5,
+          "area": 6.3
+        },
+        {
+          "tier": "Premium",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Gudang",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 4,
+          "area": 10
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 5,
+          "area": 15
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Area utilitas",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Kamar tidur ART",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.8,
+          "l": 2,
+          "area": 3.6
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Kamar mandi ART",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 1.5,
+          "area": 2.3
+        },
+        {
+          "tier": "Ideal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Luas",
+          "p": 1.8,
+          "l": 2.2,
+          "area": 4
+        },
+        {
+          "tier": "Premium",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Pantry",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.2,
+          "l": 2,
+          "area": 2.4
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Luas",
+          "p": 2,
+          "l": 4,
+          "area": 8
+        },
+        {
+          "tier": "Premium",
+          "p": 2,
+          "l": 5,
+          "area": 10
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2,
+          "l": 6,
+          "area": 12
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Area sampah",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 0.5,
+          "l": 1,
+          "area": 0.5
+        },
+        {
+          "tier": "Optimal",
+          "p": 1,
+          "l": 1,
+          "area": 1
+        },
+        {
+          "tier": "Ideal",
+          "p": 1,
+          "l": 1.5,
+          "area": 1.5
+        },
+        {
+          "tier": "Luas",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Premium",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2,
+          "l": 4,
+          "area": 8
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Area jemur",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Luas",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Gudang alat kebersihan",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 1.5,
+          "area": 1.5
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 1.5,
+          "area": 2.3
+        },
+        {
+          "tier": "Ideal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Luas",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Premium",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Gudang linen",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.2,
+          "l": 2,
+          "area": 2.4
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Luas",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Premium",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Kamar tidur satpam",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.8,
+          "l": 2,
+          "area": 3.6
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Kamar mandi satpam",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 1.5,
+          "area": 2.3
+        },
+        {
+          "tier": "Ideal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Luas",
+          "p": 1.8,
+          "l": 2.2,
+          "area": 4
+        },
+        {
+          "tier": "Premium",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Kamar tidur supir",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.8,
+          "l": 2,
+          "area": 3.6
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Kamar mandi supir",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 1.5,
+          "area": 2.3
+        },
+        {
+          "tier": "Ideal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Luas",
+          "p": 1.8,
+          "l": 2.2,
+          "area": 4
+        },
+        {
+          "tier": "Premium",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Ruang istirahat ART",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Ruang CCTV",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 1.5,
+          "area": 1.5
+        },
+        {
+          "tier": "Optimal",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Ideal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Luas",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Premium",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Ruang genset",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 1.5,
+          "area": 1.5
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        }
+      ]
+    },
+    {
+      "category": "Service",
+      "name": "Ruang mekanikal",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 1.5,
+          "area": 1.5
+        },
+        {
+          "tier": "Optimal",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 2.5,
+          "area": 6.3
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Carport",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2.5,
+          "l": 4.5,
+          "area": 11.3
+        },
+        {
+          "tier": "Optimal",
+          "p": 2.5,
+          "l": 5,
+          "area": 12.5
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 5,
+          "area": 15
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 6,
+          "area": 18
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 6,
+          "area": 18
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 6,
+          "area": 18
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Garasi",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2.5,
+          "l": 4.5,
+          "area": 11.3
+        },
+        {
+          "tier": "Optimal",
+          "p": 2.5,
+          "l": 5,
+          "area": 12.5
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 5,
+          "area": 15
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 6,
+          "area": 18
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 6,
+          "area": 18
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 6,
+          "area": 18
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Gerbang utama",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Optimal",
+          "p": 1,
+          "l": 3,
+          "area": 3
+        },
+        {
+          "tier": "Ideal",
+          "p": 1,
+          "l": 3,
+          "area": 3
+        },
+        {
+          "tier": "Luas",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Premium",
+          "p": 2,
+          "l": 6,
+          "area": 12
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2,
+          "l": 10,
+          "area": 20
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Foyer",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Ruang tamu",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Ideal",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Premium",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Ruang makan",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Dapur",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Toilet tamu",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.2,
+          "l": 2,
+          "area": 2.4
+        },
+        {
+          "tier": "Ideal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Luas",
+          "p": 1.8,
+          "l": 2.2,
+          "area": 4
+        },
+        {
+          "tier": "Premium",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Taman depan",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Premium",
+          "p": 6,
+          "l": 6,
+          "area": 36
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Ruang keluarga",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Optimal",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Ideal",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        },
+        {
+          "tier": "Premium",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 8,
+          "l": 10,
+          "area": 80
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Ruang TV",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Ideal",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Premium",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Ruang tamu formal",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 5,
+          "area": 15
+        },
+        {
+          "tier": "Ideal",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        },
+        {
+          "tier": "Luas",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        },
+        {
+          "tier": "Premium",
+          "p": 6,
+          "l": 6,
+          "area": 36
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Kamar tidur tamu",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Luas",
+          "p": 3.5,
+          "l": 4,
+          "area": 14
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Kamar mandi tamu",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.2,
+          "l": 2,
+          "area": 2.4
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Ideal",
+          "p": 1.8,
+          "l": 2.2,
+          "area": 4
+        },
+        {
+          "tier": "Luas",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Premium",
+          "p": 2.5,
+          "l": 2.5,
+          "area": 6.3
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Halaman belakang",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Optimal",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Ideal",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        },
+        {
+          "tier": "Luas",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        },
+        {
+          "tier": "Premium",
+          "p": 8,
+          "l": 10,
+          "area": 80
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 10,
+          "l": 15,
+          "area": 150
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Taman dalam / Courtyard",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Luas",
+          "p": 5,
+          "l": 5,
+          "area": 25
+        },
+        {
+          "tier": "Premium",
+          "p": 6,
+          "l": 6,
+          "area": 36
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 8,
+          "l": 8,
+          "area": 64
+        }
+      ]
+    },
+    {
+      "category": "Public",
+      "name": "Balkon",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 3,
+          "area": 4.5
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 4,
+          "area": 10
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 5,
+          "area": 15
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        }
+      ]
+    },
+    {
+      "category": "Private",
+      "name": "Kamar tidur utama",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Optimal",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Ideal",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Luas",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        },
+        {
+          "tier": "Premium",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 10,
+          "area": 60
+        }
+      ]
+    },
+    {
+      "category": "Private",
+      "name": "Kamar mandi utama",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Ideal",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        }
+      ]
+    },
+    {
+      "category": "Private",
+      "name": "Kamar tidur",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Luas",
+          "p": 3.5,
+          "l": 4,
+          "area": 14
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        }
+      ]
+    },
+    {
+      "category": "Private",
+      "name": "Kamar mandi",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.2,
+          "l": 2,
+          "area": 2.4
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Luas",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Premium",
+          "p": 2.5,
+          "l": 2.5,
+          "area": 6.3
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        }
+      ]
+    },
+    {
+      "category": "Private",
+      "name": "Walk-in-closet",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        }
+      ]
+    },
+    {
+      "category": "Private",
+      "name": "Ruang kerja",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Optimal",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        }
+      ]
+    },
+    {
+      "category": "Private",
+      "name": "Ruang belajar",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Optimal",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        }
+      ]
+    },
+    {
+      "category": "Private",
+      "name": "Kamar bayi",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Optimal",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        }
+      ]
+    },
+    {
+      "category": "Private",
+      "name": "Kamar orangtua",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 5,
+          "l": 5,
+          "area": 25
+        }
+      ]
+    },
+    {
+      "category": "Private",
+      "name": "Balkon privat",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Optimal",
+          "p": 1,
+          "l": 3,
+          "area": 3
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Luas",
+          "p": 2,
+          "l": 4,
+          "area": 8
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 5,
+          "area": 15
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Lounge",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Premium",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Home theater",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Optimal",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Ideal",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Luas",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        },
+        {
+          "tier": "Premium",
+          "p": 6,
+          "l": 7,
+          "area": 42
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 8,
+          "l": 8,
+          "area": 64
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Ruang baca",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Optimal",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 5,
+          "l": 5,
+          "area": 25
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Musholla",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Ruang ibadah",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1,
+          "l": 1,
+          "area": 1
+        },
+        {
+          "tier": "Optimal",
+          "p": 1,
+          "l": 2,
+          "area": 2
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Premium",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Gazebo",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Premium",
+          "p": 5,
+          "l": 5,
+          "area": 25
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 6,
+          "area": 36
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Kolam renang",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 3,
+          "l": 6,
+          "area": 18
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 8,
+          "area": 24
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 10,
+          "area": 30
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 10,
+          "area": 40
+        },
+        {
+          "tier": "Premium",
+          "p": 5,
+          "l": 10,
+          "area": 50
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 20,
+          "area": 120
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Kolam renang anak",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 3,
+          "area": 6
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Rooftop",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Optimal",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Ideal",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 6,
+          "area": 24
+        },
+        {
+          "tier": "Premium",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 8,
+          "l": 10,
+          "area": 80
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Area bermain anak",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2.5,
+          "l": 2.5,
+          "area": 6.3
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Ideal",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Luas",
+          "p": 5,
+          "l": 5,
+          "area": 25
+        },
+        {
+          "tier": "Premium",
+          "p": 6,
+          "l": 6,
+          "area": 36
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 8,
+          "l": 8,
+          "area": 64
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Fire pit",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2.5,
+          "l": 2.5,
+          "area": 6.3
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Premium",
+          "p": 5,
+          "l": 5,
+          "area": 25
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 6,
+          "area": 36
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Perpustakaan",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Optimal",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Studio seni",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Ideal",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Premium",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Studio musik",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Optimal",
+          "p": 4,
+          "l": 4,
+          "area": 16
+        },
+        {
+          "tier": "Ideal",
+          "p": 5,
+          "l": 5,
+          "area": 25
+        },
+        {
+          "tier": "Luas",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        },
+        {
+          "tier": "Premium",
+          "p": 6,
+          "l": 6,
+          "area": 36
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 8,
+          "l": 8,
+          "area": 64
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Ruang meditasi",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.5,
+          "l": 1.5,
+          "area": 2.3
+        },
+        {
+          "tier": "Optimal",
+          "p": 2,
+          "l": 2,
+          "area": 4
+        },
+        {
+          "tier": "Ideal",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Luas",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Premium",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 6,
+          "area": 36
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Sauna",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 1.5,
+          "l": 1.5,
+          "area": 2.3
+        },
+        {
+          "tier": "Optimal",
+          "p": 1.5,
+          "l": 2,
+          "area": 3
+        },
+        {
+          "tier": "Ideal",
+          "p": 2,
+          "l": 2.5,
+          "area": 5
+        },
+        {
+          "tier": "Luas",
+          "p": 2.5,
+          "l": 2.5,
+          "area": 6.3
+        },
+        {
+          "tier": "Premium",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        }
+      ]
+    },
+    {
+      "category": "Luxury",
+      "name": "Gym",
+      "areas": [
+        {
+          "tier": "Minimum",
+          "p": 2.5,
+          "l": 3,
+          "area": 7.5
+        },
+        {
+          "tier": "Optimal",
+          "p": 3,
+          "l": 3,
+          "area": 9
+        },
+        {
+          "tier": "Ideal",
+          "p": 3,
+          "l": 4,
+          "area": 12
+        },
+        {
+          "tier": "Luas",
+          "p": 4,
+          "l": 5,
+          "area": 20
+        },
+        {
+          "tier": "Premium",
+          "p": 5,
+          "l": 6,
+          "area": 30
+        },
+        {
+          "tier": "Eksekutif",
+          "p": 6,
+          "l": 8,
+          "area": 48
+        }
+      ]
+    }
+  ],
+  "tables": {
+    "factor_groups": [
+      {
+        "key": "jabodetabek",
+        "name": "Jabodetabek?",
+        "options": [
+          {
+            "label": "Ya",
+            "multiplier": 1,
+            "note": "",
+            "is_default": true
+          },
+          {
+            "label": "Tidak",
+            "multiplier": 1.1,
+            "note": "",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "key": "existing_building",
+        "name": "Existing building?",
+        "options": [
+          {
+            "label": "Ya",
+            "multiplier": 1.1,
+            "note": "Butuh pembongkaran bangunan eksisting dan perapihan lahan",
+            "is_default": false
+          },
+          {
+            "label": "Tidak",
+            "multiplier": 1,
+            "note": "",
+            "is_default": true
+          }
+        ]
+      },
+      {
+        "key": "target_building",
+        "name": "Target building",
+        "options": [
+          {
+            "label": "Bangun baru",
+            "multiplier": 1,
+            "note": "",
+            "is_default": true
+          },
+          {
+            "label": "Renovasi",
+            "multiplier": 1.1,
+            "note": "Butuh pertimbangan struktur eksisting, dan potensi penyuntikan struktur",
+            "is_default": false
+          },
+          {
+            "label": "Extensi",
+            "multiplier": 0.8,
+            "note": "Struktur eksisting menjadi penopang",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "key": "style",
+        "name": "Style bangunan",
+        "options": [
+          {
+            "label": "Minimalist",
+            "multiplier": 0.95,
+            "note": "",
+            "is_default": false
+          },
+          {
+            "label": "Scandinavian",
+            "multiplier": 1,
+            "note": "",
+            "is_default": false
+          },
+          {
+            "label": "Japandi",
+            "multiplier": 1,
+            "note": "",
+            "is_default": false
+          },
+          {
+            "label": "Tropis",
+            "multiplier": 1.03,
+            "note": "",
+            "is_default": false
+          },
+          {
+            "label": "Industrial",
+            "multiplier": 1.05,
+            "note": "",
+            "is_default": false
+          },
+          {
+            "label": "Modern Contemporary",
+            "multiplier": 1.08,
+            "note": "",
+            "is_default": false
+          },
+          {
+            "label": "Mediterranean",
+            "multiplier": 1.15,
+            "note": "",
+            "is_default": true
+          },
+          {
+            "label": "Classical",
+            "multiplier": 1.25,
+            "note": "",
+            "is_default": false
+          },
+          {
+            "label": "Luxury Modern",
+            "multiplier": 1.3,
+            "note": "",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "allocations": [
+      {
+        "category": "pelaksanaan",
+        "label": "Bangunan",
+        "percentage": 1,
+        "is_base": true,
+        "is_default": true
+      },
+      {
+        "category": "pelaksanaan",
+        "label": "Interior - basic furnished",
+        "percentage": 0.35,
+        "is_base": false,
+        "is_default": false
+      },
+      {
+        "category": "pelaksanaan",
+        "label": "Interior - full furnished",
+        "percentage": 0.6,
+        "is_base": false,
+        "is_default": false
+      },
+      {
+        "category": "pelaksanaan",
+        "label": "Interior - luxury furnished",
+        "percentage": 0.8,
+        "is_base": false,
+        "is_default": false
+      },
+      {
+        "category": "pelaksanaan",
+        "label": "Landscape",
+        "percentage": 0.15,
+        "is_base": false,
+        "is_default": true
+      },
+      {
+        "category": "perancangan",
+        "label": "Biaya arsitek",
+        "percentage": 0.04,
+        "is_base": false,
+        "is_default": true
+      },
+      {
+        "category": "perancangan",
+        "label": "Biaya desain interior",
+        "percentage": 0.02,
+        "is_base": false,
+        "is_default": false
+      },
+      {
+        "category": "perancangan",
+        "label": "Biaya desain lanskap",
+        "percentage": 0.005,
+        "is_base": false,
+        "is_default": false
+      },
+      {
+        "category": "perancangan",
+        "label": "Biaya ahli struktur",
+        "percentage": 0.003,
+        "is_base": false,
+        "is_default": false
+      },
+      {
+        "category": "perancangan",
+        "label": "Biaya ahli MEP",
+        "percentage": 0.002,
+        "is_base": false,
+        "is_default": false
+      },
+      {
+        "category": "persiapan",
+        "label": "Pembersihan lahan",
+        "percentage": 0.004,
+        "is_base": false,
+        "is_default": true
+      },
+      {
+        "category": "persiapan",
+        "label": "Tes ketahanan tanah (boring dan sondir)",
+        "percentage": 0.004,
+        "is_base": false,
+        "is_default": true
+      },
+      {
+        "category": "persiapan",
+        "label": "Survey topografi",
+        "percentage": 0.002,
+        "is_base": false,
+        "is_default": true
+      },
+      {
+        "category": "persiapan",
+        "label": "Pajak",
+        "percentage": 0.01,
+        "is_base": false,
+        "is_default": false
+      },
+      {
+        "category": "persiapan",
+        "label": "PBG",
+        "percentage": 0.01,
+        "is_base": false,
+        "is_default": false
+      }
+    ],
+    "building_types": [
+      {
+        "key": "standar",
+        "name": "Standar",
+        "price_per_m2": 5500000
+      },
+      {
+        "key": "optimal",
+        "name": "Optimal",
+        "price_per_m2": 8500000
+      },
+      {
+        "key": "premium",
+        "name": "Premium",
+        "price_per_m2": 12500000
+      }
+    ],
+    "components": [
+      {
+        "name": "Struktur",
+        "standar": "Standar",
+        "optimal": "Standar + potensi perubahan kecil",
+        "premium": "Bentang lebar"
+      },
+      {
+        "name": "Dinding",
+        "standar": "Bata hebel",
+        "optimal": "Bata merah",
+        "premium": "Bata merah + detail"
+      },
+      {
+        "name": "Lantai",
+        "standar": "Keramik lokal",
+        "optimal": "Homogenous tile / SPC",
+        "premium": "Sintered stone / Marmer"
+      },
+      {
+        "name": "Plafon",
+        "standar": "Gypsum datar",
+        "optimal": "Gypsum bertingkat sederhana",
+        "premium": "Ceiling custom, panel kayu"
+      },
+      {
+        "name": "Pintu",
+        "standar": "Plywood",
+        "optimal": "Engineering + veneer",
+        "premium": "Solid wood / alumunium"
+      },
+      {
+        "name": "Jendela",
+        "standar": "Alumunium standar",
+        "optimal": "Alumunium menengah",
+        "premium": "Alumunium premium / slim profile, kaca Low-E"
+      },
+      {
+        "name": "Cat",
+        "standar": "Standar",
+        "optimal": "Premium",
+        "premium": "Cat premium, panel dekoratif, wallpaper, batu alam"
+      },
+      {
+        "name": "Sanitary",
+        "standar": "Ekonomis",
+        "optimal": "Menengah",
+        "premium": "Premium"
+      },
+      {
+        "name": "Lighting",
+        "standar": "Standar",
+        "optimal": "Downlight + aksen",
+        "premium": "Lighting design lengkap"
+      },
+      {
+        "name": "MEP",
+        "standar": "Standar",
+        "optimal": "Lengkap",
+        "premium": "Smart Home"
+      }
+    ],
+    "zonasi": [
+      {
+        "code": "R-1",
+        "name": "Sub zona perumahan kampung",
+        "kdb": 1,
+        "klb": 3.2,
+        "ktb": 1,
+        "rth": 0.2
+      },
+      {
+        "code": "R-2",
+        "name": "Sub zona rumah sangat kecil",
+        "kdb": 0.8,
+        "klb": 2.4,
+        "ktb": 0.8,
+        "rth": 0.3
+      },
+      {
+        "code": "R-3",
+        "name": "Sub zona rumah kecil",
+        "kdb": 0.6,
+        "klb": 1.2,
+        "ktb": 0.6,
+        "rth": 0.4
+      },
+      {
+        "code": "R-4",
+        "name": "Sub zona rumah sedang",
+        "kdb": 0.4,
+        "klb": 0.8,
+        "ktb": 0.4,
+        "rth": 0.5
+      },
+      {
+        "code": "R-5",
+        "name": "Sub zona rumah besar",
+        "kdb": 0.3,
+        "klb": 0.6,
+        "ktb": 0.3,
+        "rth": 0.7
+      }
+    ],
+    "size_tiers": [
+      {
+        "key": "minimum",
+        "name": "Minimum",
+        "description": "Ukuran minimum yang tetap fungsional dan efisien."
+      },
+      {
+        "key": "optimal",
+        "name": "Optimal",
+        "description": "Ukuran ideal untuk kebutuhan rumah tinggal pada umumnya."
+      },
+      {
+        "key": "ideal",
+        "name": "Ideal",
+        "description": "Lebih lega dan nyaman untuk aktivitas sehari-hari."
+      },
+      {
+        "key": "luas",
+        "name": "Luas",
+        "description": "Luas dengan fleksibilitas tinggi dan kenyamanan premium."
+      },
+      {
+        "key": "premium",
+        "name": "Premium",
+        "description": "Sangat lega, mendukung furnitur premium dan aktivitas yang beragam."
+      },
+      {
+        "key": "eksekutif",
+        "name": "Eksekutif",
+        "description": "Dimensi eksklusif dengan kenyamanan dan fleksibilitas maksimal."
+      }
+    ],
+    "settings": [
+      {
+        "key": "dana_darurat_pct",
+        "value": "0.10",
+        "note": "Dana darurat / sinking fund, 10% of gross budget (main form row 56)"
+      },
+      {
+        "key": "sirkulasi_pct",
+        "value": "0.20",
+        "note": "Sirkulasi allowance, 20% added on top of room area total (main form row 129)"
+      },
+      {
+        "key": "toleransi_default",
+        "value": "0",
+        "note": "Toleransi (biaya tertinggi) default 0 above nyaman budget (main form row 54)"
+      }
+    ]
+  }
+}
