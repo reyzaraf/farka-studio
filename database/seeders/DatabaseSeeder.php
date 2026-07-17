@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PermissionSeeder::class,
+            BudgetCalculatorSeeder::class,
         ]);
 
         // Super admin — also given every permission explicitly (Gate::before already
