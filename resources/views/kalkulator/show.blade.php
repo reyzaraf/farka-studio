@@ -258,12 +258,13 @@
                     @foreach($factorGroups as $group)
                         <label class="field">
                             <span class="field-label">{{ $group->name }}</span>
-                            <select name="factor_option_ids[]" class="control" data-required-factor>
+                            <select name="factor_option_ids[]" class="control factor-select" data-required-factor>
                                 <option value="">— Pilih —</option>
                                 @foreach($group->options as $opt)
-                                    <option value="{{ $opt->id }}">{{ $opt->label }} (×{{ rtrim(rtrim(number_format($opt->multiplier, 2), '0'), '.') }})</option>
+                                    <option value="{{ $opt->id }}" data-note="{{ $opt->note }}">{{ $opt->label }} (×{{ rtrim(rtrim(number_format($opt->multiplier, 2), '0'), '.') }})</option>
                                 @endforeach
                             </select>
+                            <p class="hint factor-note" style="display:none"></p>
                         </label>
                     @endforeach
                 </div>
@@ -305,6 +306,7 @@
                             <span class="rp-prefix">Rp</span>
                             <input name="budget" type="text" inputmode="numeric" data-rupiah class="rp-input" placeholder="mis. 2.000.000.000">
                         </div>
+                        <p class="hint">Biaya ternyaman yang dapat digunakan untuk pembangunan.</p>
                     </label>
                     <label class="field">
                         <span class="field-label">Toleransi</span>
@@ -312,10 +314,12 @@
                             <span class="rp-prefix">Rp</span>
                             <input name="toleransi" type="text" inputmode="numeric" data-rupiah class="rp-input" placeholder="0">
                         </div>
+                        <p class="hint">Biaya tertinggi yang masih dapat ditoleransi.</p>
                     </label>
                     <label class="field">
                         <span class="field-label">Dana darurat (%)</span>
                         <input name="dana_darurat_pct_display" type="number" step="0.1" min="0" class="control" placeholder="{{ rtrim(rtrim(number_format($settings['dana_darurat_pct'] * 100, 2), '0'), '.') }} (default)">
+                        <p class="hint">Untuk kebutuhan masa depan di luar ekspektasi (sinking fund).</p>
                     </label>
                     <label class="field">
                         <span class="field-label">Tipe bangunan</span>
@@ -436,6 +440,20 @@ document.querySelectorAll('input[data-rupiah]').forEach(el => {
         const n = digitsToNumber(el.value);
         el.value = n ? n.toLocaleString('id-ID') : '';
     });
+});
+
+// --- Factor advisory notes (show the selected option's note below its dropdown) ---
+document.querySelectorAll('.factor-select').forEach(sel => {
+    const noteEl = sel.parentElement.querySelector('.factor-note');
+    if (!noteEl) return;
+    const upd = () => {
+        const opt = sel.options[sel.selectedIndex];
+        const note = opt ? (opt.getAttribute('data-note') || '') : '';
+        noteEl.textContent = note;
+        noteEl.style.display = note ? 'block' : 'none';
+    };
+    sel.addEventListener('change', upd);
+    upd();
 });
 
 // --- Room builder ---
