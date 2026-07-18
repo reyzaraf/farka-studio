@@ -14,9 +14,9 @@ Route::get('/', [WebController::class, 'index']);
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
 // Public budget calculator
-Route::get('/kalkulator-budget', [\App\Http\Controllers\BudgetCalculatorController::class, 'show'])->name('kalkulator.show');
-Route::post('/kalkulator-budget/calculate', [\App\Http\Controllers\BudgetCalculatorController::class, 'calculate'])->middleware('throttle:60,1')->name('kalkulator.calculate');
-Route::post('/kalkulator-budget/pdf', [\App\Http\Controllers\BudgetCalculatorController::class, 'pdf'])->middleware('throttle:60,1')->name('kalkulator.pdf');
+Route::get('/budget-estimator', [\App\Http\Controllers\BudgetCalculatorController::class, 'show'])->name('kalkulator.show');
+Route::post('/budget-estimator/calculate', [\App\Http\Controllers\BudgetCalculatorController::class, 'calculate'])->middleware('throttle:60,1')->name('kalkulator.calculate');
+Route::post('/budget-estimator/pdf', [\App\Http\Controllers\BudgetCalculatorController::class, 'pdf'])->middleware('throttle:60,1')->name('kalkulator.pdf');
 
 // Custom Admin Panel Routes
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
