@@ -22,5 +22,18 @@
                     <div class="leading-tight">{!! nl2br(e($contact->address ?? "Jl. Kemang Raya No. 88\nJakarta Selatan 12730")) !!}</div>
                 </div>
             </div>
+
+            {{-- CTA: Budget Estimator --}}
+            <div class="w-full max-w-4xl mt-16 md:mt-24 pt-10 md:pt-14 border-t border-gray-200 flex flex-col items-center text-center">
+                <span class="text-gray-400 text-[0.65rem] md:text-xs font-black uppercase tracking-[0.3em] mb-4">Plan Your Build</span>
+                <h3 class="text-2xl md:text-4xl font-black tracking-tight mb-4 max-w-2xl">Not sure where your budget lands?</h3>
+                <p class="text-gray-500 text-sm md:text-base font-medium tracking-tight max-w-xl mb-8 leading-relaxed">
+                    Get an instant, transparent estimate of your construction budget — shaped by your land size, zoning, build quality, and spatial program before we ever draw a line.
+                </p>
+                <a href="{{ route('kalkulator.show') }}" class="group inline-flex items-center gap-3 bg-black text-white text-[0.7rem] md:text-xs font-black uppercase tracking-[0.2em] px-8 py-4 hover:bg-gray-700 transition">
+                    Try the Budget Estimator
+                    <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+                </a>
+            </div>
         </div>
     </section>
