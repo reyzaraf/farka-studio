@@ -89,7 +89,7 @@ class BudgetCalculatorPublicTest extends TestCase
         $opt = fn (string $g, string $l) => \App\Models\Calc\FactorOption::where('label', $l)
             ->whereHas('group', fn ($q) => $q->where('key', $g))->value('id');
 
-        $res = $this->post(route('kalkulator.pdf'), [
+        $payload = [
             'nama_proyek' => 'Rizal',
             'luas_tanah' => 300,
             'factor_option_ids' => [
@@ -104,9 +104,22 @@ class BudgetCalculatorPublicTest extends TestCase
             'sirkulasi_pct' => 0.20,
             'allocation_ids' => \App\Models\Calc\Allocation::where('is_default', true)->where('is_base', false)->pluck('id')->all(),
             'rooms' => [],
-        ]);
+        ];
+
+        $res = $this->post(route('kalkulator.pdf'), $payload);
 
         $res->assertOk();
         $this->assertSame('application/pdf', $res->headers->get('content-type'));
+
+        // Render the PDF view a second time in the same PHP process. The pdf
+        // blade previously declared global `function rp()` / `function ar()`
+        // helpers via @php...@endphp, which Laravel compiles with `require`
+        // (not `require_once`) — a second render in one process would fatal
+        // with "Cannot redeclare function rp()". This guards against a
+        // regression back to global function declarations in the view.
+        $res2 = $this->post(route('kalkulator.pdf'), $payload);
+
+        $res2->assertOk();
+        $this->assertSame('application/pdf', $res2->headers->get('content-type'));
     }
 }
