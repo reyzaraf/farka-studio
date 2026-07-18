@@ -42,4 +42,34 @@ class CalculatorAdminTest extends TestCase
         $area = RoomArea::where('room_id', $kamarMandi->id)->where('size_tier_id', $premium->id)->first();
         $this->assertEqualsWithDelta(6.25, $area->area, 0.001);
     }
+
+    private function superAdmin(): \App\Models\User
+    {
+        return \App\Models\User::where('email', 'admin@farkastudio.test')->first();
+    }
+
+    public function test_admin_can_create_and_delete_room(): void
+    {
+        $admin = $this->superAdmin();
+        $tiers = SizeTier::orderBy('order')->get();
+        $areas = $tiers->values()->map(fn ($t, $i) => ['size_tier_id' => $t->id, 'panjang' => 2, 'lebar' => 3])->all();
+
+        $this->actingAs($admin)->post(route('admin.calc.rooms.store'), [
+            'category' => 'service', 'name' => 'Test Room', 'areas' => $areas,
+        ])->assertRedirect(route('admin.calc.rooms.index'));
+
+        $room = Room::where('name', 'Test Room')->first();
+        $this->assertNotNull($room);
+        $this->assertSame(6, $room->areas()->count());
+        $this->assertEqualsWithDelta(6.0, $room->areas()->first()->area, 0.001); // 2*3
+
+        $this->actingAs($admin)->delete(route('admin.calc.rooms.destroy', $room->id))
+            ->assertRedirect(route('admin.calc.rooms.index'));
+        $this->assertNull(Room::find($room->id));
+    }
+
+    public function test_room_index_renders(): void
+    {
+        $this->actingAs($this->superAdmin())->get(route('admin.calc.rooms.index'))->assertOk();
+    }
 }
