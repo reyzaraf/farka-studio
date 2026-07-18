@@ -91,24 +91,30 @@ class BudgetCalculatorService
         // --- Summary ---
         $baseline = $nettConstruction;
         $mult = 1 + $sirkulasiPct;
-        $utamaArea = $subtotals['utama'] * $mult;
-        $sekunderArea = ($subtotals['utama'] + $subtotals['sekunder']) * $mult;
-        $tersierArea = ($subtotals['utama'] + $subtotals['sekunder'] + $subtotals['tersier']) * $mult;
-
         $cost = fn (float $area) => (int) round($area * $hargaBobot);
-        $costUtama = $cost($utamaArea);
-        $costSekunder = $cost($sekunderArea);
-        $costTersier = $cost($tersierArea);
-        // Grand total of all priorities (Utama + Sekunder + Tersier), incl. sirkulasi.
-        $costTotal = $cost($grandTotal);
+
         $summaryRows = [
             ['label' => 'Budget', 'area' => $budgetArea, 'cost' => $baseline, 'selisih' => null],
             ['label' => 'Regulasi', 'area' => $luasTerbangun, 'cost' => $regulasiCost, 'selisih' => $baseline - $regulasiCost],
-            ['label' => 'Kebutuhan (Utama)', 'area' => $utamaArea, 'cost' => $costUtama, 'selisih' => $baseline - $costUtama],
-            ['label' => 'Kebutuhan (+Sekunder)', 'area' => $sekunderArea, 'cost' => $costSekunder, 'selisih' => $baseline - $costSekunder],
-            ['label' => 'Kebutuhan (+Tersier)', 'area' => $tersierArea, 'cost' => $costTersier, 'selisih' => $baseline - $costTersier],
-            ['label' => 'Kebutuhan Total', 'area' => $grandTotal, 'cost' => $costTotal, 'selisih' => $baseline - $costTotal],
         ];
+
+        // Kebutuhan rows are cumulative by priority (Utama -> +Sekunder -> +Tersier).
+        // A priority whose tier has no rooms is skipped so it does not duplicate the
+        // previous row; the last Kebutuhan row shown is therefore the grand total.
+        $cumulative = 0.0;
+        foreach ([
+            'utama' => 'Kebutuhan (Utama)',
+            'sekunder' => 'Kebutuhan (+Sekunder)',
+            'tersier' => 'Kebutuhan (+Tersier)',
+        ] as $key => $label) {
+            $cumulative += $subtotals[$key];
+            if ($subtotals[$key] <= 0) {
+                continue;
+            }
+            $area = $cumulative * $mult;
+            $c = $cost($area);
+            $summaryRows[] = ['label' => $label, 'area' => $area, 'cost' => $c, 'selisih' => $baseline - $c];
+        }
 
         return [
             'weighting' => [

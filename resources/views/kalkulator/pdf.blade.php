@@ -3,9 +3,10 @@
     $ar  = fn ($n) => number_format(round($n, 1), 1, ',', '.') . ' m²';
     $pct = fn ($n) => rtrim(rtrim(number_format($n * 100, 2), '0'), '.') . '%';
 
-    // Program penuh (baris ringkasan terakhir) vs baseline budget, untuk kalimat verdict.
+    // Program penuh (baris Kebutuhan terakhir yang tampil = grand total) vs baseline budget, untuk kalimat verdict.
     $summaryRows = $result['summary']['rows'];
-    $lastNeed = end($summaryRows);
+    $kebutuhanRows = array_values(array_filter($summaryRows, fn ($r) => str_starts_with($r['label'], 'Kebutuhan')));
+    $lastNeed = $kebutuhanRows ? end($kebutuhanRows) : null;
     $baseline = $result['summary']['baseline'];
 @endphp
 <!doctype html>
