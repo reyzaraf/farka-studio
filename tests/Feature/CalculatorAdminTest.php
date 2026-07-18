@@ -66,6 +66,7 @@ class CalculatorAdminTest extends TestCase
         $this->actingAs($admin)->delete(route('admin.calc.rooms.destroy', $room->id))
             ->assertRedirect(route('admin.calc.rooms.index'));
         $this->assertNull(Room::find($room->id));
+        $this->assertSame(0, RoomArea::where('room_id', $room->id)->count());
     }
 
     public function test_room_index_renders(): void
