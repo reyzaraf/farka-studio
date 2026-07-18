@@ -290,14 +290,14 @@ function roomRow(){
     const opts = ROOMS.map(r => `<option value="${r.id}">${esc(r.name)} — ${esc(r.category)}</option>`).join('');
     const tierOpts = TIERS.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join('');
     wrap.innerHTML = `
-        <select class="r-room sm:col-span-5 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black">
+        <select class="r-room sm:col-span-5 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black" aria-label="Ruangan">
             <option value="">— Pilih ruangan —</option>${opts}
         </select>
-        <select class="r-tier sm:col-span-3 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black">
+        <select class="r-tier sm:col-span-3 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black" aria-label="Tipe luasan">
             <option value="">Tipe luasan</option>${tierOpts}
         </select>
         <input type="number" min="1" value="1" class="r-qty sm:col-span-1 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black" aria-label="Jumlah">
-        <select class="r-prio sm:col-span-2 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black">
+        <select class="r-prio sm:col-span-2 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black" aria-label="Prioritas">
             <option value="utama">Utama</option>
             <option value="sekunder">Sekunder</option>
             <option value="tersier">Tersier</option>
@@ -396,13 +396,20 @@ function render(r){
         ? '<span class="text-black/30">—</span>'
         : `<span class="${v < 0 ? 'text-red-600' : 'text-emerald-600'} tabular-nums">${rupiah(v)}</span>`;
 
+    // On mobile each metric is a "Label …… Value" row (values right-aligned, never cramped);
+    // on sm+ it becomes a 3-column label-over-value grid.
+    const cell = (label, value) => `
+        <div class="flex items-baseline justify-between gap-2 sm:block">
+            <div class="text-black/40 text-[13px] sm:text-[11px]">${label}</div>
+            <div class="font-header font-semibold text-[15px] tabular-nums text-right sm:text-left">${value}</div>
+        </div>`;
     const cards = r.summary.rows.map(row => `
         <div class="rounded-xl border border-black/10 p-4">
-            <div class="text-[11px] uppercase tracking-[0.15em] text-black/40">${esc(row.label)}</div>
-            <div class="mt-2 grid grid-cols-3 gap-2 text-[13px]">
-                <div><div class="text-black/40">Luas</div><div class="font-header font-semibold text-[15px] tabular-nums">${m2(row.area)}</div></div>
-                <div><div class="text-black/40">Biaya</div><div class="font-header font-semibold text-[15px] tabular-nums">${rupiah(row.cost)}</div></div>
-                <div><div class="text-black/40">Selisih</div><div class="font-header font-semibold text-[15px]">${selisih(row.selisih)}</div></div>
+            <div class="text-[11px] uppercase tracking-[0.15em] text-black/40 mb-2.5">${esc(row.label)}</div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2">
+                ${cell('Luas', m2(row.area))}
+                ${cell('Biaya', rupiah(row.cost))}
+                ${cell('Selisih', selisih(row.selisih))}
             </div>
         </div>`).join('');
 
