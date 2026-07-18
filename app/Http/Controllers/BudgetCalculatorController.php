@@ -36,7 +36,12 @@ class BudgetCalculatorController extends Controller
         return Pdf::loadView('kalkulator.pdf', [
             'input' => $input,
             'result' => $result,
-        ])->download($filename);
+            'buildingType' => BuildingType::find($input['building_type_id']),
+            'zonasi' => Zonasi::find($input['zonasi_id']),
+            'allocations' => Allocation::whereIn('id', $input['allocation_ids'] ?? [])
+                ->orderBy('order')->get()->groupBy('category'),
+            'generatedAt' => now()->format('d F Y'),
+        ])->setPaper('a4')->download($filename);
     }
 
     /** Shared reference data for the form (Task 8 reuses this for the PDF). */

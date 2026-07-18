@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Kalkulator Budget | Farka Studio</title>
+    <title>Budget Estimator | Farka Studio</title>
     <link rel="icon" href="{{ asset('farkalogo.svg') }}" type="image/x-icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,7 +52,7 @@
         .topbar:hover { color: var(--ink); }
         .page-head { margin: 20px 0 28px; }
         .page-title { font-size: clamp(1.7rem, 4.5vw, 2.4rem); font-weight: 900; letter-spacing: -.02em; }
-        .page-sub { margin-top: 8px; font-size: clamp(1rem, 2.4vw, 1.15rem); color: var(--ink-55); max-width: 640px; }
+        .page-sub { margin-top: 8px; font-size: clamp(1rem, 2.4vw, 1.15rem); color: var(--ink-55); max-width: 660px; }
         .page-sub .note { color: var(--ink-40); }
 
         .layout { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: start; }
@@ -92,7 +92,7 @@
         input[type=number]::-webkit-outer-spin-button,
         input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
-        /* Rupiah input group */
+        /* Currency input group */
         .rp-group { display: flex; align-items: stretch; border: 1px solid var(--line-strong); border-radius: 12px; overflow: hidden; transition: border-color .15s; }
         .rp-group:focus-within { border-color: var(--ink); }
         .rp-prefix { display: grid; place-items: center; padding: 0 14px; color: var(--ink-55); background: var(--wash); border-right: 1px solid var(--line); font-size: .95rem; }
@@ -174,15 +174,13 @@
 
         .scen-cap { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-40); margin-bottom: 12px; }
         .scen-list { display: grid; gap: 10px; }
-        .scen-card { border: 1px solid var(--line); border-radius: 12px; padding: 15px; }
-        .scen-title { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-40); margin-bottom: 10px; }
-        .scen-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
-        @media (min-width: 480px) { .scen-grid { grid-template-columns: 1fr 1fr 1fr; gap: 6px; } }
-        .scen-cell { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-        @media (min-width: 480px) { .scen-cell { display: block; } }
-        .scen-cell .c-label { font-size: 12px; color: var(--ink-40); }
-        .scen-cell .c-value { font-family: var(--font-head); font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; text-align: right; }
-        @media (min-width: 480px) { .scen-cell .c-value { text-align: left; margin-top: 2px; } }
+        .scen-card { border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+        .scen-title { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-40); margin-bottom: 12px; }
+        /* Each metric: label on its own line, value below it (never beside) */
+        .scen-grid { display: grid; grid-template-columns: 1fr; gap: 11px; }
+        .scen-cell { display: block; }
+        .scen-cell .c-label { display: block; font-size: 12px; letter-spacing: .02em; color: var(--ink-45); margin-bottom: 2px; }
+        .scen-cell .c-value { display: block; font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
         .pos { color: var(--pos); } .neg { color: var(--neg); } .muted { color: var(--ink-40); }
 
         .pdf-btn { width: 100%; background: var(--ink); color: #fff; border: 0; border-radius: 12px; padding: 15px; font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background .15s, opacity .15s; }
@@ -196,10 +194,10 @@
     <a href="{{ url('/') }}" class="topbar">&larr; Farka Studio</a>
 
     <header class="page-head">
-        <h1 class="page-title">Kalkulator Budget Proyek</h1>
+        <h1 class="page-title">Budget Estimator</h1>
         <p class="page-sub">
-            Estimasi kebutuhan biaya pembangunan berdasarkan preferensi Anda.
-            <span class="note">*Angka hanya asumsi dan bukan final.</span>
+            Translate your vision into a construction budget — from design intent to buildable reality.
+            <span class="note">Figures are indicative only, not a final quotation.</span>
         </p>
     </header>
 
@@ -210,34 +208,34 @@
 
             {{-- 1. General --}}
             <section class="card">
-                <div class="step">Langkah 1</div>
-                <h2 class="card-title">Informasi Umum</h2>
+                <div class="step">Step 1</div>
+                <h2 class="card-title">Project Details</h2>
                 <div class="grid2">
                     <label class="field">
-                        <span class="field-label">Nama proyek</span>
-                        <input name="nama_proyek" class="control" placeholder="mis. Rumah Tinggal Bapak A">
+                        <span class="field-label">Project name</span>
+                        <input name="nama_proyek" class="control" placeholder="e.g. Private Residence">
                     </label>
                     <label class="field">
-                        <span class="field-label">Luas tanah (m²)</span>
-                        <input name="luas_tanah" type="number" step="0.1" min="0" class="control" placeholder="mis. 300">
+                        <span class="field-label">Land area (m²)</span>
+                        <input name="luas_tanah" type="number" step="0.1" min="0" class="control" placeholder="e.g. 300">
                     </label>
                     <label class="field col-2">
-                        <span class="field-label">Lokasi proyek</span>
-                        <input name="lokasi_proyek" class="control" placeholder="Kota / wilayah">
+                        <span class="field-label">Location</span>
+                        <input name="lokasi_proyek" class="control" placeholder="City / region">
                     </label>
                 </div>
             </section>
 
             {{-- 2. Weighting factors --}}
             <section class="card">
-                <div class="step">Langkah 2</div>
-                <h2 class="card-title">Faktor Bobot</h2>
+                <div class="step">Step 2</div>
+                <h2 class="card-title">Weighting Factors</h2>
                 <div class="grid2">
                     @foreach($factorGroups as $group)
                         <label class="field">
                             <span class="field-label">{{ $group->name }}</span>
                             <select name="factor_option_ids[]" class="control" data-required-factor>
-                                <option value="">— Pilih —</option>
+                                <option value="">— Select —</option>
                                 @foreach($group->options as $opt)
                                     <option value="{{ $opt->id }}">{{ $opt->label }} (×{{ rtrim(rtrim(number_format($opt->multiplier, 2), '0'), '.') }})</option>
                                 @endforeach
@@ -249,9 +247,9 @@
 
             {{-- 3. Allocations --}}
             <section class="card">
-                <div class="step">Langkah 3</div>
-                <h2 class="card-title tight">Alokasi Dana</h2>
-                <p class="card-sub">Pilih komponen biaya yang ingin diperhitungkan.</p>
+                <div class="step">Step 3</div>
+                <h2 class="card-title tight">Budget Allocation</h2>
+                <p class="card-sub">Choose the cost components to factor into your estimate.</p>
                 <div class="alloc-groups">
                     @foreach($allocations as $category => $items)
                         <div>
@@ -274,31 +272,31 @@
 
             {{-- 4. Design-to-Budget --}}
             <section class="card">
-                <div class="step">Langkah 4</div>
+                <div class="step">Step 4</div>
                 <h2 class="card-title">Design-to-Budget</h2>
                 <div class="grid2">
                     <label class="field">
                         <span class="field-label">Budget</span>
                         <div class="rp-group">
                             <span class="rp-prefix">Rp</span>
-                            <input name="budget" type="text" inputmode="numeric" data-rupiah class="rp-input" placeholder="mis. 2.000.000.000">
+                            <input name="budget" type="text" inputmode="numeric" data-rupiah class="rp-input" placeholder="e.g. 2.000.000.000">
                         </div>
                     </label>
                     <label class="field">
-                        <span class="field-label">Toleransi</span>
+                        <span class="field-label">Tolerance</span>
                         <div class="rp-group">
                             <span class="rp-prefix">Rp</span>
                             <input name="toleransi" type="text" inputmode="numeric" data-rupiah class="rp-input" placeholder="0">
                         </div>
                     </label>
                     <label class="field">
-                        <span class="field-label">Dana darurat (%)</span>
+                        <span class="field-label">Contingency (%)</span>
                         <input name="dana_darurat_pct_display" type="number" step="0.1" min="0" class="control" placeholder="{{ rtrim(rtrim(number_format($settings['dana_darurat_pct'] * 100, 2), '0'), '.') }} (default)">
                     </label>
                     <label class="field">
-                        <span class="field-label">Tipe bangunan</span>
+                        <span class="field-label">Building tier</span>
                         <select name="building_type_id" class="control">
-                            <option value="">— Pilih —</option>
+                            <option value="">— Select —</option>
                             @foreach($buildingTypes as $bt)
                                 <option value="{{ $bt->id }}">{{ $bt->name }} — Rp {{ number_format($bt->price_per_m2, 0, ',', '.') }}/m²</option>
                             @endforeach
@@ -308,12 +306,12 @@
 
                 @if($components->isNotEmpty())
                 <div class="comp-block">
-                    <div class="comp-cap">Referensi kualitas per tipe bangunan</div>
+                    <div class="comp-cap">Quality reference by building tier</div>
                     <div class="comp-scroll">
                         <table class="comp-table">
                             <thead>
                                 <tr>
-                                    <th>Komponen</th><th>Standar</th><th>Optimal</th><th>Premium</th>
+                                    <th>Component</th><th>Standard</th><th>Optimal</th><th>Premium</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -328,41 +326,41 @@
                             </tbody>
                         </table>
                     </div>
-                    <p class="hint">*Tidak termasuk furniture, interior, kolam renang, lift, landscape, peralatan elektronik.</p>
+                    <p class="hint">*Excludes furniture, interior fit-out, pool, lift, landscape, and electronics.</p>
                 </div>
                 @endif
             </section>
 
             {{-- 5. Design-to-Regulation --}}
             <section class="card">
-                <div class="step">Langkah 5</div>
+                <div class="step">Step 5</div>
                 <h2 class="card-title">Design-to-Regulation</h2>
                 <label class="field" style="max-width:420px">
-                    <span class="field-label">Zonasi lahan</span>
+                    <span class="field-label">Land zoning</span>
                     <select name="zonasi_id" class="control">
-                        <option value="">— Pilih —</option>
+                        <option value="">— Select —</option>
                         @foreach($zonasiList as $z)
                             <option value="{{ $z->id }}">{{ $z->code }} — {{ $z->name }}</option>
                         @endforeach
                     </select>
                 </label>
-                <p class="hint">KDB/KLB/KTB/RTH dihitung otomatis dari zonasi &times; luas tanah. *Untuk kepastian butuh dokumen SKRK dari Dinas PU / PTSP setempat.</p>
+                <p class="hint">KDB / KLB / KTB / RTH are derived automatically from zoning &times; land area. *Confirm with an SKRK document from your local planning authority.</p>
             </section>
 
             {{-- 6. Design-to-Needs --}}
             <section class="card">
-                <div class="step">Langkah 6</div>
+                <div class="step">Step 6</div>
                 <div class="rooms-head">
                     <h2 class="card-title tight" style="margin-bottom:0">Design-to-Needs</h2>
-                    <button type="button" id="add-room" class="btn btn-dark btn-add">Tambah ruangan</button>
+                    <button type="button" id="add-room" class="btn btn-dark btn-add">Add room</button>
                 </div>
-                <p class="card-sub">Susun kebutuhan ruangan beserta jumlah, tipe luasan, dan prioritasnya.</p>
+                <p class="card-sub">Build your room program with quantity, size tier, and priority.</p>
                 <input type="hidden" name="sirkulasi_pct" value="{{ $settings['sirkulasi_pct'] }}">
                 <div id="rooms-body" class="room-list"></div>
                 <div id="rooms-empty" class="rooms-empty">
-                    Belum ada ruangan. Klik <b>“Tambah ruangan”</b> untuk mulai.
+                    No rooms yet. Click <b>“Add room”</b> to begin.
                 </div>
-                <p class="hint">Sirkulasi {{ (int) round($settings['sirkulasi_pct'] * 100) }}% ditambahkan otomatis pada total luas kebutuhan.</p>
+                <p class="hint">A {{ (int) round($settings['sirkulasi_pct'] * 100) }}% circulation allowance is added automatically to the total required area.</p>
             </section>
         </form>
 
@@ -370,11 +368,11 @@
         <aside class="aside-col">
             <div id="result" class="result">
                 <div class="result-empty">
-                    <div class="result-cap">Ringkasan Estimasi</div>
-                    <p>Lengkapi <b>luas tanah, faktor bobot, budget, tipe bangunan,</b> dan <b>zonasi</b> untuk melihat estimasi.</p>
+                    <div class="result-cap">Estimate Summary</div>
+                    <p>Enter <b>land area, weighting factors, budget, building tier,</b> and <b>zoning</b> to reveal your estimate.</p>
                 </div>
             </div>
-            <button id="download-pdf" class="pdf-btn" disabled>Download PDF</button>
+            <button id="download-pdf" class="pdf-btn" disabled>Download PDF Report</button>
         </aside>
     </div>
 </div>
@@ -390,7 +388,7 @@ function m2(n){ return (Math.round(n * 10) / 10).toLocaleString('id-ID', {minimu
 function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function digitsToNumber(v){ const d = String(v == null ? '' : v).replace(/\D/g, ''); return d ? parseInt(d, 10) : 0; }
 
-// --- Rupiah input formatting ---
+// --- Currency input formatting ---
 document.querySelectorAll('input[data-rupiah]').forEach(el => {
     el.addEventListener('input', () => {
         const n = digitsToNumber(el.value);
@@ -409,15 +407,15 @@ function roomRow(){
     const opts = ROOMS.map(r => `<option value="${r.id}">${esc(r.name)} — ${esc(r.category)}</option>`).join('');
     const tierOpts = TIERS.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join('');
     wrap.innerHTML = `
-        <select class="r-room" aria-label="Ruangan"><option value="">— Pilih ruangan —</option>${opts}</select>
-        <select class="r-tier" aria-label="Tipe luasan"><option value="">Tipe luasan</option>${tierOpts}</select>
-        <input type="number" min="1" value="1" class="r-qty" aria-label="Jumlah">
-        <select class="r-prio" aria-label="Prioritas">
-            <option value="utama">Utama</option>
-            <option value="sekunder">Sekunder</option>
-            <option value="tersier">Tersier</option>
+        <select class="r-room" aria-label="Room"><option value="">— Select room —</option>${opts}</select>
+        <select class="r-tier" aria-label="Size tier"><option value="">Size tier</option>${tierOpts}</select>
+        <input type="number" min="1" value="1" class="r-qty" aria-label="Quantity">
+        <select class="r-prio" aria-label="Priority">
+            <option value="utama">Primary</option>
+            <option value="sekunder">Secondary</option>
+            <option value="tersier">Tertiary</option>
         </select>
-        <button type="button" class="room-del" aria-label="Hapus">&times;</button>`;
+        <button type="button" class="room-del" aria-label="Remove">&times;</button>`;
     wrap.querySelector('.room-del').addEventListener('click', () => { wrap.remove(); refreshRoomsEmpty(); recalc(); });
     wrap.querySelectorAll('select, input').forEach(el => el.addEventListener('change', recalc));
     return wrap;
@@ -466,8 +464,8 @@ let timer = null;
 function showEmptyState(){
     pdfBtn.disabled = true;
     resultEl.innerHTML =
-        '<div class="result-empty"><div class="result-cap">Ringkasan Estimasi</div>' +
-        '<p>Lengkapi <b>luas tanah, faktor bobot, budget, tipe bangunan,</b> dan <b>zonasi</b> untuk melihat estimasi.</p></div>';
+        '<div class="result-empty"><div class="result-cap">Estimate Summary</div>' +
+        '<p>Enter <b>land area, weighting factors, budget, building tier,</b> and <b>zoning</b> to reveal your estimate.</p></div>';
 }
 
 function recalc(){
@@ -493,35 +491,36 @@ function metric(label, value){
 }
 
 function render(r){
-    const selisih = (v) => v === null ? '<span class="muted">—</span>'
+    const diff = (v) => v === null ? '<span class="muted">—</span>'
         : `<span class="${v < 0 ? 'neg' : 'pos'}">${rupiah(v)}</span>`;
+    // Each metric: label on its own line, value below (never beside the label).
     const cell = (label, value) =>
         `<div class="scen-cell"><span class="c-label">${label}</span><span class="c-value">${value}</span></div>`;
     const cards = r.summary.rows.map(row => `
         <div class="scen-card">
             <div class="scen-title">${esc(row.label)}</div>
             <div class="scen-grid">
-                ${cell('Luas', m2(row.area))}
-                ${cell('Biaya', rupiah(row.cost))}
-                ${cell('Selisih', selisih(row.selisih))}
+                ${cell('Area', m2(row.area))}
+                ${cell('Cost', rupiah(row.cost))}
+                ${cell('Difference vs budget', diff(row.selisih))}
             </div>
         </div>`).join('');
 
     resultEl.innerHTML = `
-        <div class="result-cap">Ringkasan Estimasi</div>
-        <h3>Estimasi Budget</h3>
+        <div class="result-cap">Estimate Summary</div>
+        <h3>Your Estimate</h3>
         <div class="hero">
-            <div class="hero-label">Luas terjangkau (budget)</div>
+            <div class="hero-label">Affordable area (budget)</div>
             <div class="hero-value">${m2(r.budget.area)}</div>
-            <div class="hero-sub">dari nett construction ${rupiah(r.budget.nett_construction)}</div>
+            <div class="hero-sub">from a net construction budget of ${rupiah(r.budget.nett_construction)}</div>
         </div>
         <div class="metrics">
-            ${metric('Bobot', '×' + r.weighting.bobot.toFixed(2))}
-            ${metric('Harga per m² (berbobot)', rupiah(r.weighting.harga_per_m2_bobot))}
-            ${metric('Luas terbangun (regulasi)', m2(r.regulation.luas_terbangun))}
-            ${metric('Total kebutuhan ruang', m2(r.needs.grand_total))}
+            ${metric('Weight', '×' + r.weighting.bobot.toFixed(2))}
+            ${metric('Price per m² (weighted)', rupiah(r.weighting.harga_per_m2_bobot))}
+            ${metric('Buildable area (zoning)', m2(r.regulation.luas_terbangun))}
+            ${metric('Total required area', m2(r.needs.grand_total))}
         </div>
-        <div class="scen-cap">Perbandingan Skenario</div>
+        <div class="scen-cap">Scenario Comparison</div>
         <div class="scen-list">${cards}</div>`;
 }
 
