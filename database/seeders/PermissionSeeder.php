@@ -19,6 +19,7 @@ class PermissionSeeder extends Seeder
             'view_page_settings', 'edit_page_settings',
             'view_users', 'create_users', 'edit_users', 'delete_users',
             'view_roles', 'create_roles', 'edit_roles', 'delete_roles',
+            'view_calculator', 'create_calculator', 'edit_calculator', 'delete_calculator',
         ];
 
         foreach ($permissions as $permission) {

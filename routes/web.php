@@ -47,6 +47,19 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('contact-settings', [\App\Http\Controllers\Admin\ContactSettingController::class, 'edit'])->name('contact-settings.edit');
     Route::put('contact-settings', [\App\Http\Controllers\Admin\ContactSettingController::class, 'update'])->name('contact-settings.update');
 
+    // Budget Calculator reference data
+    Route::name('calc.')->prefix('calculator')->group(function () {
+        Route::resource('rooms', \App\Http\Controllers\Admin\Calc\RoomController::class)->except('show');
+        Route::resource('zonasi', \App\Http\Controllers\Admin\Calc\ZonasiController::class)->except('show');
+        Route::resource('building-types', \App\Http\Controllers\Admin\Calc\BuildingTypeController::class)->except('show');
+        Route::resource('factor-groups', \App\Http\Controllers\Admin\Calc\FactorGroupController::class)->except('show');
+        Route::resource('allocations', \App\Http\Controllers\Admin\Calc\AllocationController::class)->except('show');
+        Route::resource('components', \App\Http\Controllers\Admin\Calc\ComponentController::class)->except('show');
+        Route::resource('size-tiers', \App\Http\Controllers\Admin\Calc\SizeTierController::class)->except('show');
+        Route::get('settings', [\App\Http\Controllers\Admin\Calc\SettingController::class, 'edit'])->name('settings.edit');
+        Route::put('settings', [\App\Http\Controllers\Admin\Calc\SettingController::class, 'update'])->name('settings.update');
+    });
+
     // Protected by Spatie Super Admin role
     Route::middleware(['role:super_admin'])->group(function () {
         Route::delete('users/bulk-destroy', [\App\Http\Controllers\Admin\UserController::class, 'bulkDestroy'])->name('users.bulk-destroy');

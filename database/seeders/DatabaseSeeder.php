@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             'view_categories', 'create_categories', 'edit_categories', 'delete_categories',
             'view_key_people', 'create_key_people', 'edit_key_people', 'delete_key_people',
             'view_page_settings', 'edit_page_settings',
+            'view_calculator', 'create_calculator', 'edit_calculator', 'delete_calculator',
         ]);
 
         $admin = \App\Models\User::firstOrCreate(
