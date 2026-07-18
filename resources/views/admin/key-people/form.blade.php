@@ -46,7 +46,8 @@
                         @endif
                         <img id="image-preview" class="media-preview mb-2">
                         <input type="file" class="form-control @error('image_url') is-invalid @enderror" id="image_url" name="image_url" accept="image/*">
-                        <small class="form-text text-muted">Upload a new image to replace the existing one. <strong>Max upload size: 35MB</strong></small>
+                        <small class="form-text text-muted d-block">Upload a new image to replace the existing one. <strong>Max upload size: 35MB</strong></small>
+                        <small class="form-text text-primary d-block"><i class="ti ti-photo"></i> Recommended image size: <strong>portrait 3:4</strong> — e.g. <strong>900&times;1200px</strong> (min. 600&times;800px). A 3:4 photo fills the card perfectly. Format: JPG / PNG / WebP.</small>
                         <div id="image-size-warning" class="text-danger small mt-1 d-none"></div>
                         @error('image_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>

@@ -165,7 +165,8 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
                             <h5 class="mb-0">Project Media &amp; Content</h5>
-                            <small class="text-muted">Drag the <i class="ti ti-grip-vertical"></i> handle to reorder. The first image is used as the cover.</small>
+                            <small class="text-muted d-block">Drag the <i class="ti ti-grip-vertical"></i> handle to reorder. The first image is used as the cover.</small>
+                            <small class="text-primary d-block mt-1"><i class="ti ti-photo"></i> Recommended image size: <strong>landscape 3:2</strong> — e.g. <strong>1600&times;1067px</strong> (min. 1200px wide). Keep every image in a project the same orientation for a tidy gallery. Format: JPG / PNG / WebP.</small>
                         </div>
                         <button type="button" class="btn btn-sm btn-outline-primary" id="add-content-btn">
                             <i class="ti ti-plus"></i> Add Media Item
