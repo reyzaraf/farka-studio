@@ -12,6 +12,7 @@ use App\Models\Calc\Setting;
 use App\Models\Calc\SizeTier;
 use App\Models\Calc\Zonasi;
 use App\Services\BudgetCalculatorService;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BudgetCalculatorController extends Controller
 {
@@ -23,6 +24,19 @@ class BudgetCalculatorController extends Controller
     public function calculate(CalculateBudgetRequest $request, BudgetCalculatorService $service)
     {
         return response()->json($service->calculate($request->calculatorInput()));
+    }
+
+    public function pdf(CalculateBudgetRequest $request, BudgetCalculatorService $service)
+    {
+        $input = $request->calculatorInput();
+        $result = $service->calculate($input);
+        $name = $input['nama_proyek'] !== '' ? $input['nama_proyek'] : 'Proyek';
+        $filename = 'Estimasi-Budget-' . \Illuminate\Support\Str::slug($name) . '.pdf';
+
+        return Pdf::loadView('kalkulator.pdf', [
+            'input' => $input,
+            'result' => $result,
+        ])->download($filename);
     }
 
     /** Shared reference data for the form (Task 8 reuses this for the PDF). */

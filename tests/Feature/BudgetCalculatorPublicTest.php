@@ -83,4 +83,30 @@ class BudgetCalculatorPublicTest extends TestCase
     {
         $this->postJson(route('kalkulator.calculate'), [])->assertStatus(422);
     }
+
+    public function test_pdf_endpoint_returns_pdf_download(): void
+    {
+        $opt = fn (string $g, string $l) => \App\Models\Calc\FactorOption::where('label', $l)
+            ->whereHas('group', fn ($q) => $q->where('key', $g))->value('id');
+
+        $res = $this->post(route('kalkulator.pdf'), [
+            'nama_proyek' => 'Rizal',
+            'luas_tanah' => 300,
+            'factor_option_ids' => [
+                $opt('jabodetabek', 'Ya'), $opt('existing_building', 'Tidak'),
+                $opt('target_building', 'Bangun baru'), $opt('style', 'Mediterranean'),
+            ],
+            'building_type_id' => \App\Models\Calc\BuildingType::where('key', 'standar')->value('id'),
+            'zonasi_id' => \App\Models\Calc\Zonasi::where('code', 'R-3')->value('id'),
+            'budget' => 2_000_000_000,
+            'toleransi' => 0,
+            'dana_darurat_pct' => 0.10,
+            'sirkulasi_pct' => 0.20,
+            'allocation_ids' => \App\Models\Calc\Allocation::where('is_default', true)->where('is_base', false)->pluck('id')->all(),
+            'rooms' => [],
+        ]);
+
+        $res->assertOk();
+        $this->assertSame('application/pdf', $res->headers->get('content-type'));
+    }
 }
