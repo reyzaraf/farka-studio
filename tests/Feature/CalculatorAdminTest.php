@@ -104,4 +104,17 @@ class CalculatorAdminTest extends TestCase
         ])->assertRedirect(route('admin.calc.allocations.index'));
         $this->assertEqualsWithDelta(0.025, \App\Models\Calc\Allocation::where('label','Test fee')->value('percentage'), 0.0001);
     }
+
+    public function test_factor_group_saves_options(): void
+    {
+        $this->actingAs($this->superAdmin())->post(route('admin.calc.factor-groups.store'), [
+            'key' => 'test_group', 'name' => 'Test Group',
+            'options' => [
+                ['label' => 'A', 'multiplier' => 1.0, 'is_default' => 1],
+                ['label' => 'B', 'multiplier' => 1.2],
+            ],
+        ])->assertRedirect(route('admin.calc.factor-groups.index'));
+        $g = \App\Models\Calc\FactorGroup::where('key','test_group')->first();
+        $this->assertSame(2, $g->options()->count());
+    }
 }
