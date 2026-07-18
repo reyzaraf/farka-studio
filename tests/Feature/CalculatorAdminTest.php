@@ -73,4 +73,27 @@ class CalculatorAdminTest extends TestCase
     {
         $this->actingAs($this->superAdmin())->get(route('admin.calc.rooms.index'))->assertOk();
     }
+
+    public function test_flat_calc_admin_pages_render(): void
+    {
+        $admin = $this->superAdmin();
+        foreach ([
+            route('admin.calc.zonasi.index'), route('admin.calc.zonasi.create'),
+            route('admin.calc.building-types.index'), route('admin.calc.building-types.create'),
+            route('admin.calc.components.index'), route('admin.calc.components.create'),
+            route('admin.calc.size-tiers.index'), route('admin.calc.size-tiers.create'),
+        ] as $url) {
+            $this->actingAs($admin)->get($url)->assertOk();
+        }
+    }
+
+    public function test_zonasi_percentages_are_stored_as_fractions(): void
+    {
+        $this->actingAs($this->superAdmin())->post(route('admin.calc.zonasi.store'), [
+            'code' => 'R-9', 'name' => 'Test', 'kdb' => 50, 'klb' => 2, 'ktb' => 50, 'rth' => 30,
+        ])->assertRedirect(route('admin.calc.zonasi.index'));
+        $z = Zonasi::where('code', 'R-9')->first();
+        $this->assertEqualsWithDelta(0.50, $z->kdb, 0.001);
+        $this->assertEqualsWithDelta(2.0, $z->klb, 0.001);
+    }
 }
