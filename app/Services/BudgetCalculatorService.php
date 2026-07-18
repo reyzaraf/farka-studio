@@ -26,7 +26,7 @@ class BudgetCalculatorService
             $factors[] = ['label' => $opt->label, 'multiplier' => (float) $opt->multiplier];
         }
 
-        $basePrice = (int) BuildingType::whereKey($in['building_type_id'])->value('price_per_m2');
+        $basePrice = (int) BuildingType::findOrFail($in['building_type_id'])->price_per_m2;
         $hargaBobot = (int) round($basePrice * $bobot);
 
         // --- Budget chain ---
