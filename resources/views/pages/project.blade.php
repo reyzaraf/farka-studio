@@ -19,7 +19,7 @@
                     </div>
                     <div id="cat-{{ $categoryModel->slug }}" class="submenu-container {{ $loop->first ? 'open' : '' }} pl-4 flex flex-col items-start">
                         @foreach($projects->where('category_id', $categoryModel->id) as $projectItem)
-                        <div class="submenu-item relative inline-block cursor-pointer mb-4 ml-2" onclick="setDetail('{{ $projectItem->slug }}', this)">
+                        <div class="submenu-item relative inline-block cursor-pointer mb-4 ml-2" data-slug="{{ $projectItem->slug }}" onclick="setDetail('{{ $projectItem->slug }}', this)">
                             <div class="submenu-lines absolute inset-0 z-20 opacity-0 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute top-[-2px] left-[-10px] right-[-10px] h-[2px] bg-black"></div>
                                 <div class="absolute right-[-2px] top-[-10px] bottom-[-6px] w-[2px] bg-black"></div>

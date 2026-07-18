@@ -11,6 +11,13 @@ use App\Http\Controllers\WebController;
 
 Route::get('/', [WebController::class, 'index']);
 
+// Crawlable per-project deep-link (renders the SPA focused on one project).
+Route::get('/project/{slug}', [WebController::class, 'show'])->name('project.show');
+
+// Crawlable deep-links for the About and Contact sections.
+Route::get('/about', [WebController::class, 'about'])->name('about');
+Route::get('/contact', [WebController::class, 'contact'])->name('contact');
+
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
 // Dynamic robots.txt so the Sitemap directive always points at the current host.

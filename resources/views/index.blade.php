@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Farka Studio</title>
+    @php
+        $defaultDesc = 'Farka Studio is a premier architectural and interior design studio specializing in innovative, premium, and sustainable spatial experiences.';
+        $mTitle = $metaTitle ?? 'Farka Studio';
+        $mDesc  = $metaDescription ?? $defaultDesc;
+        $mImage = $metaImage ?? asset('farkalogo.svg');
+    @endphp
+    <title>{{ $mTitle }}</title>
     
     <!-- Primary Meta Tags -->
      
-    <meta name="title" content="Farka Studio">
-    <meta name="description" content="Farka Studio is a premier architectural and interior design studio specializing in innovative, premium, and sustainable spatial experiences.">
+    <meta name="title" content="{{ $mTitle }}">
+    <meta name="description" content="{{ $mDesc }}">
     <meta name="keywords" content="Farka Studio, Architecture, Interior Design, Architectural Firm, Sustainable Design, Premium Architecture, Spatial Design, Building Design">
     <meta name="author" content="Farka Studio">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -21,20 +27,51 @@
     <link rel="canonical" href="{{ url()->current() }}">
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="{{ isset($activeProject) ? 'article' : 'website' }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="Farka Studio">
-    <meta property="og:description" content="Farka Studio is a premier architectural and interior design studio specializing in innovative, premium, and sustainable spatial experiences.">
-    <meta property="og:image" content="{{ asset('farkalogo.svg') }}">
+    <meta property="og:title" content="{{ $mTitle }}">
+    <meta property="og:description" content="{{ $mDesc }}">
+    <meta property="og:image" content="{{ $mImage }}">
     <meta property="og:site_name" content="Farka Studio">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
-    <meta property="twitter:title" content="Farka Studio">
-    <meta property="twitter:description" content="Farka Studio is a premier architectural and interior design studio specializing in innovative, premium, and sustainable spatial experiences.">
-    <meta property="twitter:image" content="{{ asset('farkalogo.svg') }}">
-    
+    <meta property="twitter:title" content="{{ $mTitle }}">
+    <meta property="twitter:description" content="{{ $mDesc }}">
+    <meta property="twitter:image" content="{{ $mImage }}">
+
+    <!-- Structured data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Farka Studio",
+      "url": "{{ url('/') }}",
+      "logo": "{{ asset('farkalogo.svg') }}",
+      "description": {!! json_encode($defaultDesc) !!}
+    }
+    </script>
+    @isset($activeProject)
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "name": {!! json_encode($activeProject->title) !!},
+      "url": "{{ url()->current() }}",
+      "image": "{{ $mImage }}",
+      "description": {!! json_encode($mDesc) !!},
+      "creator": { "@type": "Organization", "name": "Farka Studio" }@if($activeProject->location),
+      "locationCreated": { "@type": "Place", "name": {!! json_encode($activeProject->location) !!} }@endif
+
+    }
+    </script>
+    <script>window.INITIAL_PROJECT = @json($activeProjectSlug);</script>
+    @endisset
+    @isset($activePage)
+    <script>window.INITIAL_PAGE = @json($activePage);</script>
+    @endisset
+
     <!-- Theme Color -->
     <meta name="theme-color" content="#ffffff">
     <!-- Fonts -->
@@ -144,6 +181,27 @@
     </style>
 </head>
 <body class="overflow-hidden">
+@isset($activeProject)
+{{-- Server-rendered project content for crawlers on a /project/{slug} deep-link (visually hidden) --}}
+<div class="sr-only">
+    <h1>{{ $activeProject->title }}</h1>
+    <p>{{ $mDesc }}</p>
+    @if($activeProject->location)<p>Location: {{ $activeProject->location }}</p>@endif
+    @if($activeProject->contents->first())
+        <img src="{{ asset('storage/' . $activeProject->contents->first()->image_url) }}" alt="{{ $activeProject->title }}" loading="lazy">
+    @endif
+    @foreach($activeProject->contents as $c)
+        @if($c->description)<p>{{ $c->description }}</p>@endif
+    @endforeach
+</div>
+@endisset
+@isset($activePage)
+{{-- Server-rendered heading for crawlers on the /about and /contact deep-links --}}
+<div class="sr-only">
+    @if($activePage === 'about')<h1>About Farka Studio</h1>@else<h1>Contact Farka Studio</h1>@endif
+    <p>{{ $mDesc }}</p>
+</div>
+@endisset
 
     <div id="preloader-bg" class="fixed inset-0 z-[190] bg-white"></div>
     <img id="logo-farka" src="{{ asset('farkalogo.svg') }}" class="logo-center opacity-0">
@@ -332,7 +390,13 @@
                 mainLogo.style.transition = 'all 0.8s cubic-bezier(0.85, 0, 0.15, 1)';
                 mainLogo.style.zIndex = '150'; 
                 restoreActiveStates();
-                
+
+                // Deep-link: if arrived on a /project/{slug} URL, open that project.
+                if (window.INITIAL_PROJECT) openInitialProject(window.INITIAL_PROJECT);
+                // Deep-link: open the About / Contact section directly.
+                else if (window.INITIAL_PAGE === 'about') goToAbout();
+                else if (window.INITIAL_PAGE === 'contact') goToContact();
+
                 // Play video after preloader
                 const ytIframe = document.getElementById('hero-yt-video');
                 const gdriveIframe = document.getElementById('hero-gdrive-video');
@@ -348,6 +412,18 @@
                     setTimeout(() => mp4Video.classList.remove('opacity-0'), 100);
                 }
             }, 1200);
+        }
+
+        // Open a specific project when the page is loaded via its deep-link URL.
+        function openInitialProject(slug) {
+            const el = document.querySelector('.submenu-item[data-slug="' + slug + '"]');
+            if (!el || !db[slug]) return;
+            goToProject();
+            setTimeout(() => {
+                const cat = el.closest('.submenu-container');
+                if (cat) cat.classList.add('open');
+                setDetail(slug, el);
+            }, 750);
         }
 
         window.onload = runPreloader;

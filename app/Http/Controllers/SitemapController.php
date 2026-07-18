@@ -26,7 +26,29 @@ class SitemapController extends Controller
                 'changefreq' => 'monthly',
                 'priority'   => '0.8',
             ],
+            [
+                'loc'        => route('about'),
+                'lastmod'    => now()->toAtomString(),
+                'changefreq' => 'yearly',
+                'priority'   => '0.6',
+            ],
+            [
+                'loc'        => route('contact'),
+                'lastmod'    => now()->toAtomString(),
+                'changefreq' => 'yearly',
+                'priority'   => '0.6',
+            ],
         ];
+
+        // One crawlable URL per published project.
+        foreach (Project::where('is_published', true)->orderBy('order')->get(['slug', 'updated_at']) as $p) {
+            $urls[] = [
+                'loc'        => route('project.show', $p->slug),
+                'lastmod'    => ($p->updated_at ?? now())->toAtomString(),
+                'changefreq' => 'monthly',
+                'priority'   => '0.7',
+            ];
+        }
 
         return response()
             ->view('sitemap', ['urls' => $urls])
