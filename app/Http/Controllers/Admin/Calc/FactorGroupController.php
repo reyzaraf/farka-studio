@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Calc;
 use App\Http\Controllers\Controller;
 use App\Models\Calc\FactorGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FactorGroupController extends Controller
 {
@@ -82,17 +83,21 @@ class FactorGroupController extends Controller
      */
     private function syncOptions(FactorGroup $group, array $options, $defaultIndex): void
     {
-        $group->options()->delete();
-        $defaultIndex = is_numeric($defaultIndex) ? (int) $defaultIndex : 0;
+        $options = array_values($options);
+        $defaultIndex = (is_numeric($defaultIndex) && isset($options[(int) $defaultIndex])) ? (int) $defaultIndex : 0;
 
-        foreach (array_values($options) as $i => $opt) {
-            $group->options()->create([
-                'label' => $opt['label'],
-                'multiplier' => $opt['multiplier'],
-                'note' => $opt['note'] ?? null,
-                'is_default' => $i === $defaultIndex,
-                'order' => $i,
-            ]);
-        }
+        DB::transaction(function () use ($group, $options, $defaultIndex) {
+            $group->options()->delete();
+
+            foreach ($options as $i => $opt) {
+                $group->options()->create([
+                    'label' => $opt['label'],
+                    'multiplier' => $opt['multiplier'],
+                    'note' => $opt['note'] ?? null,
+                    'is_default' => $i === $defaultIndex,
+                    'order' => $i,
+                ]);
+            }
+        });
     }
 }

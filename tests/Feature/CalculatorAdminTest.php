@@ -117,4 +117,37 @@ class CalculatorAdminTest extends TestCase
         $g = \App\Models\Calc\FactorGroup::where('key','test_group')->first();
         $this->assertSame(2, $g->options()->count());
     }
+
+    public function test_factor_group_update_keeps_single_default(): void
+    {
+        $admin = $this->superAdmin();
+        // create with default on index 0
+        $this->actingAs($admin)->post(route('admin.calc.factor-groups.store'), [
+            'key' => 'tg_upd', 'name' => 'TG Upd',
+            'options' => [
+                ['label' => 'A', 'multiplier' => 1.0],
+                ['label' => 'B', 'multiplier' => 1.2],
+                ['label' => 'C', 'multiplier' => 1.3],
+            ],
+            'default_index' => 0,
+        ])->assertRedirect();
+
+        $group = \App\Models\Calc\FactorGroup::where('key', 'tg_upd')->firstOrFail();
+
+        // update, choosing index 2 as the default
+        $this->actingAs($admin)->put(route('admin.calc.factor-groups.update', $group->id), [
+            'key' => 'tg_upd', 'name' => 'TG Upd',
+            'options' => [
+                ['label' => 'A', 'multiplier' => 1.0],
+                ['label' => 'B', 'multiplier' => 1.2],
+                ['label' => 'C', 'multiplier' => 1.3],
+            ],
+            'default_index' => 2,
+        ])->assertRedirect();
+
+        $group->refresh()->load('options');
+        $this->assertSame(3, $group->options->count());
+        $this->assertSame(1, $group->options->where('is_default', true)->count());
+        $this->assertSame('C', $group->options->firstWhere('is_default', true)->label);
+    }
 }
