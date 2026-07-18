@@ -43,7 +43,7 @@
         a { color: inherit; }
 
         /* ============ Layout ============ */
-        .wrap { max-width: 1120px; margin: 0 auto; padding: 32px 20px 64px; }
+        .wrap { max-width: 1240px; margin: 0 auto; padding: 32px 20px 64px; }
         .topbar {
             display: inline-flex; align-items: center; gap: 8px;
             font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
@@ -57,7 +57,7 @@
 
         .layout { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: start; }
         @media (min-width: 1024px) {
-            .layout { grid-template-columns: 2fr 1fr; gap: 28px; }
+            .layout { grid-template-columns: minmax(0, 1.3fr) minmax(400px, 1fr); gap: 28px; }
         }
         .form-col { display: grid; gap: 20px; }
 
