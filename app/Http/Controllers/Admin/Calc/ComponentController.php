@@ -58,9 +58,9 @@ class ComponentController extends Controller
     {
         return $request->validate([
             'name' => 'required|string|max:255',
-            'standar' => 'required|string|max:500',
-            'optimal' => 'required|string|max:500',
-            'premium' => 'required|string|max:500',
+            'standar' => 'required|string|max:255',
+            'optimal' => 'required|string|max:255',
+            'premium' => 'required|string|max:255',
         ]);
     }
 }

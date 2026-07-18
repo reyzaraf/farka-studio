@@ -59,7 +59,7 @@ class SizeTierController extends Controller
         return $request->validate([
             'key' => 'required|string|max:50|unique:calc_size_tiers,key' . ($id ? ",$id" : ''),
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:500',
+            'description' => 'nullable|string|max:255',
         ]);
     }
 }
