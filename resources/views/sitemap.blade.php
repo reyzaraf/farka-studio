@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?php echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n"; ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+@foreach($urls as $u)
     <url>
-        <loc>{{ url('/') }}</loc>
-        <lastmod>{{ $lastmod }}</lastmod>
-        <changefreq>daily</changefreq>
-        <priority>1.0</priority>
+        <loc>{{ $u['loc'] }}</loc>
+        <lastmod>{{ $u['lastmod'] }}</lastmod>
+        <changefreq>{{ $u['changefreq'] }}</changefreq>
+        <priority>{{ $u['priority'] }}</priority>
     </url>
+@endforeach
 </urlset>

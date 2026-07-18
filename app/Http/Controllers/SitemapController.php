@@ -2,18 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Project;
+use Illuminate\Support\Carbon;
 
 class SitemapController extends Controller
 {
     public function index()
     {
-        $latestProject = Project::latest('updated_at')->first();
-        $lastmod = $latestProject ? $latestProject->updated_at->toAtomString() : now()->toAtomString();
+        // Homepage lastmod tracks the most recently updated published project.
+        $latest = Project::where('is_published', true)->max('updated_at');
+        $homeLastmod = ($latest ? Carbon::parse($latest) : now())->toAtomString();
 
-        return response()->view('sitemap', [
-            'lastmod' => $lastmod
-        ])->header('Content-Type', 'text/xml');
+        $urls = [
+            [
+                'loc'        => url('/'),
+                'lastmod'    => $homeLastmod,
+                'changefreq' => 'weekly',
+                'priority'   => '1.0',
+            ],
+            [
+                'loc'        => route('kalkulator.show'),
+                'lastmod'    => now()->toAtomString(),
+                'changefreq' => 'monthly',
+                'priority'   => '0.8',
+            ],
+        ];
+
+        return response()
+            ->view('sitemap', ['urls' => $urls])
+            ->header('Content-Type', 'application/xml');
     }
 }

@@ -13,6 +13,19 @@ Route::get('/', [WebController::class, 'index']);
 
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
+// Dynamic robots.txt so the Sitemap directive always points at the current host.
+Route::get('/robots.txt', function () {
+    $body = implode("\n", [
+        'User-agent: *',
+        'Allow: /',
+        'Disallow: /admin',
+        '',
+        'Sitemap: ' . url('/sitemap.xml'),
+        '',
+    ]);
+    return response($body, 200, ['Content-Type' => 'text/plain']);
+})->name('robots');
+
 // Public budget calculator
 Route::get('/budget-estimator', [\App\Http\Controllers\BudgetCalculatorController::class, 'show'])->name('kalkulator.show');
 Route::post('/budget-estimator/calculate', [\App\Http\Controllers\BudgetCalculatorController::class, 'calculate'])->middleware('throttle:60,1')->name('kalkulator.calculate');

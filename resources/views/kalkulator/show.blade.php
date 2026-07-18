@@ -5,7 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Budget Estimator | Farka Studio</title>
+    <meta name="description" content="Estimasi biaya pembangunan secara instan bersama Farka Studio — hitung kebutuhan budget berdasarkan luas tanah, zonasi, kualitas bangunan, dan program ruang.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
     <link rel="icon" href="{{ asset('farkalogo.svg') }}" type="image/x-icon">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Farka Studio">
+    <meta property="og:title" content="Budget Estimator | Farka Studio">
+    <meta property="og:description" content="Estimasi biaya pembangunan secara instan berdasarkan luas tanah, zonasi, kualitas bangunan, dan program ruang.">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('farkalogo.svg') }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Budget Estimator | Farka Studio">
+    <meta name="twitter:description" content="Estimasi biaya pembangunan secara instan berdasarkan luas tanah, zonasi, kualitas bangunan, dan program ruang.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
