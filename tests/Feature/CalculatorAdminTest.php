@@ -96,4 +96,12 @@ class CalculatorAdminTest extends TestCase
         $this->assertEqualsWithDelta(0.50, $z->kdb, 0.001);
         $this->assertEqualsWithDelta(2.0, $z->klb, 0.001);
     }
+
+    public function test_allocation_percentage_stored_as_fraction(): void
+    {
+        $this->actingAs($this->superAdmin())->post(route('admin.calc.allocations.store'), [
+            'category' => 'persiapan', 'label' => 'Test fee', 'percentage' => 2.5,
+        ])->assertRedirect(route('admin.calc.allocations.index'));
+        $this->assertEqualsWithDelta(0.025, \App\Models\Calc\Allocation::where('label','Test fee')->value('percentage'), 0.0001);
+    }
 }
