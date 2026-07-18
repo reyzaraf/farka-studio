@@ -13,6 +13,11 @@ Route::get('/', [WebController::class, 'index']);
 
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
+// Public budget calculator
+Route::get('/kalkulator-budget', [\App\Http\Controllers\BudgetCalculatorController::class, 'show'])->name('kalkulator.show');
+Route::post('/kalkulator-budget/calculate', [\App\Http\Controllers\BudgetCalculatorController::class, 'calculate'])->name('kalkulator.calculate');
+Route::post('/kalkulator-budget/pdf', [\App\Http\Controllers\BudgetCalculatorController::class, 'pdf'])->name('kalkulator.pdf');
+
 // Custom Admin Panel Routes
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
