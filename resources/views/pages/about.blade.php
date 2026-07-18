@@ -25,9 +25,9 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
                     @foreach($keyPeople as $person)
                     <div class="group cursor-pointer text-center md:text-left">
-                        <div class="overflow-hidden mb-4">
+                        <div class="overflow-hidden mb-4 bg-gray-100">
                             @if($person->image_url)
-                                <img src="{{ asset('storage/' . $person->image_url) }}" alt="{{ $person->name }}" class="w-full aspect-[3/4] object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition duration-500">
+                                <img src="{{ asset('storage/' . $person->image_url) }}" alt="{{ $person->name }}" class="w-full aspect-[3/4] object-contain grayscale group-hover:grayscale-0 transition duration-500">
                             @else
                                 <div class="w-full aspect-[3/4] bg-gray-200 flex items-center justify-center text-gray-400 grayscale group-hover:grayscale-0 transition duration-500">No Image</div>
                             @endif
