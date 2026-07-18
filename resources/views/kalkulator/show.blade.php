@@ -144,6 +144,30 @@
         .room-del:hover { color: var(--neg); border-color: rgba(220,38,38,.4); }
         .rooms-empty { font-size: .9rem; color: var(--ink-40); text-align: center; border: 1px dashed var(--line-strong); border-radius: 12px; padding: 22px 16px; }
         .rooms-empty b { color: var(--ink-70); font-weight: 600; }
+        .room-area { grid-column: 1 / -1; font-size: 13px; color: var(--ink-55); padding-top: 8px; margin-top: 2px; border-top: 1px dashed var(--line); }
+        .room-area b { color: var(--ink); font-weight: 700; }
+
+        /* ============ Regulation live info ============ */
+        .reg-info { margin-top: 14px; }
+        .reg-table { width: 100%; border-collapse: collapse; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font-size: .92rem; }
+        .reg-table th, .reg-table td { padding: 9px 14px; text-align: left; }
+        .reg-table thead th { background: var(--wash); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-55); }
+        .reg-table tbody tr { border-top: 1px solid var(--line); }
+        .reg-table td.n { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+        .reg-table tr.total td { background: var(--wash); font-weight: 700; }
+        .reg-empty { font-size: .85rem; color: var(--ink-40); }
+
+        /* ============ Size-tier reference ============ */
+        .tier-ref { margin: 4px 0 16px; border: 1px solid var(--line); border-radius: 12px; padding: 2px 14px; }
+        .tier-ref summary { cursor: pointer; font-size: .9rem; font-weight: 600; color: var(--ink-70); padding: 11px 0; list-style: none; }
+        .tier-ref summary::-webkit-details-marker { display: none; }
+        .tier-ref summary::before { content: "▸ "; color: var(--ink-40); }
+        .tier-ref[open] summary::before { content: "▾ "; }
+        .tier-ref[open] summary { border-bottom: 1px solid var(--line); margin-bottom: 6px; }
+        .tier-item { padding: 7px 0; font-size: .88rem; border-top: 1px solid rgba(17,17,17,.05); }
+        .tier-item:first-of-type { border-top: 0; }
+        .tier-item b { color: var(--ink); }
+        .tier-item span { color: var(--ink-55); }
 
         /* ============ Buttons ============ */
         .btn { font-family: inherit; font-size: .95rem; font-weight: 600; border: 0; border-radius: 12px; cursor: pointer; transition: background .15s, opacity .15s; }
@@ -344,6 +368,7 @@
                         @endforeach
                     </select>
                 </label>
+                <div id="reg-info" class="reg-info"></div>
                 <p class="hint">KDB / KLB / KTB / RTH dihitung otomatis dari zonasi &times; luas tanah. *Untuk kepastian butuh dokumen SKRK dari Dinas PU / PTSP setempat.</p>
             </section>
 
@@ -355,6 +380,14 @@
                     <button type="button" id="add-room" class="btn btn-dark btn-add">Tambah ruangan</button>
                 </div>
                 <p class="card-sub">Susun kebutuhan ruangan beserta jumlah, tipe luasan, dan prioritasnya.</p>
+                @if($sizeTiers->isNotEmpty())
+                <details class="tier-ref">
+                    <summary>Penjelasan tipe luasan</summary>
+                    @foreach($sizeTiers as $t)
+                        <div class="tier-item"><b>{{ $t->name }}</b> — <span>{{ $t->description }}</span></div>
+                    @endforeach
+                </details>
+                @endif
                 <input type="hidden" name="sirkulasi_pct" value="{{ $settings['sirkulasi_pct'] }}">
                 <div id="rooms-body" class="room-list"></div>
                 <div id="rooms-empty" class="rooms-empty">
@@ -381,7 +414,16 @@
 const CSRF = document.querySelector('meta[name="csrf-token"]').content;
 const ROOMS = @json($rooms);
 const TIERS = @json($sizeTiers);
+const ZONASI = @json($zonasiList);
 const FACTOR_COUNT = {{ $factorGroups->count() }};
+
+// Unit area (m²) for a room at a given size tier, from the catalog.
+function roomUnitArea(roomId, tierId){
+    const r = ROOMS.find(x => Number(x.id) === Number(roomId));
+    if (!r || !r.areas) return null;
+    const a = r.areas.find(x => Number(x.size_tier_id) === Number(tierId));
+    return a ? Number(a.area) : null;
+}
 
 function rupiah(n){ return 'Rp ' + Math.round(n).toLocaleString('id-ID'); }
 function m2(n){ return (Math.round(n * 10) / 10).toLocaleString('id-ID', {minimumFractionDigits: 0, maximumFractionDigits: 1}) + ' m²'; }
@@ -415,9 +457,22 @@ function roomRow(){
             <option value="sekunder">Sekunder</option>
             <option value="tersier">Tersier</option>
         </select>
-        <button type="button" class="room-del" aria-label="Hapus">&times;</button>`;
+        <button type="button" class="room-del" aria-label="Hapus">&times;</button>
+        <div class="room-area"></div>`;
+    const areaEl = wrap.querySelector('.room-area');
+    function updArea(){
+        const rid = Number(wrap.querySelector('.r-room').value) || 0;
+        const tid = Number(wrap.querySelector('.r-tier').value) || 0;
+        const qty = Number(wrap.querySelector('.r-qty').value) || 1;
+        const unit = roomUnitArea(rid, tid);
+        areaEl.innerHTML = (unit === null)
+            ? '<span class="muted">Pilih ruangan &amp; tipe luasan untuk melihat luas.</span>'
+            : `Luas: <b>${m2(unit)}</b> × ${qty} = <b>${m2(unit * qty)}</b>`;
+    }
     wrap.querySelector('.room-del').addEventListener('click', () => { wrap.remove(); refreshRoomsEmpty(); recalc(); });
-    wrap.querySelectorAll('select, input').forEach(el => el.addEventListener('change', recalc));
+    wrap.querySelectorAll('select, input').forEach(el => el.addEventListener('change', () => { updArea(); recalc(); }));
+    wrap.querySelector('.r-qty').addEventListener('input', updArea);
+    updArea();
     return wrap;
 }
 document.getElementById('add-room').addEventListener('click', () => { roomsBody.appendChild(roomRow()); refreshRoomsEmpty(); });
@@ -546,9 +601,35 @@ pdfBtn.addEventListener('click', () => {
     form.remove();
 });
 
+// --- Regulation live preview (KDB / KLB / KTB / RTH + luas terbangun) ---
+const regInfoEl = document.getElementById('reg-info');
+function renderRegulation(){
+    const fd = new FormData(document.getElementById('calc-form'));
+    const zid = Number(fd.get('zonasi_id')) || 0;
+    const land = parseFloat(fd.get('luas_tanah')) || 0;
+    const z = ZONASI.find(x => Number(x.id) === zid);
+    if (!z || land <= 0) {
+        regInfoEl.innerHTML = '<p class="reg-empty">Pilih zonasi &amp; isi luas tanah untuk melihat KDB / KLB / KTB / RTH.</p>';
+        return;
+    }
+    const pct = (f) => Math.round(f * 100) + '%';
+    regInfoEl.innerHTML = `
+        <table class="reg-table">
+            <thead><tr><th>Parameter</th><th style="text-align:right">Koefisien</th><th style="text-align:right">Luas</th></tr></thead>
+            <tbody>
+                <tr><td>KDB</td><td class="n">${pct(z.kdb)}</td><td class="n">${m2(z.kdb * land)}</td></tr>
+                <tr><td>KLB</td><td class="n">${Number(z.klb).toFixed(2)}</td><td class="n">${m2(z.klb * land)}</td></tr>
+                <tr><td>KTB</td><td class="n">${pct(z.ktb)}</td><td class="n">${m2(z.ktb * land)}</td></tr>
+                <tr><td>RTH</td><td class="n">${pct(z.rth)}</td><td class="n">${m2(z.rth * land)}</td></tr>
+                <tr class="total"><td>Luas terbangun (maks. KLB)</td><td class="n"></td><td class="n">${m2(z.klb * land)}</td></tr>
+            </tbody>
+        </table>`;
+}
+
 // --- Init ---
-document.getElementById('calc-form').addEventListener('change', recalc);
-document.getElementById('calc-form').addEventListener('input', recalc);
+document.getElementById('calc-form').addEventListener('change', () => { renderRegulation(); recalc(); });
+document.getElementById('calc-form').addEventListener('input', () => { renderRegulation(); recalc(); });
+renderRegulation();
 showEmptyState();
 </script>
 </body>
