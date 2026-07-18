@@ -150,4 +150,13 @@ class CalculatorAdminTest extends TestCase
         $this->assertSame(1, $group->options->where('is_default', true)->count());
         $this->assertSame('C', $group->options->firstWhere('is_default', true)->label);
     }
+
+    public function test_settings_update_stores_fractions(): void
+    {
+        $this->actingAs($this->superAdmin())->put(route('admin.calc.settings.update'), [
+            'dana_darurat_pct' => 12, 'sirkulasi_pct' => 25, 'toleransi_default' => 1000000,
+        ])->assertRedirect(route('admin.calc.settings.edit'));
+        $this->assertEqualsWithDelta(0.12, (float) \App\Models\Calc\Setting::value('dana_darurat_pct'), 0.0001);
+        $this->assertEqualsWithDelta(0.25, (float) \App\Models\Calc\Setting::value('sirkulasi_pct'), 0.0001);
+    }
 }
