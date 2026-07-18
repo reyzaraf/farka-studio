@@ -9,87 +9,234 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700&family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Noto+Sans+JP:wght@400;500;700&family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                fontFamily: { sans: ['"Noto Sans JP"', 'sans-serif'] },
-                extend: {
-                    fontFamily: {
-                        title: ['Montserrat', 'sans-serif'],
-                        header: ['"Source Sans 3"', 'sans-serif'],
-                    },
-                },
-            },
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer base {
-            h1, h2, .font-title { @apply font-title; }
-            h3, h4, .font-header { @apply font-header; }
-        }
-    </style>
     <style>
-        body { font-family: 'Noto Sans JP', sans-serif; }
-        /* Remove number-input spinners for a cleaner look */
+        /* ============ Reset & tokens ============ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --ink: #111111;
+            --ink-70: rgba(17,17,17,.70);
+            --ink-55: rgba(17,17,17,.55);
+            --ink-45: rgba(17,17,17,.45);
+            --ink-40: rgba(17,17,17,.40);
+            --line: rgba(17,17,17,.12);
+            --line-strong: rgba(17,17,17,.28);
+            --wash: rgba(17,17,17,.03);
+            --pos: #15803d;
+            --neg: #dc2626;
+            --radius: 16px;
+            --font-title: 'Montserrat', system-ui, -apple-system, Segoe UI, sans-serif;
+            --font-head: 'Source Sans 3', system-ui, -apple-system, Segoe UI, sans-serif;
+            --font-body: 'Noto Sans JP', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        }
+        html { -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: var(--font-body);
+            color: var(--ink);
+            background: #fff;
+            font-size: 16px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3 { font-family: var(--font-title); font-weight: 800; line-height: 1.2; }
+        a { color: inherit; }
+
+        /* ============ Layout ============ */
+        .wrap { max-width: 1120px; margin: 0 auto; padding: 32px 20px 64px; }
+        .topbar {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+            color: var(--ink-40); text-decoration: none; transition: color .15s;
+        }
+        .topbar:hover { color: var(--ink); }
+        .page-head { margin: 20px 0 28px; }
+        .page-title { font-size: clamp(1.7rem, 4.5vw, 2.4rem); font-weight: 900; letter-spacing: -.02em; }
+        .page-sub { margin-top: 8px; font-size: clamp(1rem, 2.4vw, 1.15rem); color: var(--ink-55); max-width: 640px; }
+        .page-sub .note { color: var(--ink-40); }
+
+        .layout { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: start; }
+        @media (min-width: 1024px) {
+            .layout { grid-template-columns: 2fr 1fr; gap: 28px; }
+        }
+        .form-col { display: grid; gap: 20px; }
+
+        /* ============ Card / section ============ */
+        .card { border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+        @media (min-width: 640px) { .card { padding: 26px 28px; } }
+        .step { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-40); }
+        .card-title { font-size: clamp(1.2rem, 3vw, 1.5rem); margin: 4px 0 18px; }
+        .card-title.tight { margin-bottom: 4px; }
+        .card-sub { font-size: .95rem; color: var(--ink-55); margin-bottom: 18px; }
+
+        /* ============ Fields ============ */
+        .grid2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+        @media (min-width: 640px) { .grid2 { grid-template-columns: 1fr 1fr; gap: 18px; } }
+        .col-2 { grid-column: 1 / -1; }
+        .field { display: block; }
+        .field-label { display: block; font-size: .9rem; font-weight: 600; color: var(--ink-70); margin-bottom: 7px; }
+        .control {
+            display: block; width: 100%;
+            font-family: inherit; font-size: 1rem; color: var(--ink);
+            background: #fff; border: 1px solid var(--line-strong); border-radius: 12px;
+            padding: 12px 15px; outline: none; transition: border-color .15s;
+        }
+        .control::placeholder { color: var(--ink-40); }
+        .control:focus { border-color: var(--ink); }
+        select.control {
+            -webkit-appearance: none; appearance: none; cursor: pointer; padding-right: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-opacity='0.5' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 14px center;
+        }
+        input[type=number] { -moz-appearance: textfield; }
         input[type=number]::-webkit-outer-spin-button,
         input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type=number] { -moz-appearance: textfield; }
+
+        /* Rupiah input group */
+        .rp-group { display: flex; align-items: stretch; border: 1px solid var(--line-strong); border-radius: 12px; overflow: hidden; transition: border-color .15s; }
+        .rp-group:focus-within { border-color: var(--ink); }
+        .rp-prefix { display: grid; place-items: center; padding: 0 14px; color: var(--ink-55); background: var(--wash); border-right: 1px solid var(--line); font-size: .95rem; }
+        .rp-input { flex: 1; min-width: 0; border: 0; outline: none; font-family: inherit; font-size: 1rem; padding: 12px 15px; color: var(--ink); background: transparent; }
+        .rp-input::placeholder { color: var(--ink-40); }
+
+        /* ============ Allocations ============ */
+        .alloc-groups { display: grid; gap: 18px; }
+        .alloc-cat { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-40); margin-bottom: 8px; }
+        .alloc-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        @media (min-width: 640px) { .alloc-list { grid-template-columns: 1fr 1fr; } }
+        .alloc-item {
+            display: flex; align-items: center; gap: 12px; cursor: pointer;
+            border: 1px solid var(--line); border-radius: 12px; padding: 11px 15px;
+            font-size: 15px; transition: border-color .15s;
+        }
+        .alloc-item:hover { border-color: var(--line-strong); }
+        .alloc-item.is-base { background: var(--wash); }
+        .alloc-item input[type=checkbox] { width: 17px; height: 17px; accent-color: var(--ink); flex: none; }
+        .alloc-item .name { flex: 1; }
+        .alloc-item .pct { color: var(--ink-45); font-variant-numeric: tabular-nums; }
+
+        /* ============ Components table ============ */
+        .comp-block { margin-top: 24px; }
+        .comp-cap { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-40); margin-bottom: 8px; }
+        .comp-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; -webkit-overflow-scrolling: touch; }
+        .comp-table { width: 100%; border-collapse: collapse; min-width: 560px; font-size: .9rem; }
+        .comp-table th, .comp-table td { text-align: left; padding: 11px 15px; vertical-align: top; }
+        .comp-table thead th { background: var(--wash); font-weight: 700; }
+        .comp-table tbody tr { border-top: 1px solid var(--line); }
+        .comp-table td.name { font-weight: 600; white-space: nowrap; }
+        .comp-table td.desc { color: var(--ink-70); }
+        .hint { font-size: .78rem; color: var(--ink-40); margin-top: 8px; }
+
+        /* ============ Room builder ============ */
+        .rooms-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 6px; }
+        .room-list { display: grid; gap: 10px; }
+        .room-row {
+            display: grid; grid-template-columns: 1fr; gap: 8px;
+            border: 1px solid var(--line); border-radius: 12px; padding: 12px;
+        }
+        @media (min-width: 640px) {
+            .room-row { grid-template-columns: 5fr 3fr 1.4fr 2.4fr 44px; align-items: center; padding: 10px; }
+        }
+        .room-row select, .room-row input { font-family: inherit; font-size: 15px; border: 1px solid var(--line-strong); border-radius: 10px; padding: 10px 12px; outline: none; background: #fff; width: 100%; }
+        .room-row select { -webkit-appearance: none; appearance: none; }
+        .room-row select:focus, .room-row input:focus { border-color: var(--ink); }
+        .room-del { border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink-40); font-size: 20px; line-height: 1; padding: 9px 0; cursor: pointer; transition: .15s; }
+        .room-del:hover { color: var(--neg); border-color: rgba(220,38,38,.4); }
+        .rooms-empty { font-size: .9rem; color: var(--ink-40); text-align: center; border: 1px dashed var(--line-strong); border-radius: 12px; padding: 22px 16px; }
+        .rooms-empty b { color: var(--ink-70); font-weight: 600; }
+
+        /* ============ Buttons ============ */
+        .btn { font-family: inherit; font-size: .95rem; font-weight: 600; border: 0; border-radius: 12px; cursor: pointer; transition: background .15s, opacity .15s; }
+        .btn-dark { background: var(--ink); color: #fff; padding: 11px 18px; }
+        .btn-dark:hover { background: #000; }
+        .btn-add::before { content: "+ "; }
+
+        /* ============ Result panel ============ */
+        .aside-col { display: grid; gap: 16px; }
+        @media (min-width: 1024px) { .aside-col { position: sticky; top: 24px; } }
+        .result { border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+        .result-cap { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-40); }
+        .result-empty { text-align: center; padding: 22px 4px; }
+        .result-empty p { margin-top: 12px; color: var(--ink-55); font-size: 15px; }
+        .result-empty b { color: var(--ink-70); font-weight: 600; }
+        .result h3 { font-size: 1.2rem; margin: 4px 0 16px; }
+
+        .hero { background: var(--ink); color: #fff; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .hero-label { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+        .hero-value { font-family: var(--font-title); font-size: 2rem; font-weight: 900; margin-top: 4px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+        .hero-sub { font-size: .9rem; color: rgba(255,255,255,.6); margin-top: 6px; }
+
+        .metrics { margin-bottom: 22px; }
+        .metric { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+        .metric:last-child { border-bottom: 0; }
+        .metric .m-label { font-size: 13px; color: var(--ink-55); }
+        .metric .m-value { font-family: var(--font-head); font-weight: 700; font-size: 1rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+        .scen-cap { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-40); margin-bottom: 12px; }
+        .scen-list { display: grid; gap: 10px; }
+        .scen-card { border: 1px solid var(--line); border-radius: 12px; padding: 15px; }
+        .scen-title { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-40); margin-bottom: 10px; }
+        .scen-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+        @media (min-width: 480px) { .scen-grid { grid-template-columns: 1fr 1fr 1fr; gap: 6px; } }
+        .scen-cell { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+        @media (min-width: 480px) { .scen-cell { display: block; } }
+        .scen-cell .c-label { font-size: 12px; color: var(--ink-40); }
+        .scen-cell .c-value { font-family: var(--font-head); font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; text-align: right; }
+        @media (min-width: 480px) { .scen-cell .c-value { text-align: left; margin-top: 2px; } }
+        .pos { color: var(--pos); } .neg { color: var(--neg); } .muted { color: var(--ink-40); }
+
+        .pdf-btn { width: 100%; background: var(--ink); color: #fff; border: 0; border-radius: 12px; padding: 15px; font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background .15s, opacity .15s; }
+        .pdf-btn:hover { background: #000; }
+        .pdf-btn:disabled { opacity: .4; cursor: not-allowed; }
     </style>
 </head>
-<body class="bg-white text-neutral-900 antialiased">
+<body>
+<div class="wrap">
 
-<div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <a href="{{ url('/') }}" class="topbar">&larr; Farka Studio</a>
 
-    {{-- Top bar --}}
-    <a href="{{ url('/') }}" class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-black/40 hover:text-black transition">
-        &larr; Farka Studio
-    </a>
-
-    <header class="mt-5 mb-8 sm:mb-10">
-        <h1 class="font-title text-3xl sm:text-4xl font-extrabold tracking-tight">Kalkulator Budget Proyek</h1>
-        <p class="mt-2 text-base sm:text-lg text-black/60 max-w-2xl">
+    <header class="page-head">
+        <h1 class="page-title">Kalkulator Budget Proyek</h1>
+        <p class="page-sub">
             Estimasi kebutuhan biaya pembangunan berdasarkan preferensi Anda.
-            <span class="text-black/40">*Angka hanya asumsi dan bukan final.</span>
+            <span class="note">*Angka hanya asumsi dan bukan final.</span>
         </p>
     </header>
 
-    <div class="grid lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+    <div class="layout">
 
         {{-- ================= FORM ================= --}}
-        <form id="calc-form" class="lg:col-span-2 space-y-5 sm:space-y-6" autocomplete="off">
+        <form id="calc-form" class="form-col" autocomplete="off">
 
             {{-- 1. General --}}
-            <section class="rounded-2xl border border-black/10 p-6 sm:p-7">
-                <div class="text-[11px] uppercase tracking-[0.2em] text-black/40">Langkah 1</div>
-                <h2 class="text-xl sm:text-2xl font-bold mt-1 mb-5">Informasi Umum</h2>
-                <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
-                    <label class="block">
-                        <span class="text-sm font-medium text-black/70">Nama proyek</span>
-                        <input name="nama_proyek" placeholder="mis. Rumah Tinggal Bapak A" class="input mt-1.5">
+            <section class="card">
+                <div class="step">Langkah 1</div>
+                <h2 class="card-title">Informasi Umum</h2>
+                <div class="grid2">
+                    <label class="field">
+                        <span class="field-label">Nama proyek</span>
+                        <input name="nama_proyek" class="control" placeholder="mis. Rumah Tinggal Bapak A">
                     </label>
-                    <label class="block">
-                        <span class="text-sm font-medium text-black/70">Luas tanah (m²)</span>
-                        <input name="luas_tanah" type="number" step="0.1" min="0" placeholder="mis. 300" class="input mt-1.5">
+                    <label class="field">
+                        <span class="field-label">Luas tanah (m²)</span>
+                        <input name="luas_tanah" type="number" step="0.1" min="0" class="control" placeholder="mis. 300">
                     </label>
-                    <label class="block sm:col-span-2">
-                        <span class="text-sm font-medium text-black/70">Lokasi proyek</span>
-                        <input name="lokasi_proyek" placeholder="Kota / wilayah" class="input mt-1.5">
+                    <label class="field col-2">
+                        <span class="field-label">Lokasi proyek</span>
+                        <input name="lokasi_proyek" class="control" placeholder="Kota / wilayah">
                     </label>
                 </div>
             </section>
 
             {{-- 2. Weighting factors --}}
-            <section class="rounded-2xl border border-black/10 p-6 sm:p-7">
-                <div class="text-[11px] uppercase tracking-[0.2em] text-black/40">Langkah 2</div>
-                <h2 class="text-xl sm:text-2xl font-bold mt-1 mb-5">Faktor Bobot</h2>
-                <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
+            <section class="card">
+                <div class="step">Langkah 2</div>
+                <h2 class="card-title">Faktor Bobot</h2>
+                <div class="grid2">
                     @foreach($factorGroups as $group)
-                        <label class="block">
-                            <span class="text-sm font-medium text-black/70">{{ $group->name }}</span>
-                            <select name="factor_option_ids[]" class="input mt-1.5" data-required-factor>
+                        <label class="field">
+                            <span class="field-label">{{ $group->name }}</span>
+                            <select name="factor_option_ids[]" class="control" data-required-factor>
                                 <option value="">— Pilih —</option>
                                 @foreach($group->options as $opt)
                                     <option value="{{ $opt->id }}">{{ $opt->label }} (×{{ rtrim(rtrim(number_format($opt->multiplier, 2), '0'), '.') }})</option>
@@ -101,22 +248,21 @@
             </section>
 
             {{-- 3. Allocations --}}
-            <section class="rounded-2xl border border-black/10 p-6 sm:p-7">
-                <div class="text-[11px] uppercase tracking-[0.2em] text-black/40">Langkah 3</div>
-                <h2 class="text-xl sm:text-2xl font-bold mt-1 mb-1">Alokasi Dana</h2>
-                <p class="text-sm text-black/50 mb-5">Pilih komponen biaya yang ingin diperhitungkan.</p>
-                <div class="space-y-5">
+            <section class="card">
+                <div class="step">Langkah 3</div>
+                <h2 class="card-title tight">Alokasi Dana</h2>
+                <p class="card-sub">Pilih komponen biaya yang ingin diperhitungkan.</p>
+                <div class="alloc-groups">
                     @foreach($allocations as $category => $items)
                         <div>
-                            <div class="text-[11px] uppercase tracking-[0.18em] text-black/40 mb-2">{{ $category }}</div>
-                            <div class="grid sm:grid-cols-2 gap-2.5">
+                            <div class="alloc-cat">{{ $category }}</div>
+                            <div class="alloc-list">
                                 @foreach($items as $a)
-                                    <label class="flex items-center gap-3 text-[15px] rounded-xl border border-black/10 px-4 py-3 cursor-pointer hover:border-black/30 transition {{ $a->is_base ? 'bg-black/[0.03]' : '' }}">
+                                    <label class="alloc-item {{ $a->is_base ? 'is-base' : '' }}">
                                         <input type="checkbox" name="allocation_ids[]" value="{{ $a->id }}"
-                                               class="h-4 w-4 accent-black shrink-0"
                                                @checked($a->is_base) @disabled($a->is_base)>
-                                        <span class="flex-1">{{ $a->label }}</span>
-                                        <span class="text-black/45 tabular-nums">{{ rtrim(rtrim(number_format($a->percentage * 100, 2), '0'), '.') }}%</span>
+                                        <span class="name">{{ $a->label }}</span>
+                                        <span class="pct">{{ rtrim(rtrim(number_format($a->percentage * 100, 2), '0'), '.') }}%</span>
                                         @if($a->is_base)<input type="hidden" name="allocation_ids[]" value="{{ $a->id }}">@endif
                                     </label>
                                 @endforeach
@@ -127,31 +273,31 @@
             </section>
 
             {{-- 4. Design-to-Budget --}}
-            <section class="rounded-2xl border border-black/10 p-6 sm:p-7">
-                <div class="text-[11px] uppercase tracking-[0.2em] text-black/40">Langkah 4</div>
-                <h2 class="text-xl sm:text-2xl font-bold mt-1 mb-5">Design-to-Budget</h2>
-                <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
-                    <label class="block">
-                        <span class="text-sm font-medium text-black/70">Budget</span>
-                        <div class="mt-1.5 flex items-stretch rounded-xl border border-black/15 focus-within:border-black overflow-hidden">
-                            <span class="grid place-items-center px-3.5 text-black/50 bg-black/[0.03] border-r border-black/10">Rp</span>
-                            <input name="budget" type="text" inputmode="numeric" data-rupiah placeholder="mis. 2.000.000.000" class="w-full px-4 py-3 text-base outline-none">
+            <section class="card">
+                <div class="step">Langkah 4</div>
+                <h2 class="card-title">Design-to-Budget</h2>
+                <div class="grid2">
+                    <label class="field">
+                        <span class="field-label">Budget</span>
+                        <div class="rp-group">
+                            <span class="rp-prefix">Rp</span>
+                            <input name="budget" type="text" inputmode="numeric" data-rupiah class="rp-input" placeholder="mis. 2.000.000.000">
                         </div>
                     </label>
-                    <label class="block">
-                        <span class="text-sm font-medium text-black/70">Toleransi</span>
-                        <div class="mt-1.5 flex items-stretch rounded-xl border border-black/15 focus-within:border-black overflow-hidden">
-                            <span class="grid place-items-center px-3.5 text-black/50 bg-black/[0.03] border-r border-black/10">Rp</span>
-                            <input name="toleransi" type="text" inputmode="numeric" data-rupiah placeholder="0" class="w-full px-4 py-3 text-base outline-none">
+                    <label class="field">
+                        <span class="field-label">Toleransi</span>
+                        <div class="rp-group">
+                            <span class="rp-prefix">Rp</span>
+                            <input name="toleransi" type="text" inputmode="numeric" data-rupiah class="rp-input" placeholder="0">
                         </div>
                     </label>
-                    <label class="block">
-                        <span class="text-sm font-medium text-black/70">Dana darurat (%)</span>
-                        <input name="dana_darurat_pct_display" type="number" step="0.1" min="0" placeholder="{{ rtrim(rtrim(number_format($settings['dana_darurat_pct'] * 100, 2), '0'), '.') }} (default)" class="input mt-1.5">
+                    <label class="field">
+                        <span class="field-label">Dana darurat (%)</span>
+                        <input name="dana_darurat_pct_display" type="number" step="0.1" min="0" class="control" placeholder="{{ rtrim(rtrim(number_format($settings['dana_darurat_pct'] * 100, 2), '0'), '.') }} (default)">
                     </label>
-                    <label class="block">
-                        <span class="text-sm font-medium text-black/70">Tipe bangunan</span>
-                        <select name="building_type_id" class="input mt-1.5">
+                    <label class="field">
+                        <span class="field-label">Tipe bangunan</span>
+                        <select name="building_type_id" class="control">
                             <option value="">— Pilih —</option>
                             @foreach($buildingTypes as $bt)
                                 <option value="{{ $bt->id }}">{{ $bt->name }} — Rp {{ number_format($bt->price_per_m2, 0, ',', '.') }}/m²</option>
@@ -160,163 +306,128 @@
                     </label>
                 </div>
 
-                {{-- Quality components reference (from calc_components, admin-managed) --}}
                 @if($components->isNotEmpty())
-                <div class="mt-6">
-                    <div class="text-[11px] uppercase tracking-[0.18em] text-black/40 mb-2">Referensi kualitas per tipe bangunan</div>
-                    <div class="overflow-x-auto rounded-xl border border-black/10">
-                        <table class="w-full text-sm border-collapse min-w-[560px]">
+                <div class="comp-block">
+                    <div class="comp-cap">Referensi kualitas per tipe bangunan</div>
+                    <div class="comp-scroll">
+                        <table class="comp-table">
                             <thead>
-                                <tr class="bg-black/[0.03] text-left">
-                                    <th class="px-4 py-3 font-semibold">Komponen</th>
-                                    <th class="px-4 py-3 font-semibold">Standar</th>
-                                    <th class="px-4 py-3 font-semibold">Optimal</th>
-                                    <th class="px-4 py-3 font-semibold">Premium</th>
+                                <tr>
+                                    <th>Komponen</th><th>Standar</th><th>Optimal</th><th>Premium</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($components as $c)
-                                    <tr class="border-t border-black/10 align-top">
-                                        <td class="px-4 py-3 font-medium whitespace-nowrap">{{ $c->name }}</td>
-                                        <td class="px-4 py-3 text-black/70">{{ $c->standar }}</td>
-                                        <td class="px-4 py-3 text-black/70">{{ $c->optimal }}</td>
-                                        <td class="px-4 py-3 text-black/70">{{ $c->premium }}</td>
+                                    <tr>
+                                        <td class="name">{{ $c->name }}</td>
+                                        <td class="desc">{{ $c->standar }}</td>
+                                        <td class="desc">{{ $c->optimal }}</td>
+                                        <td class="desc">{{ $c->premium }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    <p class="text-xs text-black/40 mt-2">*Tidak termasuk furniture, interior, kolam renang, lift, landscape, peralatan elektronik.</p>
+                    <p class="hint">*Tidak termasuk furniture, interior, kolam renang, lift, landscape, peralatan elektronik.</p>
                 </div>
                 @endif
             </section>
 
             {{-- 5. Design-to-Regulation --}}
-            <section class="rounded-2xl border border-black/10 p-6 sm:p-7">
-                <div class="text-[11px] uppercase tracking-[0.2em] text-black/40">Langkah 5</div>
-                <h2 class="text-xl sm:text-2xl font-bold mt-1 mb-5">Design-to-Regulation</h2>
-                <label class="block sm:max-w-md">
-                    <span class="text-sm font-medium text-black/70">Zonasi lahan</span>
-                    <select name="zonasi_id" class="input mt-1.5">
+            <section class="card">
+                <div class="step">Langkah 5</div>
+                <h2 class="card-title">Design-to-Regulation</h2>
+                <label class="field" style="max-width:420px">
+                    <span class="field-label">Zonasi lahan</span>
+                    <select name="zonasi_id" class="control">
                         <option value="">— Pilih —</option>
                         @foreach($zonasiList as $z)
                             <option value="{{ $z->id }}">{{ $z->code }} — {{ $z->name }}</option>
                         @endforeach
                     </select>
                 </label>
-                <p class="text-xs text-black/40 mt-3">KDB/KLB/KTB/RTH dihitung otomatis dari zonasi &times; luas tanah. *Untuk kepastian butuh dokumen SKRK dari Dinas PU / PTSP setempat.</p>
+                <p class="hint">KDB/KLB/KTB/RTH dihitung otomatis dari zonasi &times; luas tanah. *Untuk kepastian butuh dokumen SKRK dari Dinas PU / PTSP setempat.</p>
             </section>
 
-            {{-- 6. Design-to-Needs (room builder) --}}
-            <section class="rounded-2xl border border-black/10 p-6 sm:p-7">
-                <div class="text-[11px] uppercase tracking-[0.2em] text-black/40">Langkah 6</div>
-                <div class="flex flex-wrap items-center justify-between gap-3 mt-1 mb-2">
-                    <h2 class="text-xl sm:text-2xl font-bold">Design-to-Needs</h2>
-                    <button type="button" id="add-room" class="inline-flex items-center gap-1.5 text-sm font-medium bg-black text-white rounded-xl px-4 py-2.5 hover:bg-black/85 transition">
-                        + Tambah ruangan
-                    </button>
+            {{-- 6. Design-to-Needs --}}
+            <section class="card">
+                <div class="step">Langkah 6</div>
+                <div class="rooms-head">
+                    <h2 class="card-title tight" style="margin-bottom:0">Design-to-Needs</h2>
+                    <button type="button" id="add-room" class="btn btn-dark btn-add">Tambah ruangan</button>
                 </div>
-                <p class="text-sm text-black/50 mb-4">Susun kebutuhan ruangan beserta jumlah, tipe luasan, dan prioritasnya.</p>
+                <p class="card-sub">Susun kebutuhan ruangan beserta jumlah, tipe luasan, dan prioritasnya.</p>
                 <input type="hidden" name="sirkulasi_pct" value="{{ $settings['sirkulasi_pct'] }}">
-                <div id="rooms-body" class="space-y-2.5"></div>
-                <div id="rooms-empty" class="text-sm text-black/40 rounded-xl border border-dashed border-black/15 px-4 py-6 text-center">
-                    Belum ada ruangan. Klik <span class="font-medium text-black/60">“Tambah ruangan”</span> untuk mulai.
+                <div id="rooms-body" class="room-list"></div>
+                <div id="rooms-empty" class="rooms-empty">
+                    Belum ada ruangan. Klik <b>“Tambah ruangan”</b> untuk mulai.
                 </div>
-                <p class="text-xs text-black/40 mt-3">Sirkulasi {{ (int) round($settings['sirkulasi_pct'] * 100) }}% ditambahkan otomatis pada total luas kebutuhan.</p>
+                <p class="hint">Sirkulasi {{ (int) round($settings['sirkulasi_pct'] * 100) }}% ditambahkan otomatis pada total luas kebutuhan.</p>
             </section>
         </form>
 
         {{-- ================= RESULT PANEL ================= --}}
-        <aside class="lg:col-span-1 lg:sticky lg:top-6 space-y-4">
-            <div id="result" class="rounded-2xl border border-black/10 bg-white p-6 sm:p-7">
-                <div id="result-empty" class="py-6 text-center">
-                    <div class="text-[11px] uppercase tracking-[0.2em] text-black/40">Ringkasan Estimasi</div>
-                    <p class="mt-3 text-black/50 text-[15px] leading-relaxed">Lengkapi <span class="font-medium text-black/70">luas tanah, faktor bobot, budget, tipe bangunan,</span> dan <span class="font-medium text-black/70">zonasi</span> untuk melihat estimasi.</p>
+        <aside class="aside-col">
+            <div id="result" class="result">
+                <div class="result-empty">
+                    <div class="result-cap">Ringkasan Estimasi</div>
+                    <p>Lengkapi <b>luas tanah, faktor bobot, budget, tipe bangunan,</b> dan <b>zonasi</b> untuk melihat estimasi.</p>
                 </div>
             </div>
-            <button id="download-pdf" disabled class="w-full bg-black text-white rounded-xl py-3.5 text-base font-semibold hover:bg-black/85 transition disabled:opacity-40 disabled:cursor-not-allowed">
-                Download PDF
-            </button>
+            <button id="download-pdf" class="pdf-btn" disabled>Download PDF</button>
         </aside>
     </div>
 </div>
-
-{{-- Shared input styling --}}
-<style>
-    .input {
-        display: block; width: 100%;
-        border: 1px solid rgba(0,0,0,0.15); border-radius: 0.75rem;
-        padding: 0.75rem 1rem; font-size: 1rem; background: #fff; outline: none;
-        transition: border-color .15s;
-    }
-    .input:focus { border-color: #000; }
-    select.input { -webkit-appearance: none; appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-opacity='0.5' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-        background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.5rem;
-    }
-</style>
 
 <script>
 const CSRF = document.querySelector('meta[name="csrf-token"]').content;
 const ROOMS = @json($rooms);
 const TIERS = @json($sizeTiers);
+const FACTOR_COUNT = {{ $factorGroups->count() }};
 
-// --- Formatters ---
 function rupiah(n){ return 'Rp ' + Math.round(n).toLocaleString('id-ID'); }
 function m2(n){ return (Math.round(n * 10) / 10).toLocaleString('id-ID', {minimumFractionDigits: 0, maximumFractionDigits: 1}) + ' m²'; }
 function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function digitsToNumber(v){ const d = String(v).replace(/\D/g, ''); return d ? parseInt(d, 10) : 0; }
+function digitsToNumber(v){ const d = String(v == null ? '' : v).replace(/\D/g, ''); return d ? parseInt(d, 10) : 0; }
 
-// --- Rupiah input formatting (thousand separators, value stays digits+dots) ---
+// --- Rupiah input formatting ---
 document.querySelectorAll('input[data-rupiah]').forEach(el => {
     el.addEventListener('input', () => {
-        const d = el.value.replace(/\D/g, '');
-        el.value = d ? parseInt(d, 10).toLocaleString('id-ID') : '';
-        recalc();
+        const n = digitsToNumber(el.value);
+        el.value = n ? n.toLocaleString('id-ID') : '';
     });
 });
 
 // --- Room builder ---
 const roomsBody = document.getElementById('rooms-body');
 const roomsEmpty = document.getElementById('rooms-empty');
-
-function refreshRoomsEmpty(){
-    roomsEmpty.style.display = roomsBody.children.length ? 'none' : 'block';
-}
+function refreshRoomsEmpty(){ roomsEmpty.style.display = roomsBody.children.length ? 'none' : 'block'; }
 
 function roomRow(){
     const wrap = document.createElement('div');
-    wrap.className = 'room-row grid grid-cols-1 sm:grid-cols-12 gap-2 sm:items-center rounded-xl border border-black/10 p-3 sm:p-2.5';
+    wrap.className = 'room-row';
     const opts = ROOMS.map(r => `<option value="${r.id}">${esc(r.name)} — ${esc(r.category)}</option>`).join('');
     const tierOpts = TIERS.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join('');
     wrap.innerHTML = `
-        <select class="r-room sm:col-span-5 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black" aria-label="Ruangan">
-            <option value="">— Pilih ruangan —</option>${opts}
-        </select>
-        <select class="r-tier sm:col-span-3 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black" aria-label="Tipe luasan">
-            <option value="">Tipe luasan</option>${tierOpts}
-        </select>
-        <input type="number" min="1" value="1" class="r-qty sm:col-span-1 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black" aria-label="Jumlah">
-        <select class="r-prio sm:col-span-2 rounded-lg border border-black/15 px-3 py-2.5 text-[15px] outline-none focus:border-black" aria-label="Prioritas">
+        <select class="r-room" aria-label="Ruangan"><option value="">— Pilih ruangan —</option>${opts}</select>
+        <select class="r-tier" aria-label="Tipe luasan"><option value="">Tipe luasan</option>${tierOpts}</select>
+        <input type="number" min="1" value="1" class="r-qty" aria-label="Jumlah">
+        <select class="r-prio" aria-label="Prioritas">
             <option value="utama">Utama</option>
             <option value="sekunder">Sekunder</option>
             <option value="tersier">Tersier</option>
         </select>
-        <button type="button" class="r-del sm:col-span-1 rounded-lg border border-black/10 py-2.5 text-black/40 hover:text-red-600 hover:border-red-300 transition" aria-label="Hapus">&times;</button>`;
-    wrap.querySelector('.r-del').addEventListener('click', () => { wrap.remove(); refreshRoomsEmpty(); recalc(); });
+        <button type="button" class="room-del" aria-label="Hapus">&times;</button>`;
+    wrap.querySelector('.room-del').addEventListener('click', () => { wrap.remove(); refreshRoomsEmpty(); recalc(); });
     wrap.querySelectorAll('select, input').forEach(el => el.addEventListener('change', recalc));
     return wrap;
 }
-document.getElementById('add-room').addEventListener('click', () => {
-    roomsBody.appendChild(roomRow());
-    refreshRoomsEmpty();
-});
+document.getElementById('add-room').addEventListener('click', () => { roomsBody.appendChild(roomRow()); refreshRoomsEmpty(); });
 refreshRoomsEmpty();
 
 // --- Payload ---
 function payload(){
-    const f = document.getElementById('calc-form');
-    const fd = new FormData(f);
+    const fd = new FormData(document.getElementById('calc-form'));
     const data = {
         nama_proyek: fd.get('nama_proyek') || '',
         luas_tanah: parseFloat(fd.get('luas_tanah')) || 0,
@@ -337,19 +448,14 @@ function payload(){
                 prioritas: row.querySelector('.r-prio').value,
             })),
     };
-    // dana darurat: only send when the user typed a value; otherwise backend applies the setting default.
     const dd = fd.get('dana_darurat_pct_display');
     if (dd !== '' && dd != null) data.dana_darurat_pct = (parseFloat(dd) || 0) / 100;
     return data;
 }
 
-// Minimum inputs required before we attempt a calculation.
 function readyToCalc(p){
-    return p.luas_tanah >= 1
-        && p.budget > 0
-        && p.building_type_id > 0
-        && p.zonasi_id > 0
-        && p.factor_option_ids.length === {{ $factorGroups->count() }};
+    return p.luas_tanah >= 1 && p.budget > 0 && p.building_type_id > 0 && p.zonasi_id > 0
+        && p.factor_option_ids.length === FACTOR_COUNT;
 }
 
 // --- Live calc ---
@@ -359,11 +465,9 @@ let timer = null;
 
 function showEmptyState(){
     pdfBtn.disabled = true;
-    resultEl.innerHTML = `
-        <div class="py-6 text-center">
-            <div class="text-[11px] uppercase tracking-[0.2em] text-black/40">Ringkasan Estimasi</div>
-            <p class="mt-3 text-black/50 text-[15px] leading-relaxed">Lengkapi <span class="font-medium text-black/70">luas tanah, faktor bobot, budget, tipe bangunan,</span> dan <span class="font-medium text-black/70">zonasi</span> untuk melihat estimasi.</p>
-        </div>`;
+    resultEl.innerHTML =
+        '<div class="result-empty"><div class="result-cap">Ringkasan Estimasi</div>' +
+        '<p>Lengkapi <b>luas tanah, faktor bobot, budget, tipe bangunan,</b> dan <b>zonasi</b> untuk melihat estimasi.</p></div>';
 }
 
 function recalc(){
@@ -385,28 +489,18 @@ function recalc(){
 }
 
 function metric(label, value){
-    return `<div class="flex items-baseline justify-between gap-3 py-2 border-b border-black/[0.06]">
-        <span class="text-[13px] text-black/50">${label}</span>
-        <span class="font-header font-semibold text-[15px] sm:text-base tabular-nums text-right">${value}</span>
-    </div>`;
+    return `<div class="metric"><span class="m-label">${label}</span><span class="m-value">${value}</span></div>`;
 }
 
 function render(r){
-    const selisih = (v) => v === null
-        ? '<span class="text-black/30">—</span>'
-        : `<span class="${v < 0 ? 'text-red-600' : 'text-emerald-600'} tabular-nums">${rupiah(v)}</span>`;
-
-    // On mobile each metric is a "Label …… Value" row (values right-aligned, never cramped);
-    // on sm+ it becomes a 3-column label-over-value grid.
-    const cell = (label, value) => `
-        <div class="flex items-baseline justify-between gap-2 sm:block">
-            <div class="text-black/40 text-[13px] sm:text-[11px]">${label}</div>
-            <div class="font-header font-semibold text-[15px] tabular-nums text-right sm:text-left">${value}</div>
-        </div>`;
+    const selisih = (v) => v === null ? '<span class="muted">—</span>'
+        : `<span class="${v < 0 ? 'neg' : 'pos'}">${rupiah(v)}</span>`;
+    const cell = (label, value) =>
+        `<div class="scen-cell"><span class="c-label">${label}</span><span class="c-value">${value}</span></div>`;
     const cards = r.summary.rows.map(row => `
-        <div class="rounded-xl border border-black/10 p-4">
-            <div class="text-[11px] uppercase tracking-[0.15em] text-black/40 mb-2.5">${esc(row.label)}</div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2">
+        <div class="scen-card">
+            <div class="scen-title">${esc(row.label)}</div>
+            <div class="scen-grid">
                 ${cell('Luas', m2(row.area))}
                 ${cell('Biaya', rupiah(row.cost))}
                 ${cell('Selisih', selisih(row.selisih))}
@@ -414,27 +508,24 @@ function render(r){
         </div>`).join('');
 
     resultEl.innerHTML = `
-        <div class="text-[11px] uppercase tracking-[0.2em] text-black/40">Ringkasan Estimasi</div>
-        <h3 class="font-title text-lg font-bold mt-1 mb-4">Estimasi Budget</h3>
-
-        <div class="rounded-xl bg-black text-white p-5 mb-5">
-            <div class="text-[11px] uppercase tracking-[0.18em] text-white/50">Luas terjangkau (budget)</div>
-            <div class="font-title text-3xl font-extrabold mt-1 tabular-nums">${m2(r.budget.area)}</div>
-            <div class="text-sm text-white/60 mt-1">dari nett construction ${rupiah(r.budget.nett_construction)}</div>
+        <div class="result-cap">Ringkasan Estimasi</div>
+        <h3>Estimasi Budget</h3>
+        <div class="hero">
+            <div class="hero-label">Luas terjangkau (budget)</div>
+            <div class="hero-value">${m2(r.budget.area)}</div>
+            <div class="hero-sub">dari nett construction ${rupiah(r.budget.nett_construction)}</div>
         </div>
-
-        <div class="mb-6">
+        <div class="metrics">
             ${metric('Bobot', '×' + r.weighting.bobot.toFixed(2))}
             ${metric('Harga per m² (berbobot)', rupiah(r.weighting.harga_per_m2_bobot))}
             ${metric('Luas terbangun (regulasi)', m2(r.regulation.luas_terbangun))}
             ${metric('Total kebutuhan ruang', m2(r.needs.grand_total))}
         </div>
-
-        <div class="text-[11px] uppercase tracking-[0.2em] text-black/40 mb-3">Perbandingan Skenario</div>
-        <div class="space-y-2.5">${cards}</div>`;
+        <div class="scen-cap">Perbandingan Skenario</div>
+        <div class="scen-list">${cards}</div>`;
 }
 
-// --- PDF: submit collected payload to the pdf route ---
+// --- PDF ---
 pdfBtn.addEventListener('click', () => {
     if (pdfBtn.disabled) return;
     const form = document.createElement('form');
@@ -456,7 +547,7 @@ pdfBtn.addEventListener('click', () => {
     form.remove();
 });
 
-// --- Init: empty state, recalc only on interaction ---
+// --- Init ---
 document.getElementById('calc-form').addEventListener('change', recalc);
 document.getElementById('calc-form').addEventListener('input', recalc);
 showEmptyState();
