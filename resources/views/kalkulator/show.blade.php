@@ -345,7 +345,7 @@ function payload(){
 
 // Minimum inputs required before we attempt a calculation.
 function readyToCalc(p){
-    return p.luas_tanah > 0
+    return p.luas_tanah >= 1
         && p.budget > 0
         && p.building_type_id > 0
         && p.zonasi_id > 0

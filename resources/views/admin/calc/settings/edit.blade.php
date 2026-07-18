@@ -42,7 +42,7 @@
                         <input type="number" step="1" min="0"
                                class="form-control @error('toleransi_default') is-invalid @enderror"
                                name="toleransi_default"
-                               value="{{ old('toleransi_default', $settings['toleransi_default']->value ?? '') }}"
+                               value="{{ old('toleransi_default', $settings['toleransi_default']?->value ?? '') }}"
                                required>
                         @error('toleransi_default')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>

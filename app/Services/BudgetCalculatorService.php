@@ -7,6 +7,7 @@ use App\Models\Calc\BuildingType;
 use App\Models\Calc\FactorOption;
 use App\Models\Calc\Room;
 use App\Models\Calc\RoomArea;
+use App\Models\Calc\SizeTier;
 use App\Models\Calc\Zonasi;
 
 class BudgetCalculatorService
@@ -53,12 +54,20 @@ class BudgetCalculatorService
         $regulasiCost = (int) round($luasTerbangun * $hargaBobot);
 
         // --- Needs ---
+        $roomsIn = $in['rooms'] ?? [];
+        $roomIds = collect($roomsIn)->pluck('room_id')->unique()->values();
+        $tierIds = collect($roomsIn)->pluck('size_tier_id')->unique()->values();
+        $roomNames = Room::whereIn('id', $roomIds)->pluck('name', 'id');
+        $tierNames = SizeTier::whereIn('id', $tierIds)->pluck('name', 'id');
+        $areas = RoomArea::whereIn('room_id', $roomIds)
+            ->whereIn('size_tier_id', $tierIds)
+            ->get()
+            ->keyBy(fn ($a) => $a->room_id.'-'.$a->size_tier_id);
+
         $rows = [];
         $subtotals = ['utama' => 0.0, 'sekunder' => 0.0, 'tersier' => 0.0];
-        foreach ($in['rooms'] ?? [] as $r) {
-            $areaUnit = (float) RoomArea::where('room_id', $r['room_id'])
-                ->where('size_tier_id', $r['size_tier_id'])
-                ->value('area');
+        foreach ($roomsIn as $r) {
+            $areaUnit = (float) ($areas[$r['room_id'].'-'.$r['size_tier_id']]->area ?? 0);
             $qty = (int) $r['jumlah'];
             $total = $areaUnit * $qty;
             $prio = $r['prioritas'];
@@ -66,10 +75,10 @@ class BudgetCalculatorService
                 $subtotals[$prio] += $total;
             }
             $rows[] = [
-                'name' => Room::whereKey($r['room_id'])->value('name'),
+                'name' => $roomNames[$r['room_id']] ?? '',
                 'prioritas' => $prio,
                 'jumlah' => $qty,
-                'tier' => \App\Models\Calc\SizeTier::whereKey($r['size_tier_id'])->value('name'),
+                'tier' => $tierNames[$r['size_tier_id']] ?? '',
                 'area_unit' => $areaUnit,
                 'total' => $total,
             ];
@@ -87,12 +96,15 @@ class BudgetCalculatorService
         $tersierArea = ($subtotals['utama'] + $subtotals['sekunder'] + $subtotals['tersier']) * $mult;
 
         $cost = fn (float $area) => (int) round($area * $hargaBobot);
+        $costUtama = $cost($utamaArea);
+        $costSekunder = $cost($sekunderArea);
+        $costTersier = $cost($tersierArea);
         $summaryRows = [
             ['label' => 'Budget', 'area' => $budgetArea, 'cost' => $baseline, 'selisih' => null],
             ['label' => 'Regulasi', 'area' => $luasTerbangun, 'cost' => $regulasiCost, 'selisih' => $baseline - $regulasiCost],
-            ['label' => 'Kebutuhan (Utama)', 'area' => $utamaArea, 'cost' => $cost($utamaArea), 'selisih' => $baseline - $cost($utamaArea)],
-            ['label' => 'Kebutuhan (+Sekunder)', 'area' => $sekunderArea, 'cost' => $cost($sekunderArea), 'selisih' => $baseline - $cost($sekunderArea)],
-            ['label' => 'Kebutuhan (+Tersier)', 'area' => $tersierArea, 'cost' => $cost($tersierArea), 'selisih' => $baseline - $cost($tersierArea)],
+            ['label' => 'Kebutuhan (Utama)', 'area' => $utamaArea, 'cost' => $costUtama, 'selisih' => $baseline - $costUtama],
+            ['label' => 'Kebutuhan (+Sekunder)', 'area' => $sekunderArea, 'cost' => $costSekunder, 'selisih' => $baseline - $costSekunder],
+            ['label' => 'Kebutuhan (+Tersier)', 'area' => $tersierArea, 'cost' => $costTersier, 'selisih' => $baseline - $costTersier],
         ];
 
         return [
