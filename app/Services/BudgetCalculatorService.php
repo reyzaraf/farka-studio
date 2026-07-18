@@ -99,12 +99,15 @@ class BudgetCalculatorService
         $costUtama = $cost($utamaArea);
         $costSekunder = $cost($sekunderArea);
         $costTersier = $cost($tersierArea);
+        // Grand total of all priorities (Utama + Sekunder + Tersier), incl. sirkulasi.
+        $costTotal = $cost($grandTotal);
         $summaryRows = [
             ['label' => 'Budget', 'area' => $budgetArea, 'cost' => $baseline, 'selisih' => null],
             ['label' => 'Regulasi', 'area' => $luasTerbangun, 'cost' => $regulasiCost, 'selisih' => $baseline - $regulasiCost],
             ['label' => 'Kebutuhan (Utama)', 'area' => $utamaArea, 'cost' => $costUtama, 'selisih' => $baseline - $costUtama],
             ['label' => 'Kebutuhan (+Sekunder)', 'area' => $sekunderArea, 'cost' => $costSekunder, 'selisih' => $baseline - $costSekunder],
             ['label' => 'Kebutuhan (+Tersier)', 'area' => $tersierArea, 'cost' => $costTersier, 'selisih' => $baseline - $costTersier],
+            ['label' => 'Kebutuhan Total', 'area' => $grandTotal, 'cost' => $costTotal, 'selisih' => $baseline - $costTotal],
         ];
 
         return [
