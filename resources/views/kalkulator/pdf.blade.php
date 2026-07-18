@@ -2,9 +2,8 @@
     $rp  = fn ($n) => 'Rp ' . number_format(round($n), 0, ',', '.');
     $ar  = fn ($n) => number_format(round($n, 1), 1, ',', '.') . ' m²';
     $pct = fn ($n) => rtrim(rtrim(number_format($n * 100, 2), '0'), '.') . '%';
-    $prio = ['utama' => 'Primary', 'sekunder' => 'Secondary', 'tersier' => 'Tertiary'];
 
-    // Full program (last summary row) vs budget baseline, for the verdict line.
+    // Program penuh (baris ringkasan terakhir) vs baseline budget, untuk kalimat verdict.
     $summaryRows = $result['summary']['rows'];
     $lastNeed = end($summaryRows);
     $baseline = $result['summary']['baseline'];
@@ -60,38 +59,38 @@
         <tr>
             <td>
                 <div class="brand">Farka Studio</div>
-                <div class="title">Project Budget Estimate</div>
+                <div class="title">Estimasi Budget Proyek</div>
             </td>
             <td style="text-align:right;">
                 <div class="meta">{{ $generatedAt }}</div>
-                <div class="meta">{{ $input['nama_proyek'] ?: 'Untitled Project' }}</div>
+                <div class="meta">{{ $input['nama_proyek'] ?: 'Proyek Tanpa Nama' }}</div>
             </td>
         </tr>
     </table>
-    <div class="disclaimer">*Figures in this document are indicative only and not a final quotation.</div>
+    <div class="disclaimer">*Angka pada dokumen ini hanya asumsi awal dan bukan penawaran final.</div>
 
-    {{-- ===== Two-column: Overview + Weighting ===== --}}
+    {{-- ===== Dua kolom: Info + Bobot ===== --}}
     <table class="cols">
         <tr>
             <td class="left" width="50%">
-                <div class="cap">Overview</div>
-                <h2>Project</h2>
+                <div class="cap">Informasi Umum</div>
+                <h2>Proyek</h2>
                 <table class="kv">
-                    <tr><td class="k">Project name</td><td class="v">{{ $input['nama_proyek'] ?: '-' }}</td></tr>
-                    <tr><td class="k">Location</td><td class="v">{{ $input['lokasi_proyek'] ?: '-' }}</td></tr>
-                    <tr><td class="k">Land area</td><td class="v">{{ $ar($input['luas_tanah']) }}</td></tr>
-                    <tr><td class="k">Building tier</td><td class="v">{{ $buildingType?->name ?? '-' }}</td></tr>
-                    <tr><td class="k">Base price / m²</td><td class="v">{{ $buildingType ? $rp($buildingType->price_per_m2) : '-' }}</td></tr>
+                    <tr><td class="k">Nama proyek</td><td class="v">{{ $input['nama_proyek'] ?: '-' }}</td></tr>
+                    <tr><td class="k">Lokasi</td><td class="v">{{ $input['lokasi_proyek'] ?: '-' }}</td></tr>
+                    <tr><td class="k">Luas tanah</td><td class="v">{{ $ar($input['luas_tanah']) }}</td></tr>
+                    <tr><td class="k">Tipe bangunan</td><td class="v">{{ $buildingType?->name ?? '-' }}</td></tr>
+                    <tr><td class="k">Harga dasar / m²</td><td class="v">{{ $buildingType ? $rp($buildingType->price_per_m2) : '-' }}</td></tr>
                 </table>
             </td>
             <td class="rightcol" width="50%">
-                <div class="cap">Weighting</div>
-                <h2>Weight &times;{{ number_format($result['weighting']['bobot'], 2) }}</h2>
+                <div class="cap">Faktor Bobot</div>
+                <h2>Bobot &times;{{ number_format($result['weighting']['bobot'], 2) }}</h2>
                 <table class="kv">
                     @foreach($result['weighting']['factors'] as $f)
                         <tr><td class="k">{{ $f['label'] }}</td><td class="v">&times;{{ rtrim(rtrim(number_format($f['multiplier'], 2), '0'), '.') }}</td></tr>
                     @endforeach
-                    <tr><td class="k">Price / m² (weighted)</td><td class="v">{{ $rp($result['weighting']['harga_per_m2_bobot']) }}</td></tr>
+                    <tr><td class="k">Harga / m² (berbobot)</td><td class="v">{{ $rp($result['weighting']['harga_per_m2_bobot']) }}</td></tr>
                 </table>
             </td>
         </tr>
@@ -99,27 +98,27 @@
 
     {{-- ===== Design-to-Budget ===== --}}
     <div class="cap">Design-to-Budget</div>
-    <h2>Budget &amp; Affordable Area</h2>
+    <h2>Anggaran &amp; Luas Terjangkau</h2>
     <div class="hero">
-        <div class="hl">Affordable area within budget</div>
+        <div class="hl">Luas terjangkau sesuai budget</div>
         <div class="hv">{{ $ar($result['budget']['area']) }}</div>
-        <div class="hs">from a net construction budget of {{ $rp($result['budget']['nett_construction']) }}</div>
+        <div class="hs">dari nett construction budget {{ $rp($result['budget']['nett_construction']) }}</div>
     </div>
     <table class="kv">
         <tr><td class="k">Budget</td><td class="v">{{ $rp($input['budget']) }}</td></tr>
-        <tr><td class="k">Tolerance</td><td class="v">{{ $rp($input['toleransi']) }}</td></tr>
+        <tr><td class="k">Toleransi</td><td class="v">{{ $rp($input['toleransi']) }}</td></tr>
         <tr><td class="k">Gross budget</td><td class="v">{{ $rp($result['budget']['gross']) }}</td></tr>
-        <tr><td class="k">Contingency ({{ $pct($input['dana_darurat_pct']) }})</td><td class="v">&minus; {{ $rp($result['budget']['dana_darurat']) }}</td></tr>
-        <tr><td class="k">Net budget</td><td class="v">{{ $rp($result['budget']['nett']) }}</td></tr>
-        <tr><td class="k">Total allocation (excl. building)</td><td class="v">{{ $pct($result['budget']['total_alokasi']) }}</td></tr>
-        <tr><td class="k">Net construction budget</td><td class="v">{{ $rp($result['budget']['nett_construction']) }}</td></tr>
+        <tr><td class="k">Dana darurat ({{ $pct($input['dana_darurat_pct']) }})</td><td class="v">&minus; {{ $rp($result['budget']['dana_darurat']) }}</td></tr>
+        <tr><td class="k">Nett budget</td><td class="v">{{ $rp($result['budget']['nett']) }}</td></tr>
+        <tr><td class="k">Total alokasi (di luar bangunan)</td><td class="v">{{ $pct($result['budget']['total_alokasi']) }}</td></tr>
+        <tr><td class="k">Nett construction budget</td><td class="v">{{ $rp($result['budget']['nett_construction']) }}</td></tr>
     </table>
 
-    {{-- ===== Selected allocations ===== --}}
+    {{-- ===== Alokasi terpilih ===== --}}
     @if($allocations->isNotEmpty())
-    <div class="cap">Selected Allocations</div>
+    <div class="cap">Alokasi Dana Terpilih</div>
     <table class="data">
-        <thead><tr><th>Group</th><th>Component</th><th class="right">Percentage</th></tr></thead>
+        <thead><tr><th>Kelompok</th><th>Komponen</th><th class="right">Persentase</th></tr></thead>
         <tbody>
         @foreach($allocations as $category => $items)
             @foreach($items as $i => $a)
@@ -136,34 +135,34 @@
 
     {{-- ===== Design-to-Regulation ===== --}}
     <div class="cap">Design-to-Regulation</div>
-    <h2>Zoning Regulation &mdash; {{ $zonasi?->code ?? $result['regulation']['code'] }}{{ $zonasi && $zonasi->name ? ' · ' . $zonasi->name : '' }}</h2>
+    <h2>Regulasi Zonasi &mdash; {{ $zonasi?->code ?? $result['regulation']['code'] }}{{ $zonasi && $zonasi->name ? ' · ' . $zonasi->name : '' }}</h2>
     <table class="data">
-        <thead><tr><th>Parameter</th><th class="right">Coefficient</th><th class="right">Area</th></tr></thead>
+        <thead><tr><th>Parameter</th><th class="right">Koefisien</th><th class="right">Luas</th></tr></thead>
         <tbody>
-            <tr><td>KDB — Building Coverage Ratio</td><td class="right">{{ $zonasi ? $pct($zonasi->kdb) : '-' }}</td><td class="num">{{ $ar($result['regulation']['kdb']) }}</td></tr>
-            <tr><td>KLB — Floor Area Ratio</td><td class="right">{{ $zonasi ? rtrim(rtrim(number_format($zonasi->klb, 2), '0'), '.') : '-' }}</td><td class="num">{{ $ar($result['regulation']['klb']) }}</td></tr>
-            <tr><td>KTB — Basement Coverage Ratio</td><td class="right">{{ $zonasi ? $pct($zonasi->ktb) : '-' }}</td><td class="num">{{ $ar($result['regulation']['ktb']) }}</td></tr>
-            <tr><td>RTH — Green Open Space</td><td class="right">{{ $zonasi ? $pct($zonasi->rth) : '-' }}</td><td class="num">{{ $ar($result['regulation']['rth']) }}</td></tr>
+            <tr><td>KDB — Koefisien Dasar Bangunan</td><td class="right">{{ $zonasi ? $pct($zonasi->kdb) : '-' }}</td><td class="num">{{ $ar($result['regulation']['kdb']) }}</td></tr>
+            <tr><td>KLB — Koefisien Lantai Bangunan</td><td class="right">{{ $zonasi ? rtrim(rtrim(number_format($zonasi->klb, 2), '0'), '.') : '-' }}</td><td class="num">{{ $ar($result['regulation']['klb']) }}</td></tr>
+            <tr><td>KTB — Koefisien Tapak Basement</td><td class="right">{{ $zonasi ? $pct($zonasi->ktb) : '-' }}</td><td class="num">{{ $ar($result['regulation']['ktb']) }}</td></tr>
+            <tr><td>RTH — Ruang Terbuka Hijau</td><td class="right">{{ $zonasi ? $pct($zonasi->rth) : '-' }}</td><td class="num">{{ $ar($result['regulation']['rth']) }}</td></tr>
         </tbody>
     </table>
     <table class="kv" style="margin-top:6px;">
-        <tr><td class="k">Buildable area (max KLB)</td><td class="v">{{ $ar($result['regulation']['luas_terbangun']) }}</td></tr>
-        <tr><td class="k">Estimated cost per zoning</td><td class="v">{{ $rp($result['regulation']['cost']) }}</td></tr>
+        <tr><td class="k">Luas terbangun (maks. KLB)</td><td class="v">{{ $ar($result['regulation']['luas_terbangun']) }}</td></tr>
+        <tr><td class="k">Estimasi biaya sesuai regulasi</td><td class="v">{{ $rp($result['regulation']['cost']) }}</td></tr>
     </table>
 
     {{-- ===== Design-to-Needs ===== --}}
     <div class="cap">Design-to-Needs</div>
-    <h2>Room Program</h2>
+    <h2>Program Kebutuhan Ruang</h2>
     @if(count($result['needs']['rows']))
     <table class="data">
         <thead>
-            <tr><th>Room</th><th>Priority</th><th class="right">Qty</th><th>Size tier</th><th class="right">Unit</th><th class="right">Total</th></tr>
+            <tr><th>Ruangan</th><th>Prioritas</th><th class="right">Jml</th><th>Tipe luasan</th><th class="right">Satuan</th><th class="right">Total</th></tr>
         </thead>
         <tbody>
         @foreach($result['needs']['rows'] as $row)
             <tr>
                 <td>{{ $row['name'] }}</td>
-                <td>{{ $prio[$row['prioritas']] ?? ucfirst($row['prioritas']) }}</td>
+                <td>{{ ucfirst($row['prioritas']) }}</td>
                 <td class="right">{{ $row['jumlah'] }}</td>
                 <td>{{ $row['tier'] }}</td>
                 <td class="right">{{ $ar($row['area_unit']) }}</td>
@@ -173,20 +172,20 @@
         </tbody>
     </table>
     <table class="kv" style="margin-top:6px;">
-        <tr><td class="k">Subtotal Primary / Secondary / Tertiary</td><td class="v">{{ $ar($result['needs']['subtotals']['utama']) }} / {{ $ar($result['needs']['subtotals']['sekunder']) }} / {{ $ar($result['needs']['subtotals']['tersier']) }}</td></tr>
-        <tr><td class="k">Total room area</td><td class="v">{{ $ar($result['needs']['rooms_total']) }}</td></tr>
-        <tr><td class="k">Circulation ({{ $pct($input['sirkulasi_pct']) }})</td><td class="v">+ {{ $ar($result['needs']['sirkulasi']) }}</td></tr>
-        <tr><td class="k">Grand total required</td><td class="v">{{ $ar($result['needs']['grand_total']) }}</td></tr>
+        <tr><td class="k">Subtotal Utama / Sekunder / Tersier</td><td class="v">{{ $ar($result['needs']['subtotals']['utama']) }} / {{ $ar($result['needs']['subtotals']['sekunder']) }} / {{ $ar($result['needs']['subtotals']['tersier']) }}</td></tr>
+        <tr><td class="k">Total luas ruang</td><td class="v">{{ $ar($result['needs']['rooms_total']) }}</td></tr>
+        <tr><td class="k">Sirkulasi ({{ $pct($input['sirkulasi_pct']) }})</td><td class="v">+ {{ $ar($result['needs']['sirkulasi']) }}</td></tr>
+        <tr><td class="k">Grand total kebutuhan</td><td class="v">{{ $ar($result['needs']['grand_total']) }}</td></tr>
     </table>
     @else
-    <div class="muted" style="padding:6px 2px;">No rooms selected.</div>
+    <div class="muted" style="padding:6px 2px;">Belum ada ruangan yang dipilih.</div>
     @endif
 
-    {{-- ===== Summary ===== --}}
-    <div class="cap">Summary</div>
-    <h2>Scenario Comparison</h2>
+    {{-- ===== Ringkasan ===== --}}
+    <div class="cap">Ringkasan</div>
+    <h2>Perbandingan Skenario</h2>
     <table class="data">
-        <thead><tr><th>Scenario</th><th class="right">Area</th><th class="right">Estimated cost</th><th class="right">Difference vs budget</th></tr></thead>
+        <thead><tr><th>Skenario</th><th class="right">Luas</th><th class="right">Estimasi biaya</th><th class="right">Selisih vs budget</th></tr></thead>
         <tbody>
         @foreach($summaryRows as $row)
             <tr>
@@ -203,17 +202,17 @@
     @if($lastNeed && $lastNeed['selisih'] !== null)
     <div class="note">
         @if($lastNeed['selisih'] < 0)
-            The full room program ({{ $ar($lastNeed['area']) }}) requires {{ $rp($lastNeed['cost']) }} —
-            <b>exceeding</b> the net construction budget by <b>{{ $rp(abs($lastNeed['selisih'])) }}</b>.
-            Consider adjusting the building tier, room priorities, or increasing the budget.
+            Total program kebutuhan ruang ({{ $ar($lastNeed['area']) }}) memerlukan {{ $rp($lastNeed['cost']) }} —
+            <b>melebihi</b> nett construction budget sebesar <b>{{ $rp(abs($lastNeed['selisih'])) }}</b>.
+            Pertimbangkan menyesuaikan tipe bangunan, prioritas ruang, atau menambah budget.
         @else
-            The full room program ({{ $ar($lastNeed['area']) }}) at {{ $rp($lastNeed['cost']) }}
-            <b>stays within</b> the net construction budget ({{ $rp($lastNeed['selisih']) }} remaining).
+            Total program kebutuhan ruang ({{ $ar($lastNeed['area']) }}) senilai {{ $rp($lastNeed['cost']) }}
+            <b>masih dalam</b> nett construction budget (sisa {{ $rp($lastNeed['selisih']) }}).
         @endif
     </div>
     @endif
 
-    <div class="foot">Farka Studio · Budget Estimator · generated automatically on {{ $generatedAt }}</div>
+    <div class="foot">Farka Studio · Budget Estimator · dokumen dihasilkan otomatis {{ $generatedAt }}</div>
 
 </body>
 </html>

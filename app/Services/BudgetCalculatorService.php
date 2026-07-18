@@ -101,10 +101,10 @@ class BudgetCalculatorService
         $costTersier = $cost($tersierArea);
         $summaryRows = [
             ['label' => 'Budget', 'area' => $budgetArea, 'cost' => $baseline, 'selisih' => null],
-            ['label' => 'Regulation', 'area' => $luasTerbangun, 'cost' => $regulasiCost, 'selisih' => $baseline - $regulasiCost],
-            ['label' => 'Needs (Primary)', 'area' => $utamaArea, 'cost' => $costUtama, 'selisih' => $baseline - $costUtama],
-            ['label' => 'Needs (+Secondary)', 'area' => $sekunderArea, 'cost' => $costSekunder, 'selisih' => $baseline - $costSekunder],
-            ['label' => 'Needs (+Tertiary)', 'area' => $tersierArea, 'cost' => $costTersier, 'selisih' => $baseline - $costTersier],
+            ['label' => 'Regulasi', 'area' => $luasTerbangun, 'cost' => $regulasiCost, 'selisih' => $baseline - $regulasiCost],
+            ['label' => 'Kebutuhan (Utama)', 'area' => $utamaArea, 'cost' => $costUtama, 'selisih' => $baseline - $costUtama],
+            ['label' => 'Kebutuhan (+Sekunder)', 'area' => $sekunderArea, 'cost' => $costSekunder, 'selisih' => $baseline - $costSekunder],
+            ['label' => 'Kebutuhan (+Tersier)', 'area' => $tersierArea, 'cost' => $costTersier, 'selisih' => $baseline - $costTersier],
         ];
 
         return [
