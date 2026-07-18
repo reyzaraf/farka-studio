@@ -407,7 +407,7 @@
                         wrapper.className = "mb-12 relative pb-10";
                         const imgEl = document.createElement('img');
                         imgEl.src = item.img;
-                        imgEl.className = "w-full aspect-[3/2] object-cover shadow-sm mb-4";
+                        imgEl.className = "w-full h-auto object-contain shadow-sm mb-4";
                         const descEl = document.createElement('p');
                         descEl.className = "text-sm text-gray-500 leading-tight pl-2 border-l-2 border-gray-200";
                         descEl.innerText = item.text;
