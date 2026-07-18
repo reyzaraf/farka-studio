@@ -159,4 +159,10 @@ class CalculatorAdminTest extends TestCase
         $this->assertEqualsWithDelta(0.12, (float) \App\Models\Calc\Setting::value('dana_darurat_pct'), 0.0001);
         $this->assertEqualsWithDelta(0.25, (float) \App\Models\Calc\Setting::value('sirkulasi_pct'), 0.0001);
     }
+
+    public function test_viewer_without_calculator_permission_is_forbidden(): void
+    {
+        $user = \App\Models\User::factory()->create(); // no roles/permissions
+        $this->actingAs($user)->get(route('admin.calc.rooms.index'))->assertForbidden();
+    }
 }
